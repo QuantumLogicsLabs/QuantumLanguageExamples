@@ -1,0 +1,227 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class DisjointSetAlgorithms {
+private:
+    int parent[100];
+    int rank[100];
+    int size[100];
+    
+    void makeSet(int n) {
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+            rank[i] = 0;
+            size[i] = 1;
+        }
+    }
+    
+    int find(int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]);
+        }
+        return parent[x];
+    }
+    
+    int findPathCompression(int x) {
+        if (parent[x] != x) {
+            parent[x] = findPathCompression(parent[x]);
+        }
+        return parent[x];
+    }
+    
+    void unionByRank(int x, int y) {
+        int xRoot = find(x);
+        int yRoot = find(y);
+        
+        if (xRoot == yRoot) {
+            return;
+        }
+        
+        if (rank[xRoot] < rank[yRoot]) {
+            parent[xRoot] = yRoot;
+        } else if (rank[xRoot] > rank[yRoot]) {
+            parent[yRoot] = xRoot;
+        } else {
+            parent[yRoot] = xRoot;
+            rank[xRoot]++;
+        }
+    }
+    
+    void unionBySize(int x, int y) {
+        int xRoot = find(x);
+        int yRoot = find(y);
+        
+        if (xRoot == yRoot) {
+            return;
+        }
+        
+        if (size[xRoot] < size[yRoot]) {
+            parent[xRoot] = yRoot;
+            size[yRoot] += size[xRoot];
+        } else {
+            parent[yRoot] = xRoot;
+            size[xRoot] += size[yRoot];
+        }
+    }
+    
+    bool isConnected(int x, int y) {
+        return find(x) == find(y);
+    }
+    
+    int countComponents(int n) {
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            if (parent[i] == i) {
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    int getComponentSize(int x) {
+        int root = find(x);
+        return size[root];
+    }
+    
+    void printSets(int n) {
+        cout << "Parent array: [";
+        for (int i = 0; i < n; i++) {
+            cout << parent[i];
+            if (i < n - 1) {
+                cout << ", ";
+            }
+        }
+        cout << "]" << endl;
+        
+        cout << "Components:" << endl;
+        bool visited[100] = {false};
+        for (int i = 0; i < n; i++) {
+            int root = find(i);
+            if (!visited[root]) {
+                cout << "Component " << root << ": ";
+                for (int j = 0; j < n; j++) {
+                    if (find(j) == root) {
+                        cout << j << " ";
+                    }
+                }
+                cout << endl;
+                visited[root] = true;
+            }
+        }
+    }
+    
+public:
+    void demonstrateDisjointSetAlgorithms() {
+        cout << "Disjoint Set (Union-Find) Algorithms Demonstration" << endl;
+        cout << "=================================================" << endl;
+        
+        cout << "1. Basic Union-Find Operations:" << endl;
+        int n = 6;
+        makeSet(n);
+        
+        cout << "Initial sets:" << endl;
+        printSets(n);
+        
+        unionByRank(0, 1);
+        unionByRank(1, 2);
+        unionByRank(3, 4);
+        
+        cout << "After unions (0-1, 1-2, 3-4):" << endl;
+        printSets(n);
+        
+        cout << "Is 0 connected to 2: " << (isConnected(0, 2) ? "Yes" : "No") << endl;
+        cout << "Is 0 connected to 3: " << (isConnected(0, 3) ? "Yes" : "No") << endl;
+        cout << "Number of components: " << countComponents(n) << endl;
+        cout << endl;
+        
+        cout << "2. Union by Size:" << endl;
+        makeSet(n);
+        
+        unionBySize(0, 1);
+        unionBySize(2, 3);
+        unionBySize(1, 2);
+        
+        cout << "After union by size (0-1, 2-3, 1-2):" << endl;
+        printSets(n);
+        
+        cout << "Size of component containing 0: " << getComponentSize(0) << endl;
+        cout << "Size of component containing 4: " << getComponentSize(4) << endl;
+        cout << endl;
+        
+        cout << "3. Path Compression:" << endl;
+        makeSet(n);
+        
+        unionByRank(0, 1);
+        unionByRank(1, 2);
+        unionByRank(2, 3);
+        unionByRank(3, 4);
+        
+        cout << "Before path compression:" << endl;
+        printSets(n);
+        
+        findPathCompression(0);
+        cout << "After path compression on 0:" << endl;
+        printSets(n);
+        cout << endl;
+        
+        cout << "4. Dynamic Connectivity:" << endl;
+        makeSet(n);
+        
+        cout << "Initial connections: None" << endl;
+        cout << "Connected components: " << countComponents(n) << endl;
+        
+        unionByRank(0, 1);
+        cout << "Connect 0-1: Components = " << countComponents(n) << endl;
+        
+        unionByRank(2, 3);
+        cout << "Connect 2-3: Components = " << countComponents(n) << endl;
+        
+        unionByRank(4, 5);
+        cout << "Connect 4-5: Components = " << countComponents(n) << endl;
+        
+        unionByRank(1, 2);
+        cout << "Connect 1-2: Components = " << countComponents(n) << endl;
+        
+        cout << "Final connectivity:" << endl;
+        printSets(n);
+        cout << endl;
+        
+        cout << "5. Component Analysis:" << endl;
+        makeSet(8);
+        
+        unionByRank(0, 1);
+        unionByRank(1, 2);
+        unionByRank(3, 4);
+        unionByRank(4, 5);
+        unionByRank(6, 7);
+        
+        cout << "Connectivity structure:" << endl;
+        printSets(8);
+        
+        cout << "Component analysis:" << endl;
+        for (int i = 0; i < 8; i++) {
+            cout << "Element " << i << " -> Component " << find(i) 
+                 << " (Size: " << getComponentSize(i) << ")" << endl;
+        }
+        cout << endl;
+        
+        cout << "Disjoint Set Algorithms Features:" << endl;
+        cout << "- Make set operation" << endl;
+        cout << "- Find operation with path compression" << endl;
+        cout << "- Union by rank" << endl;
+        cout << "- Union by size" << endl;
+        cout << "- Connected component checking" << endl;
+        cout << "- Component counting" << endl;
+        cout << "- Component size tracking" << endl;
+        cout << "- Dynamic connectivity" << endl;
+        cout << "- Time complexity O(alpha(n)) for operations" << endl;
+    }
+};
+
+int main() {
+    DisjointSetAlgorithms dsa;
+    dsa.demonstrateDisjointSetAlgorithms();
+    return 0;
+}

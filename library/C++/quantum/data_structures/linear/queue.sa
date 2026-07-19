@@ -1,0 +1,66 @@
+// Queue Implementation in C++
+#include <iostream>
+using namespace std;
+
+class Queue {
+private:
+    static const int MAX_SIZE = 100;
+    int data[MAX_SIZE];
+    int front, rear;
+
+public:
+    Queue() : front(-1), rear(-1) {}
+
+    bool enqueue(int value) {
+        if (rear >= MAX_SIZE - 1) {
+            return false;
+        }
+        if (front == -1) {
+            front = 0;
+        }
+        data[++rear] = value;
+        return true;
+    }
+
+    bool dequeue(int& value) {
+        if (front > rear || front == -1) {
+            return false;
+        }
+        value = data[front++];
+        if (front > rear) {
+            front = rear = -1;
+        }
+        return true;
+    }
+
+    bool isEmpty() {
+        return front == -1 || front > rear;
+    }
+
+    void display() {
+        if (isEmpty()) {
+            cout << "Queue is empty" << endl;
+            return;
+        }
+        cout << "Queue: ";
+        for (int i = front; i <= rear; i++) {
+            cout << data[i] << " ";
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    Queue queue;
+    queue.enqueue(10);
+    queue.enqueue(20);
+    queue.enqueue(30);
+    queue.display();
+    
+    int value;
+    if (queue.dequeue(value)) {
+        cout << "Dequeued: " << value << endl;
+    }
+    queue.display();
+    return 0;
+}

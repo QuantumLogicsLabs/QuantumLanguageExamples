@@ -1,0 +1,276 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class NetworkFlowAlgorithms {
+private:
+    const int MAX_V = 100;
+    
+    bool bfs(int rGraph[][100], int s, int t, int parent[], int V) {
+        bool visited[MAX_V];
+        for (int i = 0; i < V; i++) {
+            visited[i] = false;
+        }
+        
+        int queue[MAX_V];
+        int front = 0, rear = 0;
+        queue[rear++] = s;
+        visited[s] = true;
+        parent[s] = -1;
+        
+        while (front != rear) {
+            int u = queue[front++];
+            
+            for (int v = 0; v < V; v++) {
+                if (!visited[v] && rGraph[u][v] > 0) {
+                    queue[rear++] = v;
+                    parent[v] = u;
+                    visited[v] = true;
+                }
+            }
+        }
+        
+        return visited[t];
+    }
+    
+    int fordFulkerson(int graph[][100], int s, int t, int V) {
+        int u, v;
+        int rGraph[100][100];
+        
+        for (u = 0; u < V; u++) {
+            for (v = 0; v < V; v++) {
+                rGraph[u][v] = graph[u][v];
+            }
+        }
+        
+        int parent[MAX_V];
+        int max_flow = 0;
+        
+        while (bfs(rGraph, s, t, parent, V)) {
+            int path_flow = 999999;
+            
+            for (v = t; v != s; v = parent[v]) {
+                u = parent[v];
+                path_flow = min(path_flow, rGraph[u][v]);
+            }
+            
+            for (v = t; v != s; v = parent[v]) {
+                u = parent[v];
+                rGraph[u][v] -= path_flow;
+                rGraph[v][u] += path_flow;
+            }
+            
+            max_flow += path_flow;
+        }
+        
+        return max_flow;
+    }
+    
+    int minCut(int graph[][100], int s, int t, int V) {
+        int u, v;
+        int rGraph[100][100];
+        
+        for (u = 0; u < V; u++) {
+            for (v = 0; v < V; v++) {
+                rGraph[u][v] = graph[u][v];
+            }
+        }
+        
+        int parent[MAX_V];
+        
+        while (bfs(rGraph, s, t, parent, V)) {
+            int path_flow = 999999;
+            
+            for (v = t; v != s; v = parent[v]) {
+                u = parent[v];
+                path_flow = min(path_flow, rGraph[u][v]);
+            }
+            
+            for (v = t; v != s; v = parent[v]) {
+                u = parent[v];
+                rGraph[u][v] -= path_flow;
+                rGraph[v][u] += path_flow;
+            }
+        }
+        
+        bool isVisited[MAX_V];
+        for (int i = 0; i < V; i++) {
+            isVisited[i] = false;
+        }
+        
+        int queue[MAX_V];
+        int front = 0, rear = 0;
+        queue[rear++] = s;
+        isVisited[s] = true;
+        
+        while (front != rear) {
+            int u = queue[front++];
+            
+            for (int v = 0; v < V; v++) {
+                if (!isVisited[v] && rGraph[u][v] > 0) {
+                    queue[rear++] = v;
+                    isVisited[v] = true;
+                }
+            }
+        }
+        
+        int cutCapacity = 0;
+        for (u = 0; u < V; u++) {
+            for (v = 0; v < V; v++) {
+                if (isVisited[u] && !isVisited[v] && graph[u][v] > 0) {
+                    cutCapacity += graph[u][v];
+                }
+            }
+        }
+        
+        return cutCapacity;
+    }
+    
+    bool bipartiteMatchingDFS(int u, bool seen[], int matchR[], int bpGraph[][100], int m, int n) {
+        for (int v = 0; v < n; v++) {
+            if (bpGraph[u][v] && !seen[v]) {
+                seen[v] = true;
+                
+                if (matchR[v] == -1 || bipartiteMatchingDFS(matchR[v], seen, matchR, bpGraph, m, n)) {
+                    matchR[v] = u;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    int maxBipartiteMatching(int bpGraph[][100], int m, int n) {
+        int matchR[100];
+        
+        for (int i = 0; i < n; i++) {
+            matchR[i] = -1;
+        }
+        
+        int result = 0;
+        for (int u = 0; u < m; u++) {
+            bool seen[100];
+            for (int i = 0; i < n; i++) {
+                seen[i] = false;
+            }
+            
+            if (bipartiteMatchingDFS(u, seen, matchR, bpGraph, m, n)) {
+                result++;
+            }
+        }
+        
+        return result;
+    }
+    
+    void printMatrix(int matrix[][100], int V) {
+        cout << "    ";
+        for (int i = 0; i < V; i++) {
+            cout << i << " ";
+        }
+        cout << endl;
+        cout << "    ";
+        for (int i = 0; i < V; i++) {
+            cout << "--";
+        }
+        cout << endl;
+        
+        for (int i = 0; i < V; i++) {
+            cout << i << " | ";
+            for (int j = 0; j < V; j++) {
+                cout << matrix[i][j] << " ";
+            }
+            cout << endl;
+        }
+    }
+    
+public:
+    void demonstrateNetworkFlowAlgorithms() {
+        cout << "Network Flow Algorithms Demonstration" << endl;
+        cout << "=====================================" << endl;
+        
+        cout << "1. Ford-Fulkerson Algorithm (Max Flow):" << endl;
+        int graph[100][100] = {{0, 16, 13, 0, 0, 0},
+                              {0, 0, 10, 12, 0, 0},
+                              {0, 4, 0, 0, 14, 0},
+                              {0, 0, 9, 0, 0, 20},
+                              {0, 0, 0, 7, 0, 4},
+                              {0, 0, 0, 0, 0, 0}};
+        int V = 6;
+        int s = 0, t = 5;
+        
+        cout << "Capacity matrix:" << endl;
+        printMatrix(graph, V);
+        
+        cout << "Source: " << s << ", Sink: " << t << endl;
+        cout << "Maximum flow: " << fordFulkerson(graph, s, t, V) << endl;
+        cout << endl;
+        
+        cout << "2. Min Cut:" << endl;
+        cout << "Min cut capacity: " << minCut(graph, s, t, V) << endl;
+        cout << endl;
+        
+        cout << "3. Bipartite Matching:" << endl;
+        int bpGraph[100][100] = {{0, 1, 1, 0, 0, 0, 0, 0},
+                                {0, 0, 1, 1, 0, 0, 0, 0},
+                                {0, 0, 0, 1, 1, 0, 0, 0},
+                                {0, 0, 0, 0, 1, 1, 0, 0},
+                                {0, 0, 0, 0, 0, 1, 1, 0},
+                                {0, 0, 0, 0, 0, 0, 1, 1}};
+        int m = 6, n = 8;
+        
+        cout << "Bipartite graph adjacency matrix:" << endl;
+        printMatrix(bpGraph, m);
+        
+        cout << "Maximum bipartite matching: " << maxBipartiteMatching(bpGraph, m, n) << endl;
+        cout << endl;
+        
+        cout << "4. Another Max Flow Example:" << endl;
+        int graph2[100][100] = {{0, 10, 0, 0, 0, 0},
+                               {0, 0, 4, 8, 0, 0},
+                               {0, 0, 0, 0, 10, 0},
+                               {0, 0, 0, 0, 9, 10},
+                               {0, 0, 6, 0, 0, 10},
+                               {0, 0, 0, 0, 0, 0}};
+        int V2 = 6;
+        int s2 = 0, t2 = 5;
+        
+        cout << "Capacity matrix 2:" << endl;
+        printMatrix(graph2, V2);
+        
+        cout << "Source: " << s2 << ", Sink: " << t2 << endl;
+        cout << "Maximum flow: " << fordFulkerson(graph2, s2, t2, V2) << endl;
+        cout << endl;
+        
+        cout << "5. Complex Bipartite Matching:" << endl;
+        int complexBpGraph[100][100] = {{1, 0, 0, 0, 1, 0},
+                                        {0, 1, 0, 0, 0, 1},
+                                        {0, 0, 1, 0, 1, 0},
+                                        {0, 0, 0, 1, 0, 1},
+                                        {1, 0, 1, 0, 0, 0},
+                                        {0, 1, 0, 1, 0, 0}};
+        int cm = 6, cn = 6;
+        
+        cout << "Complex bipartite graph:" << endl;
+        printMatrix(complexBpGraph, cm);
+        
+        cout << "Maximum bipartite matching: " << maxBipartiteMatching(complexBpGraph, cm, cn) << endl;
+        cout << endl;
+        
+        cout << "Network Flow Algorithms Features:" << endl;
+        cout << "- Ford-Fulkerson algorithm for max flow" << endl;
+        cout << "- BFS-based augmenting path finding" << endl;
+        cout << "- Min cut computation" << endl;
+        cout << "- Bipartite matching using DFS" << endl;
+        cout << "- Residual graph management" << endl;
+        cout << "- Applications in transportation networks" << endl;
+        cout << "- Job assignment problems" << endl;
+        cout << "- Time complexity O(V * E * max_flow)" << endl;
+    }
+};
+
+int main() {
+    NetworkFlowAlgorithms nfa;
+    nfa.demonstrateNetworkFlowAlgorithms();
+    return 0;
+}

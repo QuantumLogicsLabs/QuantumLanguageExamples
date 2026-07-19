@@ -1,0 +1,143 @@
+// van Emde Boas Tree Implementation in C++
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+class VanEmdeBoasTree {
+private:
+    int universeSize;
+    int min;
+    int max;
+    VanEmdeBoasTree* summary;
+    VanEmdeBoasTree** clusters;
+
+    int upperSquareRoot(int u) {
+        return (int)pow(2, ceil(log2(u) / 2.0));
+    }
+
+    int lowerSquareRoot(int u) {
+        return (int)pow(2, floor(log2(u) / 2.0));
+    }
+
+    int high(int x) {
+        return x / lowerSquareRoot(universeSize);
+    }
+
+    int low(int x) {
+        return x % lowerSquareRoot(universeSize);
+    }
+
+    int index(int x, int y) {
+        return x * lowerSquareRoot(universeSize) + y;
+    }
+
+public:
+    VanEmdeBoasTree(int u) : universeSize(u), min(u), max(-1) {
+        if (u <= 2) {
+            summary = nullptr;
+            clusters = nullptr;
+        } else {
+            int clusterSize = lowerSquareRoot(u);
+            summary = new VanEmdeBoasTree(upperSquareRoot(u));
+            clusters = new VanEmdeBoasTree*[upperSquareRoot(u)];
+            for (int i = 0; i < upperSquareRoot(u); i++) {
+                clusters[i] = new VanEmdeBoasTree(clusterSize);
+            }
+        }
+    }
+
+    ~VanEmdeBoasTree() {
+        delete summary;
+        if (clusters) {
+            for (int i = 0; i < upperSquareRoot(universeSize); i++) {
+                delete clusters[i];
+            }
+            delete[] clusters;
+        }
+    }
+
+    bool insert(int x) {
+        if (x < 0 || x >= universeSize) {
+            return false;
+        }
+
+        if (min == universeSize) {
+            min = max = x;
+            return true;
+        }
+
+        if (x < min) {
+            swap(min, x);
+        }
+
+        if (max < x) {
+            max = x;
+        }
+
+        if (universeSize > 2) {
+            if (clusters[high(x)]->min == clusters[high(x)]->universeSize) {
+                summary->insert(high(x));
+                clusters[high(x)]->min = clusters[high(x)]->max = low(x);
+            } else {
+                clusters[high(x)]->insert(low(x));
+            }
+        }
+
+        return true;
+    }
+
+    bool find(int x) {
+        if (x < 0 || x >= universeSize) {
+            return false;
+        }
+
+        if (min == x || max == x) {
+            return true;
+        }
+
+        if (universeSize == 2) {
+            return false;
+        }
+
+        return clusters[high(x)]->find(low(x));
+    }
+
+    int getMin() {
+        return min;
+    }
+
+    int getMax() {
+        return max;
+    }
+
+    void display() {
+        cout << "van Emde Boas Tree (universe size: " << universeSize << ")" << endl;
+        cout << "Min: " << (min == universeSize ? "empty" : to_string(min)) << endl;
+        cout << "Max: " << (max == -1 ? "empty" : to_string(max)) << endl;
+    }
+};
+
+int main() {
+    VanEmdeBoasTree vEB(16);
+    
+    cout << "Initial state:" << endl;
+    vEB.display();
+    
+    vEB.insert(2);
+    vEB.insert(3);
+    vEB.insert(4);
+    vEB.insert(7);
+    vEB.insert(14);
+    vEB.insert(15);
+    
+    cout << "\nAfter insertions:" << endl;
+    vEB.display();
+    
+    cout << "\nSearch results:" << endl;
+    cout << "Find 3: " << (vEB.find(3) ? "Found" : "Not Found") << endl;
+    cout << "Find 5: " << (vEB.find(5) ? "Found" : "Not Found") << endl;
+    cout << "Find 14: " << (vEB.find(14) ? "Found" : "Not Found") << endl;
+    cout << "Find 10: " << (vEB.find(10) ? "Found" : "Not Found") << endl;
+    
+    return 0;
+}

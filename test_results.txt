@@ -1,0 +1,841 @@
+Quantum Language — Test Results (in progress)
+Generated : 2026-07-19 14:28:58
+Directory : C:\QuantumLogicsLabs\QuantumLanguage\compiler\examples\
+Total     : 416   (running...)
+========================================================================
+
+[PASS] examples\IO Operations.sa
+
+[PASS] examples\UTCConverter.sa
+
+[PASS] examples\advanced.sa
+
+[PASS] examples\cybersec.sa
+
+[PASS] examples\demo\demo01.sa
+
+[PASS] examples\demo\demo02.sa
+
+[PASS] examples\demo\demo03.sa
+
+[PASS] examples\demo\demo04.sa
+
+[PASS] examples\demo\demo05.sa
+
+[PASS] examples\demo\demo06.sa
+
+[PASS] examples\demo\demo07.sa
+
+[PASS] examples\demo\demo08.sa
+
+[PASS] examples\demo\demo09.sa
+
+[PASS] examples\demo\demo10.sa
+
+[PASS] examples\diamond.sa
+
+[PASS] examples\features.sa
+
+[PASS] examples\hello.sa
+
+[PASS] examples\if-else.sa
+
+[PASS] examples\joke.sa
+
+[PASS] examples\library\C\c_programs\hello.c
+
+[PASS] examples\library\C\quantum\algorithms\binary search.sa
+
+[PASS] examples\library\C\quantum\algorithms\breadth first search.sa
+
+[PASS] examples\library\C\quantum\algorithms\bubble sort.sa
+
+[PASS] examples\library\C\quantum\algorithms\depth first search.sa
+
+[PASS] examples\library\C\quantum\algorithms\fibonacci.sa
+
+[PASS] examples\library\C\quantum\algorithms\heap sort.sa
+
+[PASS] examples\library\C\quantum\algorithms\insertion sort.sa
+
+[PASS] examples\library\C\quantum\algorithms\prime sieve.sa
+
+[PASS] examples\library\C\quantum\algorithms\quick sort.sa
+
+[PASS] examples\library\C\quantum\algorithms\selection sort.sa
+
+[PASS] examples\library\C\quantum\data_structures\binary tree.sa
+
+[PASS] examples\library\C\quantum\data_structures\hash table.sa
+
+[PASS] examples\library\C\quantum\data_structures\linked list.sa
+
+[PASS] examples\library\C\quantum\data_structures\queue.sa
+
+[PASS] examples\library\C\quantum\data_structures\stack.sa
+
+[PASS] examples\library\C\quantum\examples\c.sa
+
+[PASS] examples\library\C\quantum\examples\memory management.sa
+
+[PASS] examples\library\C\quantum\games\guess game.sa
+
+[PASS] examples\library\C\quantum\games\rock paper scissors.sa
+
+[PASS] examples\library\C\quantum\games\snake.sa
+
+[PASS] examples\library\C\quantum\mathematical\factorial.sa
+
+[PASS] examples\library\C\quantum\mathematical\gcd lcm.sa
+
+[PASS] examples\library\C\quantum\mathematical\matrix multiplication.sa
+
+[PASS] examples\library\C\quantum\mathematical\power function.sa
+
+[PASS] examples\library\C\quantum\string_operations\palindrome.sa
+
+[PASS] examples\library\C\quantum\string_operations\reverse string.sa
+
+[PASS] examples\library\C\quantum\string_operations\string length.sa
+
+[PASS] examples\library\C\quantum\string_operations\string validation.sa
+
+[PASS] examples\library\C\quantum\string_operations\text encryption.sa
+
+[PASS] examples\library\C\quantum\string_operations\text processing.sa
+
+[PASS] examples\library\C++\cpp_programs\01_hello_world.cpp
+
+[PASS] examples\library\C++\cpp_programs\02_sum_two_numbers.cpp
+
+[PASS] examples\library\C++\cpp_programs\03_factorial.cpp
+
+[PASS] examples\library\C++\cpp_programs\04_fibonacci_series.cpp
+
+[PASS] examples\library\C++\cpp_programs\05_prime_check.cpp
+
+[PASS] examples\library\C++\cpp_programs\06_palindrome_number.cpp
+
+[PASS] examples\library\C++\cpp_programs\07_reverse_string.cpp
+
+[PASS] examples\library\C++\cpp_programs\08_bubble_sort.cpp
+
+[PASS] examples\library\C++\cpp_programs\09_selection_sort.cpp
+
+[PASS] examples\library\C++\cpp_programs\10_insertion_sort.cpp
+
+[PASS] examples\library\C++\cpp_programs\11_gcd.cpp
+
+[PASS] examples\library\C++\cpp_programs\12_lcm.cpp
+
+[PASS] examples\library\C++\cpp_programs\13_swap_numbers.cpp
+
+[PASS] examples\library\C++\cpp_programs\14_armstrong_number.cpp
+
+[PASS] examples\library\C++\cpp_programs\15_leap_year.cpp
+
+[PASS] examples\library\C++\cpp_programs\16_matrix_addition.cpp
+
+[PASS] examples\library\C++\cpp_programs\17_matrix_multiplication.cpp
+
+[PASS] examples\library\C++\cpp_programs\18_simple_calculator.cpp
+
+[PASS] examples\library\C++\cpp_programs\19_temperature_converter.cpp
+
+[PASS] examples\library\C++\cpp_programs\20_simple_interest.cpp
+
+[PASS] examples\library\C++\cpp_programs\21_compound_interest.cpp
+
+[PASS] examples\library\C++\cpp_programs\22_area_of_shapes.cpp
+
+[PASS] examples\library\C++\cpp_programs\23_linear_search.cpp
+
+[PASS] examples\library\C++\cpp_programs\24_binary_search.cpp
+
+[PASS] examples\library\C++\cpp_programs\25_string_operations.cpp
+
+[PASS] examples\library\C++\cpp_programs\26_structures_demo.cpp
+
+[PASS] examples\library\C++\cpp_programs\27_class_demo.cpp
+
+[PASS] examples\library\C++\cpp_programs\28_inheritance_demo.cpp
+
+[PASS] examples\library\C++\cpp_programs\29_polymorphism_demo.cpp
+
+[PASS] examples\library\C++\cpp_programs\30_pointers_demo.cpp
+
+[PASS] examples\library\C++\cpp_programs\31_recursion_sum.cpp
+
+[PASS] examples\library\C++\cpp_programs\32_stack_using_array.cpp
+
+[PASS] examples\library\C++\cpp_programs\33_queue_using_array.cpp
+
+[PASS] examples\library\C++\cpp_programs\37_exception_handling.cpp
+
+[PASS] examples\library\C++\cpp_programs\38_template_function.cpp
+
+[PASS] examples\library\C++\cpp_programs\39_operator_overloading.cpp
+
+[PASS] examples\library\C++\cpp_programs\40_vectors_demo.cpp
+
+[PASS] examples\library\C++\cpp_programs\41_map_demo.cpp
+
+[PASS] examples\library\C++\cpp_programs\42_set_demo.cpp
+
+[PASS] examples\library\C++\cpp_programs\43_quick_sort.cpp
+
+[PASS] examples\library\C++\cpp_programs\44_merge_sort.cpp
+
+[PASS] examples\library\C++\cpp_programs\45_ascii_value.cpp
+
+[PASS] examples\library\C++\cpp_programs\46_character_check.cpp
+
+[PASS] examples\library\C++\cpp_programs\47_bank_account_system.cpp
+
+[PASS] examples\library\C++\cpp_programs\48_student_record.cpp
+
+[PASS] examples\library\C++\cpp_programs\49_employee_record.cpp
+
+[PASS] examples\library\C++\cpp_programs\50_tic_tac_toe.cpp
+
+[PASS] examples\library\C++\cpp_programs\hello.cpp
+
+[PASS] examples\library\C++\quantum\OOPs\1.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 1\LAB01-TASK02.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 1\LAB01-TASK03.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 1\LAB01-TASK04.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 1\LAB01-TASK05.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 1\LAB01-TASK06.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 1\LAB01-TASK07.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 1\LAB01-TASK08.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 2\solution\LAB02-TASK01.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 2\solution\LAB02-TASK02.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 2\solution\LAB02-TASK03.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 2\solution\LAB02-TASK04.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 2\solution\LAB02-TASK05.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 2\solution\LAB02-TASK06.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 3\solution\LAB03-TASK01.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 3\solution\LAB03-TASK02.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 3\solution\LAB03-TASK03.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 3\solution\LAB03-TASK04.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 3\solution\LAB03-TASK05.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 4\LAB01-TASK01.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 5\LAB05-TASK01.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 6\LAB06-TASK01.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 7\LAB07-TASK01.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 7\LAB07-TASK02.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 7\LAB07-TASK03.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 7\LAB07-TASK04.sa
+
+[PASS] examples\library\C++\quantum\OOPs\Lab 7\LAB07-TASK05.sa
+
+[PASS] examples\library\C++\quantum\algorithms\advanced\advanced_algorithms_2.sa
+
+[PASS] examples\library\C++\quantum\algorithms\advanced\advanced_algorithms_comprehensive.sa
+
+[PASS] examples\library\C++\quantum\algorithms\advanced\search_algorithms.sa
+
+[PASS] examples\library\C++\quantum\algorithms\advanced\searching_advanced.sa
+
+[PASS] examples\library\C++\quantum\algorithms\advanced\sorting_advanced.sa
+
+[PASS] examples\library\C++\quantum\algorithms\backtracking\backtracking_algorithms.sa
+
+[PASS] examples\library\C++\quantum\algorithms\basic\number_theory.sa
+
+[PASS] examples\library\C++\quantum\algorithms\basic\simple_algorithms.sa
+
+[PASS] examples\library\C++\quantum\algorithms\bit\advanced_bit_manipulation.sa
+
+[PASS] examples\library\C++\quantum\algorithms\bit\bit_manipulation.sa
+
+[PASS] examples\library\C++\quantum\algorithms\dp\advanced_dynamic_programming.sa
+
+[PASS] examples\library\C++\quantum\algorithms\dp\dynamic_programming_advanced.sa
+
+[PASS] examples\library\C++\quantum\algorithms\ds\disjoint_set_algorithms.sa
+
+[PASS] examples\library\C++\quantum\algorithms\ds\fenwick_tree_algorithms.sa
+
+[PASS] examples\library\C++\quantum\algorithms\ds\heap_algorithms.sa
+
+[PASS] examples\library\C++\quantum\algorithms\ds\segment_tree_algorithms.sa
+
+[PASS] examples\library\C++\quantum\algorithms\graph\advanced_graph_algorithms.sa
+
+[PASS] examples\library\C++\quantum\algorithms\graph\network_flow_algorithms.sa
+
+[PASS] examples\library\C++\quantum\algorithms\greedy\greedy_algorithms.sa
+
+[PASS] examples\library\C++\quantum\algorithms\matrix\advanced_matrix_operations.sa
+
+[PASS] examples\library\C++\quantum\algorithms\matrix\matrix_algorithms.sa
+
+[PASS] examples\library\C++\quantum\algorithms\matrix\spiral_matrix.sa
+
+[PASS] examples\library\C++\quantum\algorithms\parallel\parallel_algorithms.sa
+
+[PASS] examples\library\C++\quantum\algorithms\string\advanced_pattern_printing.sa
+
+[PASS] examples\library\C++\quantum\algorithms\string\pattern_algorithms.sa
+
+[PASS] examples\library\C++\quantum\algorithms\string\string_processing_advanced.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\adjacency_list.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\adjacency_matrix.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\articulation_points.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\bellman_ford.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\bfs.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\bipartite.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\dfs.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\dijkstra.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\eulerian_path.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\floyd_warshall.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\graph_algorithms.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\graph_coloring.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\graph_isomorphism.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\hamiltonian_path.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\kruskal.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\maximum_flow.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\minimum_cut.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\planar_graph.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\prim.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\strongly_connected.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\topological_sort.sa
+
+[PASS] examples\library\C++\quantum\data_structures\graphs\transitive_closure.sa
+
+[PASS] examples\library\C++\quantum\data_structures\hash\bloom_filter.sa
+
+[PASS] examples\library\C++\quantum\data_structures\hash\concurrent_hash.sa
+
+[PASS] examples\library\C++\quantum\data_structures\hash\consistent_hashing.sa
+
+[PASS] examples\library\C++\quantum\data_structures\hash\count_min_sketch.sa
+
+[PASS] examples\library\C++\quantum\data_structures\hash\cuckoo_hashing.sa
+
+[PASS] examples\library\C++\quantum\data_structures\hash\double_hashing.sa
+
+[PASS] examples\library\C++\quantum\data_structures\hash\hash_function.sa
+
+[PASS] examples\library\C++\quantum\data_structures\hash\hash_map.sa
+
+[PASS] examples\library\C++\quantum\data_structures\hash\hash_set.sa
+
+[PASS] examples\library\C++\quantum\data_structures\hash\hash_table.sa
+
+[PASS] examples\library\C++\quantum\data_structures\hash\hyperloglog.sa
+
+[PASS] examples\library\C++\quantum\data_structures\hash\linear_probing.sa
+
+[PASS] examples\library\C++\quantum\data_structures\hash\perfect_hashing.sa
+
+[PASS] examples\library\C++\quantum\data_structures\hash\persistent_hash.sa
+
+[PASS] examples\library\C++\quantum\data_structures\hash\quadratic_probing.sa
+
+[PASS] examples\library\C++\quantum\data_structures\hash\robin_hood_hashing.sa
+
+[PASS] examples\library\C++\quantum\data_structures\hash\universal_hashing.sa
+
+[PASS] examples\library\C++\quantum\data_structures\linear\array.sa
+
+[PASS] examples\library\C++\quantum\data_structures\linear\block_array.sa
+
+[PASS] examples\library\C++\quantum\data_structures\linear\buffer.sa
+
+[PASS] examples\library\C++\quantum\data_structures\linear\chunked_array.sa
+
+[PASS] examples\library\C++\quantum\data_structures\linear\circular_queue.sa
+
+[PASS] examples\library\C++\quantum\data_structures\linear\deque.sa
+
+[PASS] examples\library\C++\quantum\data_structures\linear\dynamic_array.sa
+
+[PASS] examples\library\C++\quantum\data_structures\linear\free_list.sa
+
+[PASS] examples\library\C++\quantum\data_structures\linear\gap_buffer.sa
+
+[PASS] examples\library\C++\quantum\data_structures\linear\linked_list.sa
+
+[PASS] examples\library\C++\quantum\data_structures\linear\priority_queue.sa
+
+[PASS] examples\library\C++\quantum\data_structures\linear\queue.sa
+
+[PASS] examples\library\C++\quantum\data_structures\linear\ring_buffer.sa
+
+[PASS] examples\library\C++\quantum\data_structures\linear\rope.sa
+
+[PASS] examples\library\C++\quantum\data_structures\linear\self_adjusting_list.sa
+
+[PASS] examples\library\C++\quantum\data_structures\linear\skip_list.sa
+
+[PASS] examples\library\C++\quantum\data_structures\linear\stack.sa
+
+[PASS] examples\library\C++\quantum\data_structures\linear\unrolled_linked_list.sa
+
+[PASS] examples\library\C++\quantum\data_structures\linear\vector.sa
+
+[PASS] examples\library\C++\quantum\data_structures\linear\xor_linked_list.sa
+
+[PASS] examples\library\C++\quantum\data_structures\trees\avl_tree.sa
+
+[PASS] examples\library\C++\quantum\data_structures\trees\b_tree.sa
+
+[PASS] examples\library\C++\quantum\data_structures\trees\binary_search_tree.sa
+
+[PASS] examples\library\C++\quantum\data_structures\trees\binary_tree.sa
+
+[PASS] examples\library\C++\quantum\data_structures\trees\cartesian_tree.sa
+
+[PASS] examples\library\C++\quantum\data_structures\trees\fenwick_tree.sa
+
+[PASS] examples\library\C++\quantum\data_structures\trees\heap.sa
+
+[PASS] examples\library\C++\quantum\data_structures\trees\huffman_tree.sa
+
+[PASS] examples\library\C++\quantum\data_structures\trees\interval_tree.sa
+
+[PASS] examples\library\C++\quantum\data_structures\trees\van_emde_boas_tree.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 1\25L_3045_Q1.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 1\25L_3045_Q2.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 1\25L_3045_Q3.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 1\25L_3045_Q4.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 1\25L_3045_Q5.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 1\25L_3045_Q6.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 1\25L_3045_Q7.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 1\25L_3045_Q8.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 2\25L_3045_Q1.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 2\25L_3045_Q2.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 2\25L_3045_Q3.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 2\25L_3045_Q4.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 2\25L_3045_Q5.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 2\25L_3045_Q6.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 2\25L_3045_Q7.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 2\25L_3045_Q8.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 3\25L_3045_Q1.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 3\25L_3045_Q2.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 3\25L_3045_Q3.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 3\25L_3045_Q4.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 3\25L_3045_Q5.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 3\25L_3045_Q6.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 4\25L_3045_Q1.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 4\25L_3045_Q2.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 4\25L_3045_Q3.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 4\25L_3045_Q4.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Assignments\Assignment 4\25L_3045_Q5.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 2\25L - 3045 (Q1).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 2\25L - 3045 (Q2).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 2\25L - 3045 (Q3).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 2\25L - 3045 (Q4).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 2\25L - 3045 (Q5).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 2\25L - 3045 (Q6).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 3\25L - 3045 (Q1).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 3\25L - 3045 (Q2).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 3\25L - 3045 (Q3).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 3\25L - 3045 (Q4).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 3\25L - 3045 (Q5).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 3\25L - 3045 (Q6).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 3\25L - 3045 (Q7).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 3\25L - 3045 (Q8).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 4\25L-3045 (Q1).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 4\25L-3045 (Q2).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 4\25L-3045 (Q3).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 4\25L-3045 (Q4).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 4\25L-3045 (Q5).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 4\25L-3045 (Q6).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 4\25L-3045 (Q7).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 4\25L-3045 (Q8).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 5\25L - 3045 (Q1).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 5\25L - 3045 (Q2).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 5\25L - 3045 (Q3).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 5\25L - 3045 (Q4).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 5\25L - 3045 (Q5).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 5\25L - 3045 (Q6).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 6\25L - 3045 (Q1).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 6\25L - 3045 (Q10).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 6\25L - 3045 (Q2).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 6\25L - 3045 (Q3).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 6\25L - 3045 (Q4).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 6\25L - 3045 (Q5).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 6\25L - 3045 (Q6).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 6\25L - 3045 (Q7).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 6\25L - 3045 (Q8).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 6\25L - 3045 (Q9).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 7\25L-3045 (Q1).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 7\25L-3045 (Q10).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 7\25L-3045 (Q2).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 7\25L-3045 (Q3).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 7\25L-3045 (Q4).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 7\25L-3045 (Q5).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 7\25L-3045 (Q6).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 7\25L-3045 (Q7).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 7\25L-3045 (Q8).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 7\25L-3045 (Q9).sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Lab 9\25L-3045.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Mid\Solution\Q1.sa
+
+[PASS] examples\library\C++\quantum\fundamentals\Lab\Mid\Solution\Q2.sa
+
+[PASS] examples\library\Javascript\js_programs\hello.js
+
+[PASS] examples\library\Javascript\sa_programs\algorithms\astar pathfinding.sa
+
+[PASS] examples\library\Javascript\sa_programs\algorithms\chunky monkey.sa
+
+[PASS] examples\library\Javascript\sa_programs\algorithms\dungeon generator.sa
+
+[PASS] examples\library\Javascript\sa_programs\algorithms\markov chain.sa
+
+[PASS] examples\library\Javascript\sa_programs\algorithms\maze generator.sa
+
+[PASS] examples\library\Javascript\sa_programs\algorithms\mutations.sa
+
+[PASS] examples\library\Javascript\sa_programs\applications\profile lookup.sa
+
+[PASS] examples\library\Javascript\sa_programs\applications\recipe tracker.sa
+
+[PASS] examples\library\Javascript\sa_programs\applications\record collection.sa
+
+[PASS] examples\library\Javascript\sa_programs\data_structures\binary search tree.sa
+
+[PASS] examples\library\Javascript\sa_programs\data_structures\stack.sa
+
+[PASS] examples\library\Javascript\sa_programs\examples\script.sa
+
+[PASS] examples\library\Javascript\sa_programs\games\countdown timer.sa
+
+[PASS] examples\library\Javascript\sa_programs\games\game of life.sa
+
+[PASS] examples\library\Javascript\sa_programs\games\quiz game.sa
+
+[PASS] examples\library\Javascript\sa_programs\games\solar system.sa
+
+[PASS] examples\library\Javascript\sa_programs\mathematical\factorial calculator.sa
+
+[PASS] examples\library\Javascript\sa_programs\mathematical\mandelbrot.sa
+
+[PASS] examples\library\Javascript\sa_programs\mathematical\math interpreter.sa
+
+[PASS] examples\library\Javascript\sa_programs\mathematical\stats calculator.sa
+
+[PASS] examples\library\Javascript\sa_programs\sorting_searching\binary search.sa
+
+[PASS] examples\library\Javascript\sa_programs\sorting_searching\bubble sort.sa
+
+[PASS] examples\library\Javascript\sa_programs\sorting_searching\linear search.sa
+
+[PASS] examples\library\Javascript\sa_programs\sorting_searching\quick sort.sa
+
+[PASS] examples\library\Javascript\sa_programs\sorting_searching\selection sort.sa
+
+[PASS] examples\library\Javascript\sa_programs\string_operations\caesar cipher.sa
+
+[PASS] examples\library\Javascript\sa_programs\string_operations\dna analyzer.sa
+
+[PASS] examples\library\Javascript\sa_programs\string_operations\longest word finder.sa
+
+[PASS] examples\library\Javascript\sa_programs\string_operations\missing letter detector.sa
+
+[PASS] examples\library\Javascript\sa_programs\string_operations\morse code.sa
+
+[PASS] examples\library\Javascript\sa_programs\string_operations\password generator.sa
+
+[PASS] examples\library\Javascript\sa_programs\string_operations\sentence analyzer.sa
+
+[PASS] examples\library\Javascript\sa_programs\system_tools\simple logger.sa
+
+[PASS] examples\library\Javascript\sa_programs\system_tools\storage helper.sa
+
+[PASS] examples\library\Javascript\sa_programs\system_tools\timer utility.sa
+
+[PASS] examples\library\Javascript\sa_programs\validation\email validator.sa
+
+[PASS] examples\library\Javascript\sa_programs\validation\form fields.sa
+
+[PASS] examples\library\Javascript\sa_programs\validation\password checker.sa
+
+[PASS] examples\library\Javascript\sa_programs\validation\phone validator.sa
+
+[PASS] examples\library\Javascript\sa_programs\web_development\api fetch.sa
+
+[PASS] examples\library\Javascript\sa_programs\web_development\button click.sa
+
+[PASS] examples\library\Javascript\sa_programs\web_development\element creator.sa
+
+[PASS] examples\library\Javascript\sa_programs\web_development\style changer.sa
+
+[PASS] examples\library\Python\01_variables_and_io.py
+
+[PASS] examples\library\Python\02_conditionals.py
+
+[PASS] examples\library\Python\03_loops.py
+
+[PASS] examples\library\Python\05_lists_and_tuples.py
+
+[PASS] examples\library\Python\06_dictionaries_and_sets.py
+
+[PASS] examples\library\Python\07_strings.py
+
+[PASS] examples\library\Python\08_exception_handling.py
+
+[PASS] examples\library\Python\10_classes_and_objects.py
+
+[PASS] examples\library\Python\11_mini_projects.py
+
+[PASS] examples\library\Python\quantum\algorithms\binary search.sa
+
+[PASS] examples\library\Python\quantum\algorithms\bisection method.sa
+
+[PASS] examples\library\Python\quantum\algorithms\breadth first search.sa
+
+[PASS] examples\library\Python\quantum\algorithms\depth first search.sa
+
+[PASS] examples\library\Python\quantum\algorithms\merge sort.sa
+
+[PASS] examples\library\Python\quantum\algorithms\n queens.sa
+
+[PASS] examples\library\Python\quantum\algorithms\nth fibonacci number calculator.sa
+
+[PASS] examples\library\Python\quantum\algorithms\quicksort.sa
+
+[PASS] examples\library\Python\quantum\algorithms\selection sort.sa
+
+[PASS] examples\library\Python\quantum\algorithms\shortest path.sa
+
+[PASS] examples\library\Python\quantum\algorithms\tower of hanoi.sa
+
+[PASS] examples\library\Python\quantum\applications\budget app.sa
+
+[PASS] examples\library\Python\quantum\applications\discount calculator.sa
+
+[PASS] examples\library\Python\quantum\applications\email simulator.sa
+
+[PASS] examples\library\Python\quantum\applications\media catalog.sa
+
+[PASS] examples\library\Python\quantum\applications\medical data validator.sa
+
+[PASS] examples\library\Python\quantum\applications\musical instrument inventory.sa
+
+[PASS] examples\library\Python\quantum\applications\salary tracker.sa
+
+[PASS] examples\library\Python\quantum\applications\user configuration manager.sa
+
+[PASS] examples\library\Python\quantum\data_structures\adjacency list to matrix converter.sa
+
+[PASS] examples\library\Python\quantum\data_structures\hash table.sa
+
+[PASS] examples\library\Python\quantum\data_structures\linked list.sa
+
+[PASS] examples\library\Python\quantum\examples\functions.sa
+
+[PASS] examples\library\Python\quantum\examples\if else.sa
+
+[PASS] examples\library\Python\quantum\examples\input.sa
+
+[PASS] examples\library\Python\quantum\examples\output.sa
+
+[PASS] examples\library\Python\quantum\examples\test budget.sa
+
+[PASS] examples\library\Python\quantum\examples\test2.sa
+
+[PASS] examples\library\Python\quantum\examples\tutorial.sa
+
+[PASS] examples\library\Python\quantum\games\game character stats tracker.sa
+
+[PASS] examples\library\Python\quantum\games\guess game.sa
+
+[PASS] examples\library\Python\quantum\games\rpg character.sa
+
+[PASS] examples\library\Python\quantum\mathematical\number pattern generator.sa
+
+[PASS] examples\library\Python\quantum\mathematical\polygon area calculator.sa
+
+[PASS] examples\library\Python\quantum\simple_programs\binary_converter.sa
+
+[PASS] examples\library\Python\quantum\simple_programs\calculator.sa
+
+[PASS] examples\library\Python\quantum\simple_programs\fibonacci_sequence.sa
+
+[PASS] examples\library\Python\quantum\simple_programs\prime_numbers.sa
+
+[PASS] examples\library\Python\quantum\simple_programs\quiz_game.sa
+
+[PASS] examples\library\Python\quantum\simple_programs\sorting_algorithms.sa
+
+[PASS] examples\library\Python\quantum\simple_programs\stopwatch.sa
+
+[PASS] examples\library\Python\quantum\simple_programs\tic_tac_toe.sa
+
+[PASS] examples\library\Python\quantum\simple_programs\to_do_list.sa
+
+[PASS] examples\library\Python\quantum\simple_programs\unit_converter.sa
+
+[PASS] examples\library\Python\quantum\string_operations\caesar cipher.sa
+
+[PASS] examples\library\Python\quantum\string_operations\luhn algorithm.sa
+
+[PASS] examples\library\Python\quantum\string_operations\pin extractor.sa
+
+[PASS] examples\library\Python\quantum\utilities\isbn validator.sa
+
+[PASS] examples\library\Python\quantum\utilities\planet class.sa
+
+[PASS] examples\library\Python\quantum\utilities\player interface.sa
+
+[PASS] examples\library\Ruby\quantum\01_hello_world.sa
+
+[PASS] examples\library\Ruby\quantum\02_fizzbuzz.sa
+
+[PASS] examples\library\Ruby\quantum\03_factorial.sa
+
+[PASS] examples\library\Ruby\quantum\04_fibonacci.sa
+
+[PASS] examples\library\Ruby\quantum\05_prime_numbers.sa
+
+[PASS] examples\library\Ruby\ruby_programs\06_string_utils.rb
+
+[PASS] examples\library\Ruby\ruby_programs\07_sorting.rb
+
+[PASS] examples\library\Ruby\ruby_programs\08_oop_animals.rb
+
+[PASS] examples\library\Ruby\ruby_programs\09_calculator.rb
+
+[PASS] examples\library\Ruby\ruby_programs\10_file_io.rb
+
+[PASS] examples\library\Ruby\ruby_programs\hello.rb
+
+[PASS] examples\quantum_cybersecurity_suite.sa
+
+[PASS] examples\scanf_test.sa
+
+[PASS] examples\simple.sa
+
+[PASS] examples\test_type_system.sa
+
+========================================================================
+Result: ALL PASSED (416/416)
+Passed : 416   Failed : 0   Total : 416

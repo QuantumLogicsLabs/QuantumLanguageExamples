@@ -1,0 +1,313 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class BacktrackingAlgorithms {
+private:
+    bool isSafe(int board[][10], int row, int col, int n) {
+        for (int i = 0; i < col; i++) {
+            if (board[row][i] == 1) {
+                return false;
+            }
+        }
+        
+        for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] == 1) {
+                return false;
+            }
+        }
+        
+        for (int i = row, j = col; i < n && j >= 0; i++, j--) {
+            if (board[i][j] == 1) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    bool solveNQueensUtil(int board[][10], int col, int n) {
+        if (col >= n) {
+            return true;
+        }
+        
+        for (int i = 0; i < n; i++) {
+            if (isSafe(board, i, col, n)) {
+                board[i][col] = 1;
+                
+                if (solveNQueensUtil(board, col + 1, n)) {
+                    return true;
+                }
+                
+                board[i][col] = 0;
+            }
+        }
+        
+        return false;
+    }
+    
+    void solveNQueens(int n) {
+        int board[10][10] = {0};
+        
+        if (!solveNQueensUtil(board, 0, n)) {
+            cout << "No solution exists" << endl;
+            return;
+        }
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                cout << board[i][j] << " ";
+            }
+            cout << endl;
+        }
+    }
+    
+    bool isSafeSudoku(int board[][10], int row, int col, int num) {
+        for (int i = 0; i < 9; i++) {
+            if (board[row][i] == num) {
+                return false;
+            }
+        }
+        
+        for (int i = 0; i < 9; i++) {
+            if (board[i][col] == num) {
+                return false;
+            }
+        }
+        
+        int boxRow = row - row % 3;
+        int boxCol = col - col % 3;
+        
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[boxRow + i][boxCol + j] == num) {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    bool solveSudokuUtil(int board[][10], int row, int col) {
+        if (row == 8 && col == 9) {
+            return true;
+        }
+        
+        if (col == 9) {
+            row++;
+            col = 0;
+        }
+        
+        if (board[row][col] != 0) {
+            return solveSudokuUtil(board, row, col + 1);
+        }
+        
+        for (int num = 1; num <= 9; num++) {
+            if (isSafeSudoku(board, row, col, num)) {
+                board[row][col] = num;
+                
+                if (solveSudokuUtil(board, row, col + 1)) {
+                    return true;
+                }
+                
+                board[row][col] = 0;
+            }
+        }
+        
+        return false;
+    }
+    
+    void solveSudoku(int board[][10]) {
+        if (!solveSudokuUtil(board, 0, 0)) {
+            cout << "No solution exists" << endl;
+            return;
+        }
+        
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                cout << board[i][j] << " ";
+            }
+            cout << endl;
+        }
+    }
+    
+    void generatePermutations(string str, int l, int r, vector<string>& result) {
+        if (l == r) {
+            result.push_back(str);
+            return;
+        }
+        
+        for (int i = l; i <= r; i++) {
+            swap(str[l], str[i]);
+            generatePermutations(str, l + 1, r, result);
+            swap(str[l], str[i]);
+        }
+    }
+    
+    void generateSubsets(int arr[], int n, int index, vector<int>& current, vector<vector<int>>& result) {
+        if (index == n) {
+            result.push_back(current);
+            return;
+        }
+        
+        current.push_back(arr[index]);
+        generateSubsets(arr, n, index + 1, current, result);
+        current.pop_back();
+        
+        generateSubsets(arr, n, index + 1, current, result);
+    }
+    
+    bool isSafeColoring(int graph[][10], int colors[], int v, int c, int n) {
+        for (int i = 0; i < n; i++) {
+            if (graph[v][i] == 1 && colors[i] == c) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    bool graphColoringUtil(int graph[][10], int m, int colors[], int v, int n) {
+        if (v == n) {
+            return true;
+        }
+        
+        for (int c = 1; c <= m; c++) {
+            if (isSafeColoring(graph, colors, v, c, n)) {
+                colors[v] = c;
+                
+                if (graphColoringUtil(graph, m, colors, v + 1, n)) {
+                    return true;
+                }
+                
+                colors[v] = 0;
+            }
+        }
+        
+        return false;
+    }
+    
+    void graphColoring(int graph[][10], int m, int n) {
+        int colors[10] = {0};
+        
+        if (!graphColoringUtil(graph, m, colors, 0, n)) {
+            cout << "No solution exists" << endl;
+            return;
+        }
+        
+        for (int i = 0; i < n; i++) {
+            cout << "Vertex " << i << ": Color " << colors[i] << endl;
+        }
+    }
+    
+    void printBoard(int board[][10], int n) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                cout << board[i][j] << " ";
+            }
+            cout << endl;
+        }
+    }
+    
+    void printVector(const vector<string>& vec) {
+        cout << "[";
+        for (int i = 0; i < vec.size(); i++) {
+            cout << vec[i];
+            if (i < vec.size() - 1) {
+                cout << ", ";
+            }
+        }
+        cout << "]" << endl;
+    }
+    
+    void printSubsets(const vector<vector<int>>& subsets) {
+        cout << "[";
+        for (int i = 0; i < subsets.size(); i++) {
+            cout << "[";
+            for (int j = 0; j < subsets[i].size(); j++) {
+                cout << subsets[i][j];
+                if (j < subsets[i].size() - 1) {
+                    cout << ", ";
+                }
+            }
+            cout << "]";
+            if (i < subsets.size() - 1) {
+                cout << ", ";
+            }
+        }
+        cout << "]" << endl;
+    }
+    
+public:
+    void demonstrateBacktrackingAlgorithms() {
+        cout << "Backtracking Algorithms Demonstration" << endl;
+        cout << "==================================" << endl;
+        
+        cout << "1. N-Queens Problem:" << endl;
+        int n = 4;
+        cout << "N-Queens (n=" << n << ") solution:" << endl;
+        solveNQueens(n);
+        cout << endl;
+        
+        cout << "2. Sudoku Solver:" << endl;
+        int sudoku[10][10] = {{3, 0, 6, 5, 0, 8, 4, 0, 0},
+                              {5, 2, 0, 0, 0, 0, 0, 0, 0},
+                              {0, 8, 7, 0, 0, 0, 0, 3, 1},
+                              {0, 0, 3, 0, 1, 0, 0, 8, 0},
+                              {9, 0, 0, 8, 6, 3, 0, 0, 5},
+                              {0, 5, 0, 0, 9, 0, 6, 0, 0},
+                              {1, 3, 0, 0, 0, 0, 2, 5, 0},
+                              {0, 0, 0, 0, 0, 0, 0, 7, 4},
+                              {0, 0, 5, 2, 0, 6, 3, 0, 0}};
+        cout << "Sudoku solution:" << endl;
+        solveSudoku(sudoku);
+        cout << endl;
+        
+        cout << "3. Permutations:" << endl;
+        string str = "ABC";
+        vector<string> permutations;
+        generatePermutations(str, 0, str.length() - 1, permutations);
+        cout << "Permutations of " << str << ": ";
+        printVector(permutations);
+        cout << endl;
+        
+        cout << "4. Subsets:" << endl;
+        int arr[] = {1, 2, 3};
+        int n = 3;
+        vector<int> current;
+        vector<vector<int>> subsets;
+        generateSubsets(arr, n, 0, current, subsets);
+        cout << "Subsets of [1, 2, 3]: ";
+        printSubsets(subsets);
+        cout << endl;
+        
+        cout << "5. Graph Coloring:" << endl;
+        int graph[10][10] = {{0, 1, 1, 1},
+                             {1, 0, 1, 0},
+                             {1, 1, 0, 1},
+                             {1, 0, 1, 0}};
+        int m = 3;
+        int vertices = 4;
+        cout << "Graph coloring with " << m << " colors:" << endl;
+        graphColoring(graph, m, vertices);
+        cout << endl;
+        
+        cout << "Backtracking Algorithms Features:" << endl;
+        cout << "- N-Queens Problem" << endl;
+        cout << "- Sudoku Solver" << endl;
+        cout << "- Permutation Generation" << endl;
+        cout << "- Subset Generation" << endl;
+        cout << "- Graph Coloring" << endl;
+        cout << "- Recursive backtracking" << endl;
+        cout << "- Constraint satisfaction" << endl;
+        cout << "- Solution space exploration" << endl;
+        cout << "- Pruning invalid solutions" << endl;
+    }
+};
+
+int main() {
+    BacktrackingAlgorithms ba;
+    ba.demonstrateBacktrackingAlgorithms();
+    return 0;
+}

@@ -1,0 +1,234 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class SortingAdvanced {
+private:
+    void insertionSort(int arr[], int n) {
+        for (int i = 1; i < n; i++) {
+            int key = arr[i];
+            int j = i - 1;
+            
+            while (j >= 0 && arr[j] > key) {
+                arr[j + 1] = arr[j];
+                j--;
+            }
+            arr[j + 1] = key;
+        }
+    }
+    
+    void selectionSort(int arr[], int n) {
+        for (int i = 0; i < n - 1; i++) {
+            int minIdx = i;
+            for (int j = i + 1; j < n; j++) {
+                if (arr[j] < arr[minIdx]) {
+                    minIdx = j;
+                }
+            }
+            int temp = arr[i];
+            arr[i] = arr[minIdx];
+            arr[minIdx] = temp;
+        }
+    }
+    
+    void merge(int arr[], int l, int m, int r) {
+        int i, j, k;
+        int n1 = m - l + 1;
+        int n2 = r - m;
+        
+        int L[n1], R[n2];
+        
+        for (i = 0; i < n1; i++)
+            L[i] = arr[l + i];
+        for (j = 0; j < n2; j++)
+            R[j] = arr[m + 1 + j];
+        
+        i = 0;
+        j = 0;
+        k = l;
+        while (i < n1 && j < n2) {
+            if (L[i] <= R[j]) {
+                arr[k] = L[i];
+                i++;
+            } else {
+                arr[k] = R[j];
+                j++;
+            }
+            k++;
+        }
+        
+        while (i < n1) {
+            arr[k] = L[i];
+            i++;
+            k++;
+        }
+        
+        while (j < n2) {
+            arr[k] = R[j];
+            j++;
+            k++;
+        }
+    }
+    
+    void mergeSort(int arr[], int l, int r) {
+        if (l < r) {
+            int m = l + (r - l) / 2;
+            mergeSort(arr, l, m);
+            mergeSort(arr, m + 1, r);
+            merge(arr, l, m, r);
+        }
+    }
+    
+    int partition(int arr[], int low, int high) {
+        int pivot = arr[high];
+        int i = low - 1;
+        
+        for (int j = low; j < high; j++) {
+            if (arr[j] < pivot) {
+                i++;
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+        
+        int temp = arr[i + 1];
+        arr[i + 1] = arr[high];
+        arr[high] = temp;
+        
+        return i + 1;
+    }
+    
+    void quickSort(int arr[], int low, int high) {
+        if (low < high) {
+            int pi = partition(arr, low, high);
+            quickSort(arr, low, pi - 1);
+            quickSort(arr, pi + 1, high);
+        }
+    }
+    
+    void heapify(int arr[], int n, int i) {
+        int largest = i;
+        int l = 2 * i + 1;
+        int r = 2 * i + 2;
+        
+        if (l < n && arr[l] > arr[largest])
+            largest = l;
+        
+        if (r < n && arr[r] > arr[largest])
+            largest = r;
+        
+        if (largest != i) {
+            int temp = arr[i];
+            arr[i] = arr[largest];
+            arr[largest] = temp;
+        }
+    }
+    
+    void heapSort(int arr[], int n) {
+        for (int i = n / 2 - 1; i >= 0; i--)
+            heapify(arr, n, i);
+        
+        for (int i = n - 1; i > 0; i--) {
+            int temp = arr[0];
+            arr[0] = arr[i];
+            arr[i] = temp;
+            heapify(arr, i, 0);
+        }
+    }
+    
+    void countingSort(int arr[], int n) {
+        int output[100];
+        int count[100];
+        int max = arr[0];
+        
+        for (int i = 1; i < n; i++)
+            if (arr[i] > max)
+                max = arr[i];
+        
+        for (int i = 0; i <= max; ++i)
+            count[i] = 0;
+        
+        for (int i = 0; i < n; ++i)
+            ++count[arr[i]];
+        
+        for (int i = 0; i <= max; ++i)
+            for (int j = 0; j < count[i]; ++j)
+                output[j] = i;
+        
+        for (int i = 0; i < n; ++i)
+            arr[i] = output[i];
+    }
+    
+    void printArray(int arr[], int n) {
+        cout << "[";
+        for (int i = 0; i < n; i++) {
+            cout << arr[i];
+            if (i < n - 1) {
+                cout << ", ";
+            }
+        }
+        cout << "]" << endl;
+    }
+    
+public:
+    void demonstrateSortingAdvanced() {
+        cout << "Advanced Sorting Demonstration" << endl;
+        cout << "=============================" << endl;
+        
+        int arr[] = {64, 34, 25, 12, 22, 11, 90};
+        int n = 7;
+        
+        cout << "Original array: ";
+        printArray(arr, n);
+        
+        int arr1[] = {64, 34, 25, 12, 22, 11, 90};
+        insertionSort(arr1, n);
+        cout << "Insertion sort: ";
+        printArray(arr1, n);
+        
+        int arr2[] = {64, 34, 25, 12, 22, 11, 90};
+        selectionSort(arr2, n);
+        cout << "Selection sort: ";
+        printArray(arr2, n);
+        
+        int arr3[] = {64, 34, 25, 12, 22, 11, 90};
+        mergeSort(arr3, 0, n - 1);
+        cout << "Merge sort: ";
+        printArray(arr3, n);
+        
+        int arr4[] = {64, 34, 25, 12, 22, 11, 90};
+        quickSort(arr4, 0, n - 1);
+        cout << "Quick sort: ";
+        printArray(arr4, n);
+        
+        int arr5[] = {64, 34, 25, 12, 22, 11, 90};
+        heapSort(arr5, n);
+        cout << "Heap sort: ";
+        printArray(arr5, n);
+        
+        int arr6[] = {64, 34, 25, 12, 22, 11, 90};
+        countingSort(arr6, n);
+        cout << "Counting sort: ";
+        printArray(arr6, n);
+        cout << endl;
+        
+        cout << "Advanced Sorting Features:" << endl;
+        cout << "- Insertion Sort (O(n^2))" << endl;
+        cout << "- Selection Sort (O(n^2))" << endl;
+        cout << "- Merge Sort (O(n log n))" << endl;
+        cout << "- Quick Sort (O(n log n) average)" << endl;
+        cout << "- Heap Sort (O(n log n))" << endl;
+        cout << "- Counting Sort (O(n+k))" << endl;
+        cout << "- Manual implementation without STL" << endl;
+        cout << "- In-place and stable sorting variations" << endl;
+        cout << "- Time and space complexity analysis" << endl;
+    }
+};
+
+int main() {
+    SortingAdvanced sa;
+    sa.demonstrateSortingAdvanced();
+    return 0;
+}

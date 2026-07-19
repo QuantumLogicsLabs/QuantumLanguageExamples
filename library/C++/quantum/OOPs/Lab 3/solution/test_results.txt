@@ -1,0 +1,19 @@
+Quantum Language — Test Results (in progress)
+Generated : 2026-03-25 22:39:07
+Directory : C:\Programming\Quantum Language\examples\library\C++\OOPs\Lab 3\solution
+Total     : 5   (running...)
+========================================================================
+
+[PASS] examples\library\C++\OOPs\Lab 3\solution\LAB03-TASK01.sa
+
+[PASS] examples\library\C++\OOPs\Lab 3\solution\LAB03-TASK02.sa
+
+[PASS] examples\library\C++\OOPs\Lab 3\solution\LAB03-TASK03.sa
+
+[PASS] examples\library\C++\OOPs\Lab 3\solution\LAB03-TASK04.sa
+
+[PASS] examples\library\C++\OOPs\Lab 3\solution\LAB03-TASK05.sa
+
+========================================================================
+Result: ALL PASSED (5/5)
+Passed : 5   Failed : 0   Total : 5

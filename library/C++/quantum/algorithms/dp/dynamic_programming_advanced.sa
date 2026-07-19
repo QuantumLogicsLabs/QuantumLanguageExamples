@@ -1,0 +1,296 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class DynamicProgrammingAdvanced {
+private:
+    int fibonacci(int n, int memo[]) {
+        if (n <= 1) return n;
+        if (memo[n] != -1) return memo[n];
+        
+        memo[n] = fibonacci(n - 1, memo) + fibonacci(n - 2, memo);
+        return memo[n];
+    }
+    
+    int fibonacciTabulation(int n) {
+        if (n <= 1) return n;
+        
+        int dp[100];
+        dp[0] = 0;
+        dp[1] = 1;
+        
+        for (int i = 2; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        
+        return dp[n];
+    }
+    
+    int minCoins(int coins[], int coinCount, int amount) {
+        int dp[1000];
+        for (int i = 0; i <= amount; i++) {
+            dp[i] = INT_MAX;
+        }
+        dp[0] = 0;
+        
+        for (int i = 1; i <= amount; i++) {
+            for (int j = 0; j < coinCount; j++) {
+                if (coins[j] <= i && dp[i - coins[j]] != INT_MAX) {
+                    dp[i] = min(dp[i], dp[i - coins[j]] + 1);
+                }
+            }
+        }
+        
+        return dp[amount];
+    }
+    
+    int knapsack01(int weights[], int values[], int n, int capacity) {
+        int dp[50][50];
+        
+        for (int i = 0; i <= n; i++) {
+            for (int w = 0; w <= capacity; w++) {
+                dp[i][w] = 0;
+            }
+        }
+        
+        for (int i = 1; i <= n; i++) {
+            for (int w = 1; w <= capacity; w++) {
+                if (weights[i - 1] <= w) {
+                    dp[i][w] = max(dp[i - 1][w], 
+                                   values[i - 1] + dp[i - 1][w - weights[i - 1]]);
+                } else {
+                    dp[i][w] = dp[i - 1][w];
+                }
+            }
+        }
+        
+        return dp[n][capacity];
+    }
+    
+    int longestIncreasingSubsequence(int arr[], int n) {
+        int dp[50];
+        for (int i = 0; i < n; i++) {
+            dp[i] = 1;
+        }
+        
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (arr[j] < arr[i]) {
+                    dp[i] = max(dp[i], dp[j] + 1);
+                }
+            }
+        }
+        
+        int maxLen = 1;
+        for (int i = 0; i < n; i++) {
+            maxLen = max(maxLen, dp[i]);
+        }
+        
+        return maxLen;
+    }
+    
+    int longestCommonSubsequence(char* str1, char* str2) {
+        int m = 0, n = 0;
+        while (str1[m] != '\0') m++;
+        while (str2[n] != '\0') n++;
+        
+        int dp[50][50];
+        for (int i = 0; i <= m; i++) {
+            for (int j = 0; j <= n; j++) {
+                dp[i][j] = 0;
+            }
+        }
+        
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (str1[i - 1] == str2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        
+        return dp[m][n];
+    }
+    
+    int editDistance(char* str1, char* str2) {
+        int m = 0, n = 0;
+        while (str1[m] != '\0') m++;
+        while (str2[n] != '\0') n++;
+        
+        int dp[50][50];
+        for (int i = 0; i <= m; i++) {
+            dp[i][0] = i;
+        }
+        
+        for (int j = 0; j <= n; j++) {
+            dp[0][j] = j;
+        }
+        
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (str1[i - 1] == str2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    int minVal = dp[i - 1][j];
+                    if (dp[i][j - 1] < minVal) minVal = dp[i][j - 1];
+                    if (dp[i - 1][j - 1] < minVal) minVal = dp[i - 1][j - 1];
+                    dp[i][j] = 1 + minVal;
+                }
+            }
+        }
+        
+        return dp[m][n];
+    }
+    
+    int subsetSum(int arr[], int n, int sum) {
+        bool dp[50][1000];
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= sum; j++) {
+                dp[i][j] = false;
+            }
+        }
+        
+        for (int i = 0; i <= n; i++) {
+            dp[i][0] = true;
+        }
+        
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= sum; j++) {
+                if (j < arr[i - 1]) {
+                    dp[i][j] = dp[i - 1][j];
+                } else if (j >= arr[i - 1] && dp[i - 1][j - arr[i - 1]]) {
+                    dp[i][j] = true;
+                }
+            }
+        }
+        
+        return dp[n][sum];
+    }
+    
+    int rodCutting(int prices[], int n) {
+        int dp[50];
+        for (int i = 0; i <= n; i++) {
+            dp[i] = 0;
+        }
+        
+        for (int i = 1; i <= n; i++) {
+            int maxVal = prices[i - 1];
+            
+            for (int j = 1; j < i; j++) {
+                maxVal = max(maxVal, prices[j - 1] + dp[i - j]);
+            }
+            
+            dp[i] = maxVal;
+        }
+        
+        return dp[n];
+    }
+    
+    void printArray(int arr[], int size) {
+        cout << "[";
+        for (int i = 0; i < size; i++) {
+            cout << arr[i];
+            if (i < size - 1) {
+                cout << ", ";
+            }
+        }
+        cout << "]" << endl;
+    }
+    
+    void printVector(const vector<int>& vec) {
+        cout << "[";
+        for (int i = 0; i < vec.size(); i++) {
+            cout << vec[i];
+            if (i < vec.size() - 1) {
+                cout << ", ";
+            }
+        }
+        cout << "]" << endl;
+    }
+    
+public:
+    void demonstrateDynamicProgrammingAdvanced() {
+        cout << "Advanced Dynamic Programming Demonstration" << endl;
+        cout << "========================================" << endl;
+        
+        cout << "1. Fibonacci (Memoization):" << endl;
+        int memo[100];
+        for (int i = 0; i < 100; i++) {
+            memo[i] = -1;
+        }
+        cout << "Fibonacci(10) = " << fibonacci(10, memo) << endl;
+        cout << endl;
+        
+        cout << "2. Fibonacci (Tabulation):" << endl;
+        cout << "Fibonacci(10) = " << fibonacciTabulation(10) << endl;
+        cout << endl;
+        
+        cout << "3. Coin Change Problem:" << endl;
+        int coins[] = {1, 5, 10, 25};
+        int coinCount = 4;
+        int amount = 30;
+        cout << "Minimum coins for " << amount << ": " << minCoins(coins, coinCount, amount) << endl;
+        cout << endl;
+        
+        cout << "4. 0/1 Knapsack Problem:" << endl;
+        int weights[] = {2, 3, 4, 5};
+        int values[] = {3, 4, 5, 8};
+        int itemCount = 4;
+        int capacity = 5;
+        cout << "Maximum value for capacity " << capacity << ": " << knapsack01(weights, values, itemCount, capacity) << endl;
+        cout << endl;
+        
+        cout << "5. Longest Increasing Subsequence:" << endl;
+        int lis[] = {10, 22, 9, 33, 21, 50, 41, 60};
+        int lisSize = 8;
+        cout << "LIS length: " << longestIncreasingSubsequence(lis, lisSize) << endl;
+        cout << endl;
+        
+        cout << "6. Longest Common Subsequence:" << endl;
+        char* str1 = "AGGTAB";
+        char* str2 = "GXTXAYB";
+        cout << "LCS length: " << longestCommonSubsequence(str1, str2) << endl;
+        cout << endl;
+        
+        cout << "7. Edit Distance:" << endl;
+        char* editStr1 = "kitten";
+        char* editStr2 = "sitting";
+        cout << "Edit distance: " << editDistance(editStr1, editStr2) << endl;
+        cout << endl;
+        
+        cout << "8. Subset Sum Problem:" << endl;
+        int subset[] = {3, 34, 4, 12, 5, 2};
+        int subsetSize = 6;
+        int targetSum = 9;
+        cout << "Subset sum " << targetSum << " exists: " << (subsetSum(subset, subsetSize, targetSum) ? "Yes" : "No") << endl;
+        cout << endl;
+        
+        cout << "9. Rod Cutting Problem:" << endl;
+        int pricesArr[] = {1, 5, 8, 9, 10, 17, 17, 20};
+        int rodLength = 8;
+        cout << "Maximum revenue for rod length " << rodLength << ": " << rodCutting(pricesArr, rodLength) << endl;
+        cout << endl;
+        
+        cout << "Advanced Dynamic Programming Features:" << endl;
+        cout << "- Fibonacci (Memoization and Tabulation)" << endl;
+        cout << "- Coin Change Problem" << endl;
+        cout << "- 0/1 Knapsack Problem" << endl;
+        cout << "- Longest Increasing Subsequence" << endl;
+        cout << "- Longest Common Subsequence" << endl;
+        cout << "- Edit Distance" << endl;
+        cout << "- Subset Sum Problem" << endl;
+        cout << "- Rod Cutting Problem" << endl;
+        cout << "- Manual DP implementation without STL" << endl;
+        cout << "- Optimal substructure and overlapping subproblems" << endl;
+        cout << "- Time and space complexity analysis" << endl;
+    }
+};
+
+int main() {
+    DynamicProgrammingAdvanced dpa;
+    dpa.demonstrateDynamicProgrammingAdvanced();
+    return 0;
+}

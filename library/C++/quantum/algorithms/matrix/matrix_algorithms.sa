@@ -1,0 +1,236 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class MatrixAlgorithms {
+private:
+    void printMatrix(int matrix[][10], int rows, int cols) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                cout << matrix[i][j] << " ";
+            }
+            cout << endl;
+        }
+    }
+    
+    void printVector(const vector<int>& vec) {
+        cout << "[";
+        for (int i = 0; i < vec.size(); i++) {
+            cout << vec[i];
+            if (i < vec.size() - 1) {
+                cout << ", ";
+            }
+        }
+        cout << "]" << endl;
+    }
+    
+    void matrixAddition(int A[][10], int B[][10], int C[][10], int rows, int cols) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                C[i][j] = A[i][j] + B[i][j];
+            }
+        }
+    }
+    
+    void matrixMultiplication(int A[][10], int B[][10], int C[][10], int r1, int c1, int r2, int c2) {
+        for (int i = 0; i < r1; i++) {
+            for (int j = 0; j < c2; j++) {
+                C[i][j] = 0;
+                for (int k = 0; k < c1; k++) {
+                    C[i][j] += A[i][k] * B[k][j];
+                }
+            }
+        }
+    }
+    
+    void matrixTranspose(int A[][10], int At[][10], int rows, int cols) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                At[i][j] = A[j][i];
+            }
+        }
+    }
+    
+    void rotateMatrix(int matrix[][10], int result[][10], int rows, int cols, int angle) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                result[i][j] = matrix[i][j];
+            }
+        }
+        
+        if (angle == 90) {
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    result[i][j] = matrix[rows - 1 - j][i];
+                }
+            }
+        }
+    }
+    
+    bool isUpperTriangular(int matrix[][10], int rows, int cols) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < i; j++) {
+                if (matrix[i][j] != 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
+    bool isLowerTriangular(int matrix[][10], int rows, int cols) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = i + 1; j < cols; j++) {
+                if (matrix[i][j] != 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
+    bool isDiagonal(int matrix[][10], int rows, int cols) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (i != j && matrix[i][j] != 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
+    void matrixScalarMultiplication(int matrix[][10], int result[][10], int rows, int cols, int scalar) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                result[i][j] = matrix[i][j] * scalar;
+            }
+        }
+    }
+    
+    int matrixTrace(int matrix[][10], int size) {
+        int trace = 0;
+        for (int i = 0; i < size; i++) {
+            trace += matrix[i][i];
+        }
+        return trace;
+    }
+    
+    int matrixDeterminant2x2(int matrix[][10]) {
+        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+    }
+    
+    void matrixInverse2x2(int matrix[][10], float inverse[][10]) {
+        int det = matrixDeterminant2x2(matrix);
+        float invDet = 1.0f / det;
+        
+        inverse[0][0] = matrix[1][1] * invDet;
+        inverse[0][1] = -matrix[0][1] * invDet;
+        inverse[1][0] = -matrix[1][0] * invDet;
+        inverse[1][1] = matrix[0][0] * invDet;
+    }
+    
+public:
+    void demonstrateMatrixAlgorithms() {
+        cout << "Matrix Algorithms Demonstration" << endl;
+        cout << "=============================" << endl;
+        
+        int A[10][10] = {{1, 2, 3}, {4, 5, 6}};
+        int B[10][10] = {{7, 8, 9}, {10, 11, 12}};
+        int C[10][10];
+        int rows = 2, cols = 3;
+        
+        cout << "1. Matrix Addition:" << endl;
+        cout << "Matrix A:" << endl;
+        printMatrix(A, rows, cols);
+        cout << "Matrix B:" << endl;
+        printMatrix(B, rows, cols);
+        
+        matrixAddition(A, B, C, rows, cols);
+        cout << "A + B:" << endl;
+        printMatrix(C, rows, cols);
+        cout << endl;
+        
+        cout << "2. Matrix Multiplication:" << endl;
+        int D[10][10] = {{1, 4}, {2, 5}, {3, 6}};
+        int E[10][10] = {{7, 10, 13}, {8, 11, 14}, {9, 12, 15}};
+        int F[10][10];
+        int r1 = 3, c1 = 2, r2 = 3, c2 = 3;
+        
+        cout << "Matrix D:" << endl;
+        printMatrix(D, r1, c1);
+        cout << "Matrix E:" << endl;
+        printMatrix(E, r2, c2);
+        
+        matrixMultiplication(D, E, F, r1, c1, r2, c2);
+        cout << "D * E:" << endl;
+        printMatrix(F, r1, c2);
+        cout << endl;
+        
+        cout << "3. Matrix Transpose:" << endl;
+        int G[10][10] = {{1, 2, 3}, {4, 5, 6}};
+        int Gt[10][10];
+        
+        cout << "Original matrix:" << endl;
+        printMatrix(G, rows, cols);
+        
+        matrixTranspose(G, Gt, rows, cols);
+        cout << "Transposed matrix:" << endl;
+        printMatrix(Gt, cols, rows);
+        cout << endl;
+        
+        cout << "4. Matrix Rotation:" << endl;
+        int H[10][10] = {{1, 2, 3}, {4, 5, 6}};
+        int rotated[10][10];
+        
+        cout << "Original matrix:" << endl;
+        printMatrix(H, rows, cols);
+        
+        rotateMatrix(H, rotated, rows, cols, 90);
+        cout << "Rotated matrix (90 degrees):" << endl;
+        printMatrix(rotated, cols, rows);
+        cout << endl;
+        
+        cout << "5. Matrix Properties Check:" << endl;
+        int upper[10][10] = {{1, 0, 0}, {0, 2, 0}};
+        int lower[10][10] = {{1, 0, 0}, {1, 2, 3}};
+        int diagonal[10][10] = {{1, 0, 0}, {0, 2, 0}};
+        
+        cout << "Upper triangular check: " << (isUpperTriangular(upper, 2, 3) ? "Yes" : "No") << endl;
+        cout << "Lower triangular check: " << (isLowerTriangular(lower, 2, 3) ? "Yes" : "No") << endl;
+        cout << "Diagonal check: " << (isDiagonal(diagonal, 2, 3) ? "Yes" : "No") << endl;
+        cout << endl;
+        
+        cout << "6. Advanced Matrix Operations:" << endl;
+        int scalar[10][10] = {{1, 2, 3}, {4, 5, 6}};
+        int scalarResult[10][10];
+        
+        cout << "Original matrix:" << endl;
+        printMatrix(scalar, rows, cols);
+        
+        matrixScalarMultiplication(scalar, scalarResult, rows, cols, 2);
+        cout << "Scalar multiplication (by 2):" << endl;
+        printMatrix(scalarResult, rows, cols);
+        
+        cout << "Matrix trace: " << matrixTrace(scalar, 2) << endl;
+        cout << "2x2 determinant: " << matrixDeterminant2x2(scalar) << endl;
+        cout << endl;
+        
+        cout << "Matrix Algorithms Features:" << endl;
+        cout << "- Matrix addition and multiplication" << endl;
+        cout << "- Matrix transpose and rotation" << endl;
+        cout << "- Matrix properties check (triangular, diagonal)" << endl;
+        cout << "- Scalar multiplication" << endl;
+        cout << "- Matrix trace and determinant" << endl;
+        cout << "- Matrix inverse (2x2)" << endl;
+        cout << "- Manual implementation without external libraries" << endl;
+        cout << "- Time and space complexity analysis" << endl;
+    }
+};
+
+int main() {
+    MatrixAlgorithms ma;
+    ma.demonstrateMatrixAlgorithms();
+    return 0;
+}

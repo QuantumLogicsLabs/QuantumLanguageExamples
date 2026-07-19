@@ -1,0 +1,408 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class AdvancedPatternPrinting {
+private:
+    void printRightTriangle(int n) {
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= i; j++) {
+                cout << "* ";
+            }
+            cout << endl;
+        }
+    }
+    
+    void printInvertedRightTriangle(int n) {
+        for (int i = n; i >= 1; i--) {
+            for (int j = 1; j <= i; j++) {
+                cout << "* ";
+            }
+            cout << endl;
+        }
+    }
+    
+    void printPyramid(int n) {
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n - i; j++) {
+                cout << " ";
+            }
+            for (int j = 1; j <= 2 * i - 1; j++) {
+                cout << "*";
+            }
+            cout << endl;
+        }
+    }
+    
+    void printInvertedPyramid(int n) {
+        for (int i = n; i >= 1; i--) {
+            for (int j = 1; j <= n - i; j++) {
+                cout << " ";
+            }
+            for (int j = 1; j <= 2 * i - 1; j++) {
+                cout << "*";
+            }
+            cout << endl;
+        }
+    }
+    
+    void printDiamond(int n) {
+        printPyramid(n);
+        printInvertedPyramid(n - 1);
+    }
+    
+    void printHollowRightTriangle(int n) {
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= i; j++) {
+                if (j == 1 || j == i || i == n) {
+                    cout << "* ";
+                } else {
+                    cout << "  ";
+                }
+            }
+            cout << endl;
+        }
+    }
+    
+    void printHollowPyramid(int n) {
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n - i; j++) {
+                cout << " ";
+            }
+            for (int j = 1; j <= 2 * i - 1; j++) {
+                if (j == 1 || j == 2 * i - 1 || i == n) {
+                    cout << "*";
+                } else {
+                    cout << " ";
+                }
+            }
+            cout << endl;
+        }
+    }
+    
+    void printHollowInvertedPyramid(int n) {
+        for (int i = n; i >= 1; i--) {
+            for (int j = 1; j <= n - i; j++) {
+                cout << " ";
+            }
+            for (int j = 1; j <= 2 * i - 1; j++) {
+                if (j == 1 || j == 2 * i - 1 || i == n) {
+                    cout << "*";
+                } else {
+                    cout << " ";
+                }
+            }
+            cout << endl;
+        }
+    }
+    
+    void printHollowDiamond(int n) {
+        printHollowPyramid(n);
+        printHollowInvertedPyramid(n - 1);
+    }
+    
+    void printNumberPyramid(int n) {
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n - i; j++) {
+                cout << " ";
+            }
+            for (int j = 1; j <= i; j++) {
+                cout << j << " ";
+            }
+            for (int j = i - 1; j >= 1; j--) {
+                cout << j << " ";
+            }
+            cout << endl;
+        }
+    }
+    
+    void printAlphabetPyramid(int n) {
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n - i; j++) {
+                cout << " ";
+            }
+            char ch = 'A';
+            for (int j = 1; j <= i; j++) {
+                cout << ch << " ";
+                ch++;
+            }
+            ch -= 2;
+            for (int j = 1; j < i; j++) {
+                cout << ch << " ";
+                ch--;
+            }
+            cout << endl;
+        }
+    }
+    
+    void printPascalTriangle(int n) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                cout << " ";
+            }
+            int c = 1;
+            for (int j = 0; j <= i; j++) {
+                cout << c << " ";
+                c = c * (i - j) / (j + 1);
+            }
+            cout << endl;
+        }
+    }
+    
+    void printFloydTriangle(int n) {
+        int num = 1;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= i; j++) {
+                cout << num << " ";
+                num++;
+            }
+            cout << endl;
+        }
+    }
+    
+    void printButterfly(int n) {
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= i; j++) {
+                cout << "* ";
+            }
+            for (int j = 1; j <= 2 * (n - i); j++) {
+                cout << "  ";
+            }
+            for (int j = 1; j <= i; j++) {
+                cout << "* ";
+            }
+            cout << endl;
+        }
+        
+        for (int i = n; i >= 1; i--) {
+            for (int j = 1; j <= i; j++) {
+                cout << "* ";
+            }
+            for (int j = 1; j <= 2 * (n - i); j++) {
+                cout << "  ";
+            }
+            for (int j = 1; j <= i; j++) {
+                cout << "* ";
+            }
+            cout << endl;
+        }
+    }
+    
+    void printSwastika(int n) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i < n / 2) {
+                    if (j < n / 2) {
+                        if (j == 0 || i == n / 2 - 1) {
+                            cout << "* ";
+                        } else {
+                            cout << "  ";
+                        }
+                    } else {
+                        if (j == n - 1) {
+                            cout << "* ";
+                        } else {
+                            cout << "  ";
+                        }
+                    }
+                } else {
+                    if (j < n / 2) {
+                        if (j == 0) {
+                            cout << "* ";
+                        } else {
+                            cout << "  ";
+                        }
+                    } else {
+                        if (j == n / 2 || i == n - 1) {
+                            cout << "* ";
+                        } else {
+                            cout << "  ";
+                        }
+                    }
+                }
+            }
+            cout << endl;
+        }
+    }
+    
+    void printCross(int n) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == n / 2 || j == n / 2) {
+                    cout << "* ";
+                } else {
+                    cout << "  ";
+                }
+            }
+            cout << endl;
+        }
+    }
+    
+    void printX(int n) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == j || i + j == n - 1) {
+                    cout << "* ";
+                } else {
+                    cout << "  ";
+                }
+            }
+            cout << endl;
+        }
+    }
+    
+    void printZ(int n) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0 || i == n - 1 || i + j == n - 1) {
+                    cout << "* ";
+                } else {
+                    cout << "  ";
+                }
+            }
+            cout << endl;
+        }
+    }
+    
+    void printHeart(int n) {
+        for (int i = n / 2; i <= n; i += 2) {
+            for (int j = 1; j < n - i; j += 2) {
+                cout << " ";
+            }
+            for (int j = 1; j <= i; j++) {
+                cout << "*";
+            }
+            for (int j = 1; j <= n - i; j++) {
+                cout << " ";
+            }
+            for (int j = 1; j <= i; j++) {
+                cout << "*";
+            }
+            cout << endl;
+        }
+        
+        for (int i = n; i >= 1; i--) {
+            for (int j = i; j < n; j++) {
+                cout << " ";
+            }
+            for (int j = 1; j <= 2 * i - 1; j++) {
+                cout << "*";
+            }
+            cout << endl;
+        }
+    }
+    
+public:
+    void demonstrateAdvancedPatternPrinting() {
+        cout << "Advanced Pattern Printing Demonstration" << endl;
+        cout << "=====================================" << endl;
+        
+        cout << "1. Right Triangle:" << endl;
+        printRightTriangle(5);
+        cout << endl;
+        
+        cout << "2. Inverted Right Triangle:" << endl;
+        printInvertedRightTriangle(5);
+        cout << endl;
+        
+        cout << "3. Pyramid:" << endl;
+        printPyramid(5);
+        cout << endl;
+        
+        cout << "4. Inverted Pyramid:" << endl;
+        printInvertedPyramid(5);
+        cout << endl;
+        
+        cout << "5. Diamond:" << endl;
+        printDiamond(5);
+        cout << endl;
+        
+        cout << "6. Hollow Right Triangle:" << endl;
+        printHollowRightTriangle(5);
+        cout << endl;
+        
+        cout << "7. Hollow Pyramid:" << endl;
+        printHollowPyramid(5);
+        cout << endl;
+        
+        cout << "8. Hollow Inverted Pyramid:" << endl;
+        printHollowInvertedPyramid(5);
+        cout << endl;
+        
+        cout << "9. Hollow Diamond:" << endl;
+        printHollowDiamond(5);
+        cout << endl;
+        
+        cout << "10. Number Pyramid:" << endl;
+        printNumberPyramid(5);
+        cout << endl;
+        
+        cout << "11. Alphabet Pyramid:" << endl;
+        printAlphabetPyramid(5);
+        cout << endl;
+        
+        cout << "12. Pascal Triangle:" << endl;
+        printPascalTriangle(5);
+        cout << endl;
+        
+        cout << "13. Floyd Triangle:" << endl;
+        printFloydTriangle(5);
+        cout << endl;
+        
+        cout << "14. Butterfly Pattern:" << endl;
+        printButterfly(5);
+        cout << endl;
+        
+        cout << "15. Swastika Pattern:" << endl;
+        printSwastika(7);
+        cout << endl;
+        
+        cout << "16. Cross Pattern:" << endl;
+        printCross(7);
+        cout << endl;
+        
+        cout << "17. X Pattern:" << endl;
+        printX(7);
+        cout << endl;
+        
+        cout << "18. Z Pattern:" << endl;
+        printZ(7);
+        cout << endl;
+        
+        cout << "19. Heart Pattern:" << endl;
+        printHeart(6);
+        cout << endl;
+        
+        cout << "20. Complex Combined Pattern:" << endl;
+        for (int i = 1; i <= 3; i++) {
+            printRightTriangle(3);
+            cout << endl;
+        }
+        printPyramid(3);
+        cout << endl;
+        for (int i = 3; i >= 1; i--) {
+            printInvertedRightTriangle(3);
+            cout << endl;
+        }
+        cout << endl;
+        
+        cout << "Advanced Pattern Printing Features:" << endl;
+        cout << "- Basic geometric patterns" << endl;
+        cout << "- Hollow variations of patterns" << endl;
+        cout << "- Number and alphabet patterns" << endl;
+        cout << "- Mathematical patterns (Pascal, Floyd)" << endl;
+        cout << "- Symbolic patterns (Swastika, Cross, X, Z)" << endl;
+        cout << "- Complex patterns (Butterfly, Heart)" << endl;
+        cout << "- Combined patterns" << endl;
+        cout << "- Nested loops and conditional logic" << endl;
+        cout << "- Space and character manipulation" << endl;
+        cout << "- Pattern symmetry and asymmetry" << endl;
+    }
+};
+
+int main() {
+    AdvancedPatternPrinting app;
+    app.demonstrateAdvancedPatternPrinting();
+    return 0;
+}

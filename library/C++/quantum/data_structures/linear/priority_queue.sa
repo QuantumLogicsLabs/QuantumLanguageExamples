@@ -1,0 +1,77 @@
+// Priority Queue Implementation in C++
+#include <iostream>
+using namespace std;
+
+class PriorityQueue {
+private:
+    static const int MAX_SIZE = 100;
+    int data[MAX_SIZE];
+    int priorities[MAX_SIZE];
+    int size;
+
+public:
+    PriorityQueue() : size(0) {}
+
+    bool enqueue(int value, int priority) {
+        if (size >= MAX_SIZE) {
+            return false;
+        }
+        
+        int i = size - 1;
+        while (i >= 0 && priorities[i] > priority) {
+            data[i + 1] = data[i];
+            priorities[i + 1] = priorities[i];
+            i--;
+        }
+        
+        data[i + 1] = value;
+        priorities[i + 1] = priority;
+        size++;
+        return true;
+    }
+
+    bool dequeue(int& value) {
+        if (size == 0) {
+            return false;
+        }
+        value = data[0];
+        
+        for (int i = 0; i < size - 1; i++) {
+            data[i] = data[i + 1];
+            priorities[i] = priorities[i + 1];
+        }
+        size--;
+        return true;
+    }
+
+    bool isEmpty() {
+        return size == 0;
+    }
+
+    void display() {
+        if (isEmpty()) {
+            cout << "Priority Queue is empty" << endl;
+            return;
+        }
+        cout << "Priority Queue (value:priority): ";
+        for (int i = 0; i < size; i++) {
+            cout << data[i] << ":" << priorities[i] << " ";
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    PriorityQueue pq;
+    pq.enqueue(30, 3);
+    pq.enqueue(10, 1);
+    pq.enqueue(20, 2);
+    pq.display();
+    
+    int value;
+    while (pq.dequeue(value)) {
+        cout << "Dequeued: " << value << endl;
+        pq.display();
+    }
+    return 0;
+}

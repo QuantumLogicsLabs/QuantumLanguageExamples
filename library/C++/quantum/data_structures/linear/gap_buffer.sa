@@ -1,0 +1,117 @@
+// Gap Buffer Implementation in C++
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+class GapBuffer {
+private:
+    char* buffer;
+    int size;
+    int capacity;
+    int gapStart;
+    int gapEnd;
+
+    void moveGap(int position) {
+        if (position < gapStart) {
+            int moveSize = gapStart - position;
+            memmove(buffer + gapEnd - moveSize, buffer + position, moveSize);
+            gapEnd -= moveSize;
+            gapStart = position;
+        } else if (position > gapStart) {
+            int moveSize = position - gapStart;
+            memmove(buffer + gapStart, buffer + gapEnd, moveSize);
+            gapStart += moveSize;
+            gapEnd += moveSize;
+        }
+    }
+
+    void expandGap() {
+        int newCapacity = capacity * 2;
+        char* newBuffer = new char[newCapacity];
+        
+        int beforeGap = gapStart;
+        int afterGap = size - gapEnd;
+        
+        memcpy(newBuffer, buffer, beforeGap);
+        memcpy(newBuffer + newCapacity - afterGap, buffer + gapEnd, afterGap);
+        
+        delete[] buffer;
+        buffer = newBuffer;
+        gapEnd = newCapacity - afterGap;
+        capacity = newCapacity;
+    }
+
+public:
+    GapBuffer(int cap) : size(0), capacity(cap), gapStart(0), gapEnd(cap) {
+        buffer = new char[capacity];
+    }
+
+    ~GapBuffer() {
+        delete[] buffer;
+    }
+
+    void insert(int position, char c) {
+        if (position < 0 || position > size) {
+            return;
+        }
+        
+        moveGap(position);
+        
+        if (gapStart == gapEnd) {
+            expandGap();
+        }
+        
+        buffer[gapStart++] = c;
+        size++;
+    }
+
+    void insert(int position, const char* str) {
+        int len = strlen(str);
+        for (int i = 0; i < len; i++) {
+            insert(position + i, str[i]);
+        }
+    }
+
+    void remove(int position, int count) {
+        if (position < 0 || position >= size || count <= 0) {
+            return;
+        }
+        
+        moveGap(position);
+        int removeCount = min(count, size - position);
+        gapEnd += removeCount;
+        size -= removeCount;
+    }
+
+    string toString() {
+        string result;
+        for (int i = 0; i < gapStart; i++) {
+            result += buffer[i];
+        }
+        for (int i = gapEnd; i < capacity; i++) {
+            if (i - gapEnd < size - gapStart) {
+                result += buffer[i];
+            }
+        }
+        return result;
+    }
+
+    void display() {
+        cout << "Gap Buffer: \"" << toString() << "\" (size=" << size << ", gap=" << (gapEnd - gapStart) << ")" << endl;
+    }
+};
+
+int main() {
+    GapBuffer gb(20);
+    gb.insert(0, "Hello");
+    gb.insert(5, " World");
+    gb.display();
+    
+    gb.insert(6, "Beautiful ");
+    gb.display();
+    
+    gb.remove(6, 10);
+    gb.display();
+    
+    return 0;
+}

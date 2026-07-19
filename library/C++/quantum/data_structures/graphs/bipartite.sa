@@ -1,0 +1,175 @@
+// Bipartite Graph Check Implementation in C++
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <list>
+using namespace std;
+
+class BipartiteGraph {
+private:
+    vector<list<int>> adjList;
+    int vertices;
+
+public:
+    BipartiteGraph(int v) : vertices(v) {
+        adjList.resize(vertices);
+    }
+
+    void addEdge(int u, int v) {
+        if (u >= 0 && u < vertices && v >= 0 && v < vertices) {
+            adjList[u].push_back(v);
+            adjList[v].push_back(u);
+        }
+    }
+
+    bool isBipartiteBFS(int startVertex) {
+        vector<int> color(vertices, -1);
+        queue<int> q;
+
+        if (startVertex >= 0 && startVertex < vertices) {
+            color[startVertex] = 0;
+            q.push(startVertex);
+
+            while (!q.empty()) {
+                int u = q.front();
+                q.pop();
+
+                for (int v : adjList[u]) {
+                    if (color[v] == -1) {
+                        color[v] = 1 - color[u];
+                        q.push(v);
+                    } else if (color[v] == color[u]) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    bool isBipartiteDFS(int vertex, vector<int>& color) {
+        if (color[vertex] == -1) {
+            color[vertex] = 0;
+        }
+
+        for (int neighbor : adjList[vertex]) {
+            if (color[neighbor] == -1) {
+                color[neighbor] = 1 - color[vertex];
+                if (!isBipartiteDFS(neighbor, color)) {
+                    return false;
+                }
+            } else if (color[neighbor] == color[vertex]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    bool isBipartite() {
+        vector<int> color(vertices, -1);
+
+        for (int i = 0; i < vertices; i++) {
+            if (color[i] == -1) {
+                if (!isBipartiteDFS(i, color)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    vector<vector<int>> getBipartition() {
+        vector<int> color(vertices, -1);
+        vector<vector<int>> bipartition(2);
+
+        for (int i = 0; i < vertices; i++) {
+            if (color[i] == -1) {
+                color[i] = 0;
+                queue<int> q;
+                q.push(i);
+
+                while (!q.empty()) {
+                    int u = q.front();
+                    q.pop();
+
+                    bipartition[color[u]].push_back(u);
+
+                    for (int v : adjList[u]) {
+                        if (color[v] == -1) {
+                            color[v] = 1 - color[u];
+                            q.push(v);
+                        }
+                    }
+                }
+            }
+        }
+
+        return bipartition;
+    }
+
+    void displayBipartition(const vector<vector<int>>& bipartition) {
+        cout << "Bipartition:" << endl;
+        cout << "Set 1: ";
+        for (int vertex : bipartition[0]) {
+            cout << vertex << " ";
+        }
+        cout << endl;
+
+        cout << "Set 2: ";
+        for (int vertex : bipartition[1]) {
+            cout << vertex << " ";
+        }
+        cout << endl;
+    }
+
+    void display() {
+        cout << "Graph:" << endl;
+        for (int i = 0; i < vertices; i++) {
+            cout << i << ": ";
+            for (int neighbor : adjList[i]) {
+                cout << neighbor << " ";
+            }
+            cout << endl;
+        }
+    }
+};
+
+int main() {
+    BipartiteGraph g1(6);
+    g1.addEdge(0, 1);
+    g1.addEdge(0, 3);
+    g1.addEdge(1, 2);
+    g1.addEdge(2, 3);
+    g1.addEdge(3, 4);
+    g1.addEdge(4, 5);
+    
+    cout << "Graph 1:" << endl;
+    g1.display();
+    cout << "Is bipartite: " << (g1.isBipartite() ? "Yes" : "No") << endl;
+    if (g1.isBipartite()) {
+        vector<vector<int>> bipartition1 = g1.getBipartition();
+        g1.displayBipartition(bipartition1);
+    }
+    cout << endl;
+    
+    BipartiteGraph g2(5);
+    g2.addEdge(0, 1);
+    g2.addEdge(1, 2);
+    g2.addEdge(2, 3);
+    g2.addEdge(3, 4);
+    g2.addEdge(4, 0);
+    g2.addEdge(0, 2);
+    
+    cout << "Graph 2:" << endl;
+    g2.display();
+    cout << "Is bipartite: " << (g2.isBipartite() ? "Yes" : "No") << endl;
+    if (g2.isBipartite()) {
+        vector<vector<int>> bipartition2 = g2.getBipartition();
+        g2.displayBipartition(bipartition2);
+    }
+    
+    return 0;
+}

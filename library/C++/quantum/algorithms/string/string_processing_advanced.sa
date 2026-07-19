@@ -1,0 +1,284 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class StringProcessingAdvanced {
+private:
+    void reverseString(char* str) {
+        int n = 0;
+        while (str[n] != '\0') {
+            n++;
+        }
+        
+        for (int i = 0; i < n / 2; i++) {
+            char temp = str[i];
+            str[i] = str[n - 1 - i];
+            str[n - 1 - i] = temp;
+        }
+    }
+    
+    bool isPalindrome(const char* str) {
+        int left = 0;
+        int right = 0;
+        while (str[right] != '\0') {
+            right++;
+        }
+        right--;
+        
+        while (left < right) {
+            if (str[left] != str[right]) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+    
+    int stringLength(const char* str) {
+        int len = 0;
+        while (str[len] != '\0') {
+            len++;
+        }
+        return len;
+    }
+    
+    void copyString(char* dest, const char* src) {
+        int i = 0;
+        while (src[i] != '\0') {
+            dest[i] = src[i];
+            i++;
+        }
+        dest[i] = '\0';
+    }
+    
+    int compareString(const char* str1, const char* str2) {
+        int i = 0;
+        while (str1[i] != '\0' && str2[i] != '\0') {
+            if (str1[i] != str2[i]) {
+                return str1[i] - str2[i];
+            }
+            i++;
+        }
+        
+        if (str1[i] == '\0' && str2[i] == '\0') {
+            return 0;
+        } else if (str1[i] == '\0') {
+            return -str2[i];
+        } else {
+            return str1[i];
+        }
+    }
+    
+    void toUpperCase(char* str) {
+        int i = 0;
+        while (str[i] != '\0') {
+            if (str[i] >= 'a' && str[i] <= 'z') {
+                str[i] = str[i] - 'a' + 'A';
+            }
+            i++;
+        }
+    }
+    
+    void toLowerCase(char* str) {
+        int i = 0;
+        while (str[i] != '\0') {
+            if (str[i] >= 'A' && str[i] <= 'Z') {
+                str[i] = str[i] - 'A' + 'a';
+            }
+            i++;
+        }
+    }
+    
+    int countWords(const char* str) {
+        int wordCount = 0;
+        bool inWord = false;
+        int i = 0;
+        
+        while (str[i] != '\0') {
+            if (str[i] == ' ' || str[i] == '\t' || str[i] == '\n') {
+                inWord = false;
+            } else if (!inWord) {
+                wordCount++;
+                inWord = true;
+            }
+            i++;
+        }
+        
+        return wordCount;
+    }
+    
+    void extractWords(const char* str, char words[][50], int& wordCount) {
+        wordCount = 0;
+        int i = 0;
+        int wordIndex = 0;
+        int charIndex = 0;
+        
+        while (str[i] != '\0') {
+            if (str[i] == ' ' || str[i] == '\t' || str[i] == '\n') {
+                if (charIndex > 0) {
+                    words[wordIndex][charIndex] = '\0';
+                    wordIndex++;
+                    charIndex = 0;
+                }
+            } else {
+                if (charIndex < 49) {
+                    words[wordIndex][charIndex] = str[i];
+                    charIndex++;
+                }
+            }
+            i++;
+        }
+        
+        if (charIndex > 0) {
+            words[wordIndex][charIndex] = '\0';
+            wordIndex++;
+        }
+        
+        wordCount = wordIndex;
+    }
+    
+    void removeDuplicates(char* str) {
+        bool seen[256];
+        for (int i = 0; i < 256; i++) {
+            seen[i] = false;
+        }
+        
+        int writeIndex = 0;
+        int readIndex = 0;
+        
+        while (str[readIndex] != '\0') {
+            unsigned char c = str[readIndex];
+            if (!seen[c]) {
+                str[writeIndex] = str[readIndex];
+                seen[c] = true;
+                writeIndex++;
+            }
+            readIndex++;
+        }
+        
+        str[writeIndex] = '\0';
+    }
+    
+    void capitalizeWords(char* str) {
+        bool capitalizeNext = true;
+        int i = 0;
+        
+        while (str[i] != '\0') {
+            if (capitalizeNext && str[i] >= 'a' && str[i] <= 'z') {
+                str[i] = str[i] - 'a' + 'A';
+                capitalizeNext = false;
+            } else {
+                if (str[i] == ' ' || str[i] == '\t' || str[i] == '\n') {
+                    capitalizeNext = true;
+                }
+            }
+            i++;
+        }
+    }
+    
+    void printString(const char* str) {
+        int i = 0;
+        while (str[i] != '\0') {
+            cout << str[i];
+            i++;
+        }
+        cout << endl;
+    }
+    
+public:
+    void demonstrateStringProcessingAdvanced() {
+        cout << "Advanced String Processing Demonstration" << endl;
+        cout << "====================================" << endl;
+        
+        cout << "1. String Reversal and Palindrome:" << endl;
+        char testStr[] = "racecar";
+        cout << "Original: ";
+        printString(testStr);
+        
+        char reversedStr[50];
+        copyString(reversedStr, testStr);
+        reverseString(reversedStr);
+        cout << "Reversed: ";
+        printString(reversedStr);
+        
+        cout << "Is palindrome: " << (isPalindrome(testStr) ? "Yes" : "No") << endl;
+        cout << endl;
+        
+        cout << "2. String Operations:" << endl;
+        char str1[] = "Hello";
+        char str2[] = "World";
+        
+        cout << "String 1: ";
+        printString(str1);
+        cout << "String 2: ";
+        printString(str2);
+        
+        int cmpResult = compareString(str1, str2);
+        cout << "Comparison result: " << cmpResult << endl;
+        
+        char upperStr[] = "hello world";
+        toUpperCase(upperStr);
+        cout << "Upper case: ";
+        printString(upperStr);
+        
+        char lowerStr[] = "HELLO WORLD";
+        toLowerCase(lowerStr);
+        cout << "Lower case: ";
+        printString(lowerStr);
+        cout << endl;
+        
+        cout << "3. Word Processing:" << endl;
+        char sentence[] = "Hello world, this is a test sentence";
+        cout << "Sentence: ";
+        printString(sentence);
+        
+        int wordCount = countWords(sentence);
+        cout << "Word count: " << wordCount << endl;
+        
+        char words[20][50];
+        int extractedWordCount = 0;
+        extractWords(sentence, words, extractedWordCount);
+        
+        cout << "Words: ";
+        for (int i = 0; i < extractedWordCount; i++) {
+            printString(words[i]);
+            cout << " | ";
+        }
+        cout << endl;
+        cout << endl;
+        
+        cout << "4. String Manipulation:" << endl;
+        char dupStr[] = "programming";
+        cout << "Original: ";
+        printString(dupStr);
+        
+        removeDuplicates(dupStr);
+        cout << "Without duplicates: ";
+        printString(dupStr);
+        
+        char titleStr[] = "hello world programming";
+        capitalizeWords(titleStr);
+        cout << "Title case: ";
+        printString(titleStr);
+        cout << endl;
+        
+        cout << "Advanced String Processing Features:" << endl;
+        cout << "- String Reversal" << endl;
+        cout << "- Palindrome Check" << endl;
+        cout << "- String Comparison" << endl;
+        cout << "- Case Conversion (Upper/Lower)" << endl;
+        cout << "- Word Counting and Extraction" << endl;
+        cout << "- String Manipulation (Remove Duplicates, Title Case)" << endl;
+        cout << "- Manual string operations without STL" << endl;
+        cout << "- Memory-safe string handling" << endl;
+        cout << "- Character-level processing" << endl;
+    }
+};
+
+int main() {
+    StringProcessingAdvanced spa;
+    spa.demonstrateStringProcessingAdvanced();
+    return 0;
+}

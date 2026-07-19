@@ -1,0 +1,268 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class SimpleAlgorithms {
+private:
+    int findMax(int arr[], int size) {
+        int maxVal = arr[0];
+        for (int i = 1; i < size; i++) {
+            if (arr[i] > maxVal) {
+                maxVal = arr[i];
+            }
+        }
+        return maxVal;
+    }
+    
+    int findMin(int arr[], int size) {
+        int minVal = arr[0];
+        for (int i = 1; i < size; i++) {
+            if (arr[i] < minVal) {
+                minVal = arr[i];
+            }
+        }
+        return minVal;
+    }
+    
+    int findSum(int arr[], int size) {
+        int sum = 0;
+        for (int i = 0; i < size; i++) {
+            sum += arr[i];
+        }
+        return sum;
+    }
+    
+    double findAverage(int arr[], int size) {
+        return (double)findSum(arr, size) / size;
+    }
+    
+    void bubbleSort(int arr[], int size) {
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = 0; j < size - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+    
+    int linearSearch(int arr[], int size, int target) {
+        for (int i = 0; i < size; i++) {
+            if (arr[i] == target) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    int binarySearch(int arr[], int size, int target) {
+        int left = 0;
+        int right = size - 1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid] == target) {
+                return mid;
+            } else if (arr[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        
+        return -1;
+    }
+    
+    int fibonacci(int n) {
+        if (n <= 1) return n;
+        int a = 0, b = 1;
+        for (int i = 2; i <= n; i++) {
+            int temp = a + b;
+            a = b;
+            b = temp;
+        }
+        return b;
+    }
+    
+    int factorial(int n) {
+        if (n <= 1) return 1;
+        int result = 1;
+        for (int i = 2; i <= n; i++) {
+            result *= i;
+        }
+        return result;
+    }
+    
+    bool isPrime(int n) {
+        if (n <= 1) return false;
+        if (n == 2) return true;
+        if (n % 2 == 0) return false;
+        
+        for (int i = 3; i * i <= n; i += 2) {
+            if (n % i == 0) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    int gcd(int a, int b) {
+        if (b == 0) return a;
+        return gcd(b, a % b);
+    }
+    
+    int lcm(int a, int b) {
+        return (a * b) / gcd(a, b);
+    }
+    
+    bool isPalindrome(const char* str) {
+        int left = 0;
+        int right = 0;
+        while (str[right] != '\0') {
+            right++;
+        }
+        right--;
+        
+        while (left < right) {
+            if (str[left] != str[right]) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+    
+    int countDigits(int n) {
+        if (n == 0) return 1;
+        int count = 0;
+        while (n != 0) {
+            n /= 10;
+            count++;
+        }
+        return count;
+    }
+    
+    int sumOfDigits(int n) {
+        int sum = 0;
+        if (n < 0) n = -n;
+        while (n != 0) {
+            sum += n % 10;
+            n /= 10;
+        }
+        return sum;
+    }
+    
+    int power(int base, int exp) {
+        if (exp == 0) return 1;
+        int result = 1;
+        for (int i = 0; i < exp; i++) {
+            result *= base;
+        }
+        return result;
+    }
+    
+    void printArray(int arr[], int size) {
+        cout << "[";
+        for (int i = 0; i < size; i++) {
+            cout << arr[i];
+            if (i < size - 1) {
+                cout << ", ";
+            }
+        }
+        cout << "]" << endl;
+    }
+    
+public:
+    void demonstrateSimpleAlgorithms() {
+        cout << "Simple Algorithms Demonstration" << endl;
+        cout << "=============================" << endl;
+        
+        cout << "1. Array Operations:" << endl;
+        int nums[] = {5, 2, 8, 1, 9, 3};
+        int size = 6;
+        
+        cout << "Array: ";
+        printArray(nums, size);
+        
+        cout << "Maximum: " << findMax(nums, size) << endl;
+        cout << "Minimum: " << findMin(nums, size) << endl;
+        cout << "Sum: " << findSum(nums, size) << endl;
+        cout << "Average: " << findAverage(nums, size) << endl;
+        cout << endl;
+        
+        cout << "2. Sorting:" << endl;
+        int arr[] = {64, 34, 25, 12, 22, 11, 90};
+        int arrSize = 7;
+        
+        cout << "Original: ";
+        printArray(arr, arrSize);
+        
+        bubbleSort(arr, arrSize);
+        cout << "Sorted: ";
+        printArray(arr, arrSize);
+        cout << endl;
+        
+        cout << "3. Searching:" << endl;
+        int searchArr[] = {2, 3, 4, 10, 40};
+        int searchSize = 5;
+        int target = 10;
+        
+        cout << "Array: ";
+        printArray(searchArr, searchSize);
+        
+        int linearResult = linearSearch(searchArr, searchSize, target);
+        cout << "Linear search for " << target << ": " 
+             << (linearResult != -1 ? "Found" : "Not found") << endl;
+        
+        sort(searchArr, searchArr + searchSize);
+        int binaryResult = binarySearch(searchArr, searchSize, target);
+        cout << "Binary search for " << target << ": " 
+             << (binaryResult != -1 ? "Found" : "Not found") << endl;
+        cout << endl;
+        
+        cout << "4. Mathematical Functions:" << endl;
+        int n = 10;
+        cout << "Fibonacci(" << n << ") = " << fibonacci(n) << endl;
+        cout << "Factorial(" << n << ") = " << factorial(n) << endl;
+        cout << "Is " << n << " prime? " << (isPrime(n) ? "Yes" : "No") << endl;
+        
+        int a = 12, b = 18;
+        cout << "GCD(" << a << ", " << b << ") = " << gcd(a, b) << endl;
+        cout << "LCM(" << a << ", " << b << ") = " << lcm(a, b) << endl;
+        cout << endl;
+        
+        cout << "5. String Operations:" << endl;
+        const char* testStr = "racecar";
+        cout << "String: " << testStr << endl;
+        cout << "Is palindrome? " << (isPalindrome(testStr) ? "Yes" : "No") << endl;
+        cout << endl;
+        
+        cout << "6. Number Operations:" << endl;
+        int num = 153;
+        cout << "Number: " << num << endl;
+        cout << "Power(2, 3) = " << power(2, 3) << endl;
+        cout << "Number of digits: " << countDigits(num) << endl;
+        cout << "Sum of digits: " << sumOfDigits(num) << endl;
+        cout << endl;
+        
+        cout << "Simple Algorithms Features:" << endl;
+        cout << "- Array operations (Max, Min, Sum, Average)" << endl;
+        cout << "- Sorting algorithms (Bubble Sort)" << endl;
+        cout << "- Search algorithms (Linear, Binary)" << endl;
+        cout << "- Mathematical functions (Fibonacci, Factorial, Prime, GCD, LCM)" << endl;
+        cout << "- String operations (Palindrome check)" << endl;
+        cout << "- Number operations (Power, Digits)" << endl;
+        cout << "- Simple and efficient implementations" << endl;
+    }
+};
+
+int main() {
+    SimpleAlgorithms sa;
+    sa.demonstrateSimpleAlgorithms();
+    return 0;
+}

@@ -1,0 +1,159 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class SearchAlgorithms {
+public:
+    static int linearSearch(const vector<int>& arr, int target) {
+        for (int i = 0; i < arr.size(); i++) {
+            if (arr[i] == target) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    static int binarySearch(const vector<int>& arr, int target) {
+        int left = 0;
+        int right = arr.size() - 1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            
+            if (arr[mid] == target) {
+                return mid;
+            } else if (arr[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        
+        return -1;
+    }
+    
+    static int jumpSearch(const vector<int>& arr, int target) {
+        int n = arr.size();
+        int step = sqrt(n);
+        int prev = 0;
+        
+        while (arr[min(step, n) - 1] < target) {
+            prev = step;
+            step += sqrt(n);
+            if (prev >= n) {
+                return -1;
+            }
+        }
+        
+        while (arr[prev] < target) {
+            prev++;
+            if (prev == min(step, n)) {
+                return -1;
+            }
+        }
+        
+        if (arr[prev] == target) {
+            return prev;
+        }
+        
+        return -1;
+    }
+    
+    static int interpolationSearch(const vector<int>& arr, int target) {
+        int left = 0;
+        int right = arr.size() - 1;
+        
+        while (left <= right && target >= arr[left] && target <= arr[right]) {
+            if (left == right) {
+                if (arr[left] == target) {
+                    return left;
+                }
+                return -1;
+            }
+            
+            int pos = left + ((target - arr[left]) * (right - left)) / (arr[right] - arr[left]);
+            
+            if (arr[pos] == target) {
+                return pos;
+            } else if (arr[pos] < target) {
+                left = pos + 1;
+            } else {
+                right = pos - 1;
+            }
+        }
+        
+        return -1;
+    }
+    
+    static int fibonacciSearch(const vector<int>& arr, int target) {
+        int n = arr.size();
+        int fib2 = 0;
+        int fib1 = 1;
+        int fib = fib2 + fib1;
+        
+        while (fib < n) {
+            fib2 = fib1;
+            fib1 = fib;
+            fib = fib2 + fib1;
+        }
+        
+        int offset = -1;
+        
+        while (fib > 1) {
+            int i = min(offset + fib2, n - 1);
+            
+            if (arr[i] < target) {
+                fib = fib1;
+                fib1 = fib2;
+                fib2 = fib - fib1;
+                offset = i;
+            } else if (arr[i] > target) {
+                fib = fib2;
+                fib1 = fib1 - fib2;
+                fib2 = fib - fib1;
+            } else {
+                return i;
+            }
+        }
+        
+        if (fib1 && offset + 1 < n && arr[offset + 1] == target) {
+            return offset + 1;
+        }
+        
+        return -1;
+    }
+};
+
+int main() {
+    vector<int> arr;
+    int n, element, target;
+    
+    cout << "Enter number of elements: ";
+    cin >> n;
+    
+    cout << "Enter sorted elements: ";
+    for (int i = 0; i < n; i++) {
+        cin >> element;
+        arr.push_back(element);
+    }
+    
+    cout << "Enter element to search: ";
+    cin >> target;
+    
+    int linearResult = SearchAlgorithms::linearSearch(arr, target);
+    cout << "Linear Search: " << (linearResult != -1 ? "Found at index " + to_string(linearResult) : "Not found") << endl;
+    
+    int binaryResult = SearchAlgorithms::binarySearch(arr, target);
+    cout << "Binary Search: " << (binaryResult != -1 ? "Found at index " + to_string(binaryResult) : "Not found") << endl;
+    
+    int jumpResult = SearchAlgorithms::jumpSearch(arr, target);
+    cout << "Jump Search: " << (jumpResult != -1 ? "Found at index " + to_string(jumpResult) : "Not found") << endl;
+    
+    int interpolationResult = SearchAlgorithms::interpolationSearch(arr, target);
+    cout << "Interpolation Search: " << (interpolationResult != -1 ? "Found at index " + to_string(interpolationResult) : "Not found") << endl;
+    
+    int fibonacciResult = SearchAlgorithms::fibonacciSearch(arr, target);
+    cout << "Fibonacci Search: " << (fibonacciResult != -1 ? "Found at index " + to_string(fibonacciResult) : "Not found") << endl;
+    
+    return 0;
+}

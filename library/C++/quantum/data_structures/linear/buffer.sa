@@ -1,0 +1,67 @@
+// Buffer Implementation in C++
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+class Buffer {
+private:
+    char* data;
+    int size;
+    int capacity;
+
+public:
+    Buffer(int cap) : size(0), capacity(cap) {
+        data = new char[capacity];
+    }
+
+    ~Buffer() {
+        delete[] data;
+    }
+
+    void append(const char* str) {
+        int len = strlen(str);
+        if (size + len >= capacity) {
+            return;
+        }
+        
+        for (int i = 0; i < len; i++) {
+            data[size++] = str[i];
+        }
+        data[size] = '\0';
+    }
+
+    void clear() {
+        size = 0;
+        data[0] = '\0';
+    }
+
+    const char* getData() {
+        return data;
+    }
+
+    int getSize() {
+        return size;
+    }
+
+    int getCapacity() {
+        return capacity;
+    }
+
+    void display() {
+        cout << "Buffer: \"" << data << "\" (size=" << size << ", capacity=" << capacity << ")" << endl;
+    }
+};
+
+int main() {
+    Buffer buffer(100);
+    buffer.append("Hello");
+    buffer.append(" ");
+    buffer.append("World");
+    buffer.display();
+    
+    buffer.clear();
+    buffer.append("New content");
+    buffer.display();
+    
+    return 0;
+}

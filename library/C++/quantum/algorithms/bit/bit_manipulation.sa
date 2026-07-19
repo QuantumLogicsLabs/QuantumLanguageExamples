@@ -1,0 +1,260 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class BitManipulation {
+private:
+    int setBit(int num, int position) {
+        return num | (1 << position);
+    }
+    
+    int clearBit(int num, int position) {
+        return num & ~(1 << position);
+    }
+    
+    int toggleBit(int num, int position) {
+        return num ^ (1 << position);
+    }
+    
+    bool getBit(int num, int position) {
+        return (num & (1 << position)) != 0;
+    }
+    
+    int countSetBits(int num) {
+        int count = 0;
+        while (num) {
+            count += num & 1;
+            num >>= 1;
+        }
+        return count;
+    }
+    
+    bool isPowerOfTwo(int num) {
+        return num > 0 && (num & (num - 1)) == 0;
+    }
+    
+    int findMostSignificantBit(int num) {
+        int msb = 0;
+        while (num >>= 1) {
+            msb++;
+        }
+        return msb;
+    }
+    
+    int findLeastSignificantBit(int num) {
+        return num & -num;
+    }
+    
+    int swapBits(int num) {
+        return ((num >> 1) & 0x55555555) | ((num & 0x55555555) << 1);
+    }
+    
+    int reverseBits(int num) {
+        int reversed = 0;
+        while (num) {
+            reversed = (reversed << 1) | (num & 1);
+            num >>= 1;
+        }
+        return reversed;
+    }
+    
+    int addWithoutArithmetic(int a, int b) {
+        while (b != 0) {
+            int carry = a & b;
+            a = a ^ b;
+            b = carry << 1;
+        }
+        return a;
+    }
+    
+    int multiplyWithoutArithmetic(int a, int b) {
+        int result = 0;
+        while (b > 0) {
+            if (b & 1) {
+                result += a;
+            }
+            a <<= 1;
+            b >>= 1;
+        }
+        return result;
+    }
+    
+    int divideWithoutArithmetic(int dividend, int divisor) {
+        int quotient = 0;
+        int remainder = dividend;
+        
+        while (remainder >= divisor) {
+            remainder -= divisor;
+            quotient++;
+        }
+        
+        return quotient;
+    }
+    
+    int findSingleMissingNumber(int arr[], int n) {
+        int xorAll = 0;
+        for (int i = 0; i < n; i++) {
+            xorAll ^= arr[i];
+        }
+        
+        for (int i = 1; i <= n; i++) {
+            xorAll ^= i;
+        }
+        
+        return xorAll;
+    }
+    
+    int findTwoMissingNumbers(int arr[], int n) {
+        int xorAll = 0;
+        for (int i = 0; i < n; i++) {
+            xorAll ^= arr[i];
+        }
+        
+        int xorExpected = 0;
+        for (int i = 1; i <= n + 2; i++) {
+            xorExpected ^= i;
+        }
+        
+        int xorMissing = xorAll ^ xorExpected;
+        
+        int setBit = xorMissing & ~(xorMissing - 1);
+        int missing1 = setBit;
+        int missing2 = xorMissing ^ missing1;
+        
+        int result[] = {missing1, missing2};
+        return result[0] < result[1] ? result[0] : result[1];
+    }
+    
+    bool isEven(int num) {
+        return (num & 1) == 0;
+    }
+    
+    bool isOdd(int num) {
+        return (num & 1) == 1;
+    }
+    
+    int absoluteValue(int num) {
+        int mask = num >> 31;
+        return (num ^ mask) - mask;
+    }
+    
+    int maxWithoutComparison(int a, int b) {
+        int diff = a - b;
+        int k = (diff >> 31) & 1;
+        return a - k * diff;
+    }
+    
+    int minWithoutComparison(int a, int b) {
+        int diff = a - b;
+        int k = (diff >> 31) & 1;
+        return b + k * diff;
+    }
+    
+    void printBinary(int num) {
+        if (num == 0) {
+            cout << "0";
+            return;
+        }
+        
+        printBinary(num >> 1);
+        cout << (num & 1);
+    }
+    
+    void printArray(int arr[], int size) {
+        cout << "[";
+        for (int i = 0; i < size; i++) {
+            cout << arr[i];
+            if (i < size - 1) {
+                cout << ", ";
+            }
+        }
+        cout << "]" << endl;
+    }
+    
+public:
+    void demonstrateBitManipulation() {
+        cout << "Bit Manipulation Demonstration" << endl;
+        cout << "=============================" << endl;
+        
+        cout << "1. Basic Bit Operations:" << endl;
+        int num = 10;
+        int pos = 2;
+        
+        cout << "Number: " << num << ", Position: " << pos << endl;
+        cout << "Set bit: " << setBit(num, pos) << endl;
+        cout << "Clear bit: " << clearBit(num, pos) << endl;
+        cout << "Toggle bit: " << toggleBit(num, pos) << endl;
+        cout << "Get bit: " << (getBit(num, pos) ? "1" : "0") << endl;
+        cout << endl;
+        
+        cout << "2. Bit Counting and Properties:" << endl;
+        cout << "Number: " << num << endl;
+        cout << "Set bits count: " << countSetBits(num) << endl;
+        cout << "Is power of 2: " << (isPowerOfTwo(num) ? "Yes" : "No") << endl;
+        cout << "Most significant bit position: " << findMostSignificantBit(num) << endl;
+        cout << "Least significant bit: " << findLeastSignificantBit(num) << endl;
+        cout << endl;
+        
+        cout << "3. Bit Manipulation Tricks:" << endl;
+        cout << "Original number: " << num << endl;
+        cout << "Swap odd and even bits: " << swapBits(num) << endl;
+        cout << "Reverse bits: " << reverseBits(num) << endl;
+        cout << "Binary representation: ";
+        printBinary(num);
+        cout << endl;
+        cout << endl;
+        
+        cout << "4. Arithmetic Without Operators:" << endl;
+        int a = 15, b = 7;
+        cout << "Addition without +: " << a << " + " << b << " = " << addWithoutArithmetic(a, b) << endl;
+        cout << "Multiplication without *: " << a << " * " << b << " = " << multiplyWithoutArithmetic(a, b) << endl;
+        cout << "Division without /: " << a << " / " << b << " = " << divideWithoutArithmetic(a, b) << endl;
+        cout << endl;
+        
+        cout << "5. Finding Missing Numbers:" << endl;
+        int arr1[] = {1, 2, 4, 5, 6};
+        int n1 = 5;
+        cout << "Array with one missing: ";
+        printArray(arr1, n1);
+        cout << "Missing number: " << findSingleMissingNumber(arr1, n1) << endl;
+        
+        int arr2[] = {1, 2, 3, 5, 6, 7, 8};
+        int n2 = 5;
+        cout << "Array with two missing: ";
+        printArray(arr2, n2);
+        int missing = findTwoMissingNumbers(arr2, n2);
+        cout << "First missing: " << missing << endl;
+        cout << endl;
+        
+        cout << "6. Number Properties:" << endl;
+        int testNum = -15;
+        cout << "Number: " << testNum << endl;
+        cout << "Is even: " << (isEven(testNum) ? "Yes" : "No") << endl;
+        cout << "Is odd: " << (isOdd(testNum) ? "Yes" : "No") << endl;
+        cout << "Absolute value: " << absoluteValue(testNum) << endl;
+        cout << endl;
+        
+        cout << "7. Comparison Without Operators:" << endl;
+        int x = 25, y = 17;
+        cout << "Max(" << x << ", " << y << ") = " << maxWithoutComparison(x, y) << endl;
+        cout << "Min(" << x << ", " << y << ") = " << minWithoutComparison(x, y) << endl;
+        cout << endl;
+        
+        cout << "Bit Manipulation Features:" << endl;
+        cout << "- Basic bit operations (set, clear, toggle, get)" << endl;
+        cout << "- Bit counting and properties" << endl;
+        cout << "- Bit manipulation tricks" << endl;
+        cout << "- Arithmetic without using operators" << endl;
+        cout << "- Finding missing numbers using XOR" << endl;
+        cout << "- Number properties checking" << endl;
+        cout << "- Comparison without comparison operators" << endl;
+        cout << "- Efficient algorithms using bitwise operations" << endl;
+    }
+};
+
+int main() {
+    BitManipulation bm;
+    bm.demonstrateBitManipulation();
+    return 0;
+}

@@ -1,0 +1,439 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class AdvancedAlgorithms2 {
+private:
+    int longestCommonSubstring(string s1, string s2) {
+        int m = s1.length();
+        int n = s2.length();
+        int maxLength = 0;
+        int endIndex = 0;
+        
+        int dp[101][101];
+        
+        for (int i = 0; i <= m; i++) {
+            for (int j = 0; j <= n; j++) {
+                if (i == 0 || j == 0) {
+                    dp[i][j] = 0;
+                } else if (s1[i - 1] == s2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                    if (dp[i][j] > maxLength) {
+                        maxLength = dp[i][j];
+                        endIndex = i;
+                    }
+                } else {
+                    dp[i][j] = 0;
+                }
+            }
+        }
+        
+        return maxLength;
+    }
+    
+    int editDistance(string s1, string s2) {
+        int m = s1.length();
+        int n = s2.length();
+        
+        int dp[101][101];
+        
+        for (int i = 0; i <= m; i++) {
+            for (int j = 0; j <= n; j++) {
+                if (i == 0) {
+                    dp[i][j] = j;
+                } else if (j == 0) {
+                    dp[i][j] = i;
+                } else if (s1[i - 1] == s2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = 1 + min(dp[i][j - 1], min(dp[i - 1][j], dp[i - 1][j - 1]));
+                }
+            }
+        }
+        
+        return dp[m][n];
+    }
+    
+    int longestPalindromicSubsequence(string s) {
+        int n = s.length();
+        int dp[101][101];
+        
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = 1;
+        }
+        
+        for (int cl = 2; cl <= n; cl++) {
+            for (int i = 0; i < n - cl + 1; i++) {
+                int j = i + cl - 1;
+                if (s[i] == s[j] && cl == 2) {
+                    dp[i][j] = 2;
+                } else if (s[i] == s[j]) {
+                    dp[i][j] = dp[i + 1][j - 1] + 2;
+                } else {
+                    dp[i][j] = max(dp[i][j - 1], dp[i + 1][j]);
+                }
+            }
+        }
+        
+        return dp[0][n - 1];
+    }
+    
+    int minCutPalindrome(string s) {
+        int n = s.length();
+        bool dp[101][101];
+        int cut[101];
+        
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = true;
+        }
+        
+        for (int len = 2; len <= n; len++) {
+            for (int i = 0; i < n - len + 1; i++) {
+                int j = i + len - 1;
+                if (len == 2) {
+                    dp[i][j] = (s[i] == s[j]);
+                } else {
+                    dp[i][j] = (s[i] == s[j]) && dp[i + 1][j - 1];
+                }
+            }
+        }
+        
+        for (int i = 0; i < n; i++) {
+            if (dp[0][i]) {
+                cut[i] = 0;
+            } else {
+                cut[i] = 999999;
+                for (int j = 0; j < i; j++) {
+                    if (dp[j + 1][i] && cut[j] + 1 < cut[i]) {
+                        cut[i] = cut[j] + 1;
+                    }
+                }
+            }
+        }
+        
+        return cut[n - 1];
+    }
+    
+    int countWaysToReachStairs(int n) {
+        if (n <= 1) return 1;
+        
+        int dp[101];
+        dp[0] = 1;
+        dp[1] = 1;
+        
+        for (int i = 2; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        
+        return dp[n];
+    }
+    
+    int countWaysToReachStairsK(int n, int k) {
+        if (n == 0) return 1;
+        
+        int dp[101];
+        dp[0] = 1;
+        
+        for (int i = 1; i <= n; i++) {
+            dp[i] = 0;
+            for (int j = 1; j <= k && j <= i; j++) {
+                dp[i] += dp[i - j];
+            }
+        }
+        
+        return dp[n];
+    }
+    
+    int maxSumIncreasingSubsequence(int arr[], int n) {
+        int dp[101];
+        
+        for (int i = 0; i < n; i++) {
+            dp[i] = arr[i];
+        }
+        
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (arr[i] > arr[j] && dp[i] < dp[j] + arr[i]) {
+                    dp[i] = dp[j] + arr[i];
+                }
+            }
+        }
+        
+        int maxSum = dp[0];
+        for (int i = 1; i < n; i++) {
+            if (dp[i] > maxSum) {
+                maxSum = dp[i];
+            }
+        }
+        
+        return maxSum;
+    }
+    
+    int minJumpsToReachEnd(int arr[], int n) {
+        if (n <= 1) return 0;
+        if (arr[0] == 0) return -1;
+        
+        int maxReach = arr[0];
+        int step = arr[0];
+        int jump = 1;
+        
+        for (int i = 1; i < n; i++) {
+            if (i == n - 1) return jump;
+            
+            maxReach = max(maxReach, i + arr[i]);
+            step--;
+            
+            if (step == 0) {
+                jump++;
+                
+                if (i >= maxReach) return -1;
+                
+                step = maxReach - i;
+            }
+        }
+        
+        return -1;
+    }
+    
+    int eggDropPuzzle(int eggs, int floors) {
+        if (floors == 1 || floors == 0) return floors;
+        if (eggs == 1) return floors;
+        
+        int min = floors;
+        
+        for (int x = 1; x <= floors; x++) {
+            int res = max(eggDropPuzzle(eggs - 1, x - 1), eggDropPuzzle(eggs, floors - x));
+            if (res < min) {
+                min = res;
+            }
+        }
+        
+        return min + 1;
+    }
+    
+    int eggDropPuzzleDP(int eggs, int floors) {
+        int dp[11][101];
+        
+        for (int e = 1; e <= eggs; e++) {
+            dp[e][1] = 1;
+            dp[e][0] = 0;
+        }
+        
+        for (int f = 1; f <= floors; f++) {
+            dp[1][f] = f;
+        }
+        
+        for (int e = 2; e <= eggs; e++) {
+            for (int f = 2; f <= floors; f++) {
+                dp[e][f] = 999999;
+                
+                for (int x = 1; x <= f; x++) {
+                    int res = max(dp[e - 1][x - 1], dp[e][f - x]);
+                    if (res < dp[e][f]) {
+                        dp[e][f] = res;
+                    }
+                }
+                
+                dp[e][f]++;
+            }
+        }
+        
+        return dp[eggs][floors];
+    }
+    
+    int countDerangements(int n) {
+        if (n == 0) return 1;
+        if (n == 1) return 0;
+        if (n == 2) return 1;
+        
+        int dp[101];
+        dp[0] = 1;
+        dp[1] = 0;
+        dp[2] = 1;
+        
+        for (int i = 3; i <= n; i++) {
+            dp[i] = (i - 1) * (dp[i - 1] + dp[i - 2]);
+        }
+        
+        return dp[n];
+    }
+    
+    int countWaysToTileFloor(int n) {
+        if (n == 0) return 0;
+        if (n == 1) return 1;
+        
+        int dp[101];
+        dp[0] = 0;
+        dp[1] = 1;
+        dp[2] = 2;
+        
+        for (int i = 3; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        
+        return dp[n];
+    }
+    
+    int countWaysToTileFloor4(int n) {
+        if (n == 0) return 0;
+        if (n == 1) return 1;
+        if (n == 2) return 2;
+        if (n == 3) return 3;
+        
+        int dp[101];
+        dp[0] = 0;
+        dp[1] = 1;
+        dp[2] = 2;
+        dp[3] = 3;
+        dp[4] = 8;
+        
+        for (int i = 5; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2] + dp[i - 3] + dp[i - 4];
+        }
+        
+        return dp[n];
+    }
+    
+    int maxProductCutting(int n) {
+        if (n == 2) return 1;
+        if (n == 3) return 2;
+        
+        int dp[101];
+        dp[0] = 0;
+        dp[1] = 0;
+        dp[2] = 1;
+        dp[3] = 2;
+        
+        for (int i = 4; i <= n; i++) {
+            dp[i] = i;
+            
+            for (int j = 1; j <= i / 2; j++) {
+                dp[i] = max(dp[i], dp[j] * dp[i - j]);
+            }
+        }
+        
+        return dp[n];
+    }
+    
+    void printArray(int arr[], int n) {
+        cout << "[";
+        for (int i = 0; i < n; i++) {
+            cout << arr[i];
+            if (i < n - 1) {
+                cout << ", ";
+            }
+        }
+        cout << "]" << endl;
+    }
+    
+public:
+    void demonstrateAdvancedAlgorithms2() {
+        cout << "Advanced Algorithms 2 Demonstration" << endl;
+        cout << "===================================" << endl;
+        
+        cout << "1. Longest Common Substring:" << endl;
+        string s1 = "ABABC";
+        string s2 = "BABCA";
+        cout << "String 1: " << s1 << endl;
+        cout << "String 2: " << s2 << endl;
+        cout << "Longest common substring length: " << longestCommonSubstring(s1, s2) << endl;
+        cout << endl;
+        
+        cout << "2. Edit Distance:" << endl;
+        string ed1 = "kitten";
+        string ed2 = "sitting";
+        cout << "String 1: " << ed1 << endl;
+        cout << "String 2: " << ed2 << endl;
+        cout << "Edit distance: " << editDistance(ed1, ed2) << endl;
+        cout << endl;
+        
+        cout << "3. Longest Palindromic Subsequence:" << endl;
+        string pal = "agbdba";
+        cout << "String: " << pal << endl;
+        cout << "Longest palindromic subsequence length: " << longestPalindromicSubsequence(pal) << endl;
+        cout << endl;
+        
+        cout << "4. Palindrome Partitioning:" << endl;
+        string palPart = "ababbbabbababa";
+        cout << "String: " << palPart << endl;
+        cout << "Minimum cuts: " << minCutPalindrome(palPart) << endl;
+        cout << endl;
+        
+        cout << "5. Count Ways to Reach Stairs:" << endl;
+        int stairs = 5;
+        cout << "Ways to reach " << stairs << " stairs: " << countWaysToReachStairs(stairs) << endl;
+        
+        int stairsK = 3;
+        int k = 2;
+        cout << "Ways to reach " << stairsK << " stairs with " << k << " steps: " << countWaysToReachStairsK(stairsK, k) << endl;
+        cout << endl;
+        
+        cout << "6. Maximum Sum Increasing Subsequence:" << endl;
+        int msisArr[] = {1, 101, 2, 3, 100, 4, 5};
+        int msisN = 7;
+        cout << "Array: ";
+        printArray(msisArr, msisN);
+        cout << "Maximum sum increasing subsequence: " << maxSumIncreasingSubsequence(msisArr, msisN) << endl;
+        cout << endl;
+        
+        cout << "7. Minimum Jumps to Reach End:" << endl;
+        int jumpArr[] = {1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9};
+        int jumpN = 11;
+        cout << "Array: ";
+        printArray(jumpArr, jumpN);
+        cout << "Minimum jumps: " << minJumpsToReachEnd(jumpArr, jumpN) << endl;
+        cout << endl;
+        
+        cout << "8. Egg Drop Puzzle:" << endl;
+        int eggs = 2, floors = 10;
+        cout << "Eggs: " << eggs << ", Floors: " << floors << endl;
+        cout << "Minimum trials (recursive): " << eggDropPuzzle(eggs, floors) << endl;
+        cout << "Minimum trials (DP): " << eggDropPuzzleDP(eggs, floors) << endl;
+        cout << endl;
+        
+        cout << "9. Count Derangements:" << endl;
+        int derN = 4;
+        cout << "Derangements of " << derN << " elements: " << countDerangements(derN) << endl;
+        cout << endl;
+        
+        cout << "10. Count Ways to Tile Floor:" << endl;
+        int tileN = 4;
+        cout << "Ways to tile " << tileN << " floor (2x1 tiles): " << countWaysToTileFloor(tileN) << endl;
+        cout << "Ways to tile " << tileN << " floor (1x4 tiles): " << countWaysToTileFloor4(tileN) << endl;
+        cout << endl;
+        
+        cout << "11. Maximum Product Cutting:" << endl;
+        int cutN = 10;
+        cout << "Maximum product for " << cutN << ": " << maxProductCutting(cutN) << endl;
+        cout << endl;
+        
+        cout << "12. Complex Examples:" << endl;
+        cout << "Edit distance between 'intention' and 'execution': " << editDistance("intention", "execution") << endl;
+        cout << "Longest palindromic subsequence in 'character': " << longestPalindromicSubsequence("character") << endl;
+        cout << "Ways to reach 8 stairs: " << countWaysToReachStairs(8) << endl;
+        cout << "Derangements of 5 elements: " << countDerangements(5) << endl;
+        cout << endl;
+        
+        cout << "Advanced Algorithms 2 Features:" << endl;
+        cout << "- Longest common substring" << endl;
+        cout << "- Edit distance (Levenshtein distance)" << endl;
+        cout << "- Longest palindromic subsequence" << endl;
+        cout << "- Palindrome partitioning" << endl;
+        cout << "- Count ways to reach stairs" << endl;
+        cout << "- Maximum sum increasing subsequence" << endl;
+        cout << "- Minimum jumps to reach end" << endl;
+        cout << "- Egg drop puzzle" << endl;
+        cout << "- Count derangements" << endl;
+        cout << "- Count ways to tile floor" << endl;
+        cout << "- Maximum product cutting" << endl;
+        cout << "- Dynamic programming solutions" << endl;
+        cout << "- Optimal substructure and overlapping subproblems" << endl;
+    }
+};
+
+int main() {
+    AdvancedAlgorithms2 aa2;
+    aa2.demonstrateAdvancedAlgorithms2();
+    return 0;
+}

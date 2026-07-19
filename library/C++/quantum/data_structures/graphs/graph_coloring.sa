@@ -1,0 +1,175 @@
+// Graph Coloring Implementation in C++
+#include <iostream>
+#include <vector>
+#include <list>
+#include <algorithm>
+using namespace std;
+
+class GraphColoring {
+private:
+    vector<list<int>> adjList;
+    int vertices;
+
+    bool isSafe(int vertex, vector<int>& colors, int color) {
+        for (int neighbor : adjList[vertex]) {
+            if (colors[neighbor] == color) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool graphColoringUtil(int vertex, vector<int>& colors, int m) {
+        if (vertex == vertices) {
+            return true;
+        }
+
+        for (int color = 1; color <= m; color++) {
+            if (isSafe(vertex, colors, color)) {
+                colors[vertex] = color;
+
+                if (graphColoringUtil(vertex + 1, colors, m)) {
+                    return true;
+                }
+
+                colors[vertex] = 0;
+            }
+        }
+
+        return false;
+    }
+
+    bool welshPowellUtil(vector<pair<int, int>>& degrees, vector<int>& colors, int m) {
+        for (auto& degreePair : degrees) {
+            int vertex = degreePair.second;
+
+            for (int color = 1; color <= m; color++) {
+                if (isSafe(vertex, colors, color)) {
+                    colors[vertex] = color;
+                    break;
+                }
+            }
+        }
+
+        return true;
+    }
+
+public:
+    GraphColoring(int v) : vertices(v) {
+        adjList.resize(vertices);
+    }
+
+    void addEdge(int u, int v) {
+        if (u >= 0 && u < vertices && v >= 0 && v < vertices) {
+            adjList[u].push_back(v);
+            adjList[v].push_back(u);
+        }
+    }
+
+    vector<int> graphColoring(int m) {
+        vector<int> colors(vertices, 0);
+        
+        if (graphColoringUtil(0, colors, m)) {
+            return colors;
+        }
+        
+        return {};
+    }
+
+    vector<int> welshPowell(int m) {
+        vector<int> colors(vertices, 0);
+        vector<pair<int, int>> degrees;
+
+        for (int i = 0; i < vertices; i++) {
+            degrees.push_back({adjList[i].size(), i});
+        }
+
+        sort(degrees.rbegin(), degrees.rend());
+
+        welshPowellUtil(degrees, colors, m);
+        return colors;
+    }
+
+    int getChromaticNumber() {
+        for (int m = 1; m <= vertices; m++) {
+            vector<int> colors = graphColoring(m);
+            if (!colors.empty()) {
+                return m;
+            }
+        }
+        return vertices;
+    }
+
+    bool isBipartite() {
+        vector<int> colors = graphColoring(2);
+        return !colors.empty();
+    }
+
+    void displayColors(const vector<int>& colors, const string& method) {
+        cout << "Graph Coloring (" << method << "):" << endl;
+        if (colors.empty()) {
+            cout << "No valid coloring found" << endl;
+            return;
+        }
+
+        vector<vector<int>> colorGroups;
+        int maxColor = *max_element(colors.begin(), colors.end());
+        colorGroups.resize(maxColor + 1);
+
+        for (int i = 0; i < vertices; i++) {
+            if (colors[i] > 0) {
+                colorGroups[colors[i]].push_back(i);
+            }
+        }
+
+        for (int i = 1; i <= maxColor; i++) {
+            cout << "Color " << i << ": ";
+            for (int vertex : colorGroups[i]) {
+                cout << vertex << " ";
+            }
+            cout << endl;
+        }
+    }
+
+    void display() {
+        cout << "Graph:" << endl;
+        for (int i = 0; i < vertices; i++) {
+            cout << i << ": ";
+            for (int neighbor : adjList[i]) {
+                cout << neighbor << " ";
+            }
+            cout << endl;
+        }
+    }
+};
+
+int main() {
+    GraphColoring gc(6);
+    
+    gc.addEdge(0, 1);
+    gc.addEdge(0, 2);
+    gc.addEdge(0, 3);
+    gc.addEdge(1, 2);
+    gc.addEdge(1, 4);
+    gc.addEdge(2, 3);
+    gc.addEdge(2, 5);
+    gc.addEdge(3, 4);
+    gc.addEdge(3, 5);
+    gc.addEdge(4, 5);
+    
+    gc.display();
+    cout << endl;
+    
+    cout << "Chromatic number: " << gc.getChromaticNumber() << endl;
+    cout << "Is bipartite: " << (gc.isBipartite() ? "Yes" : "No") << endl;
+    cout << endl;
+    
+    vector<int> colors1 = gc.graphColoring(3);
+    gc.displayColors(colors1, "Backtracking");
+    cout << endl;
+    
+    vector<int> colors2 = gc.welshPowell(3);
+    gc.displayColors(colors2, "Welsh-Powell");
+    
+    return 0;
+}

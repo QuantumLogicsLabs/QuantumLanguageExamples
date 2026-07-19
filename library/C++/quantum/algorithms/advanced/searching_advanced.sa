@@ -1,0 +1,152 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class SearchingAdvanced {
+private:
+    int linearSearch(int arr[], int n, int x) {
+        for (int i = 0; i < n; i++) {
+            if (arr[i] == x) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    int binarySearch(int arr[], int l, int r, int x) {
+        while (l <= r) {
+            int m = l + (r - l) / 2;
+            if (arr[m] == x) {
+                return m;
+            }
+            if (arr[m] < x) {
+                l = m + 1;
+            } else {
+                r = m - 1;
+            }
+        }
+        return -1;
+    }
+    
+    int jumpSearch(int arr[], int n, int x) {
+        int step = n / 2;
+        int prev = 0;
+        
+        while (arr[min(step, n) - 1] < x) {
+            prev = step;
+            step += n / 2;
+        }
+        
+        for (int i = prev; i < min(step, n); i++) {
+            if (arr[i] == x) {
+                return i;
+            }
+        }
+        
+        return -1;
+    }
+    
+    int interpolationSearch(int arr[], int n, int x) {
+        int lo = 0, hi = n - 1;
+        
+        while (lo <= hi && x >= arr[lo] && x <= arr[hi]) {
+            if (lo == hi) {
+                if (arr[lo] == x) return lo;
+                else return -1;
+            }
+            
+            int pos = lo + ((hi - lo) * (x - arr[lo])) / (arr[hi] - arr[lo]);
+            
+            if (arr[pos] == x) {
+                return pos;
+            }
+            
+            if (arr[pos] < x) {
+                lo = pos + 1;
+            } else {
+                hi = pos - 1;
+            }
+        }
+        
+        return -1;
+    }
+    
+    int exponentialSearch(int arr[], int n, int x) {
+        if (arr[0] == x) {
+            return 0;
+        }
+        
+        int i = 1;
+        int bound = 1;
+        
+        while (bound < n && arr[bound] < x) {
+            bound *= 2;
+        }
+        
+        for (int i = bound / 2; i < min(bound, n); i++) {
+            if (arr[i] == x) {
+                return i;
+            }
+        }
+        
+        return -1;
+    }
+    
+    void printArray(int arr[], int n) {
+        cout << "[";
+        for (int i = 0; i < n; i++) {
+            cout << arr[i];
+            if (i < n - 1) {
+                cout << ", ";
+            }
+        }
+        cout << "]" << endl;
+    }
+    
+public:
+    void demonstrateSearchingAdvanced() {
+        cout << "Advanced Searching Demonstration" << endl;
+        cout << "===============================" << endl;
+        
+        int arr[] = {2, 3, 4, 10, 40};
+        int n = 5;
+        int x = 10;
+        
+        cout << "Array: ";
+        printArray(arr, n);
+        cout << "Element to search: " << x << endl;
+        
+        int result = linearSearch(arr, n, x);
+        cout << "Linear Search: " << (result != -1 ? "Found at index " + to_string(result) : "Not found") << endl;
+        
+        result = binarySearch(arr, 0, n - 1, x);
+        cout << "Binary Search: " << (result != -1 ? "Found at index " + to_string(result) : "Not found") << endl;
+        
+        result = jumpSearch(arr, n, x);
+        cout << "Jump Search: " << (result != -1 ? "Found at index " + to_string(result) : "Not found") << endl;
+        
+        result = interpolationSearch(arr, n, x);
+        cout << "Interpolation Search: " << (result != -1 ? "Found at index " + to_string(result) : "Not found") << endl;
+        
+        result = exponentialSearch(arr, n, x);
+        cout << "Exponential Search: " << (result != -1 ? "Found at index " + to_string(result) : "Not found") << endl;
+        cout << endl;
+        
+        cout << "Advanced Searching Features:" << endl;
+        cout << "- Linear Search (O(n))" << endl;
+        cout << "- Binary Search (O(log n))" << endl;
+        cout << "- Jump Search (O(sqrt(n)))" << endl;
+        cout << "- Interpolation Search (O(log log n))" << endl;
+        cout << "- Exponential Search (O(log n))" << endl;
+        cout << "- Manual implementation without STL" << endl;
+        cout << "- Time complexity analysis" << endl;
+        cout << "- Best, average, and worst case scenarios" << endl;
+    }
+};
+
+int main() {
+    SearchingAdvanced sa;
+    sa.demonstrateSearchingAdvanced();
+    return 0;
+}

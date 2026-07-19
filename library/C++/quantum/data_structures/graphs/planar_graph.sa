@@ -1,0 +1,254 @@
+// Planar Graph Implementation in C++
+#include <iostream>
+#include <vector>
+#include <list>
+#include <algorithm>
+using namespace std;
+
+class PlanarGraph {
+private:
+    vector<list<int>> adjList;
+    int vertices;
+    int edges;
+
+    int countCycles(int start, int parent, vector<bool>& visited) {
+        visited[start] = true;
+        int cycleCount = 0;
+
+        for (int neighbor : adjList[start]) {
+            if (!visited[neighbor]) {
+                cycleCount += countCycles(neighbor, start, visited);
+            } else if (neighbor != parent) {
+                cycleCount++;
+            }
+        }
+
+        return cycleCount / 2;
+    }
+
+    bool hasK5Subgraph() {
+        if (vertices < 5) return false;
+
+        vector<int> vertexList;
+        for (int i = 0; i < vertices; i++) {
+            vertexList.push_back(i);
+        }
+
+        vector<int> combination(5);
+        for (int i = 0; i < 5; i++) {
+            combination[i] = i;
+        }
+
+        do {
+            bool isK5 = true;
+            for (int i = 0; i < 5 && isK5; i++) {
+                for (int j = i + 1; j < 5 && isK5; j++) {
+                    bool hasEdge = false;
+                    for (int neighbor : adjList[combination[i]]) {
+                        if (neighbor == combination[j]) {
+                            hasEdge = true;
+                            break;
+                        }
+                    }
+                    if (!hasEdge) {
+                        isK5 = false;
+                    }
+                }
+            }
+            if (isK5) return true;
+        } while (next_combination(vertexList, combination, 5));
+
+        return false;
+    }
+
+    bool hasK33Subgraph() {
+        if (vertices < 6) return false;
+
+        vector<int> vertexList;
+        for (int i = 0; i < vertices; i++) {
+            vertexList.push_back(i);
+        }
+
+        vector<int> combination(6);
+        for (int i = 0; i < 6; i++) {
+            combination[i] = i;
+        }
+
+        do {
+            for (int mask = 0; mask < (1 << 6); mask++) {
+                if (__builtin_popcount(mask) == 3) {
+                    vector<int> set1, set2;
+                    for (int i = 0; i < 6; i++) {
+                        if (mask & (1 << i)) {
+                            set1.push_back(combination[i]);
+                        } else {
+                            set2.push_back(combination[i]);
+                        }
+                    }
+
+                    bool isK33 = true;
+                    for (int i = 0; i < 3 && isK33; i++) {
+                        for (int j = 0; j < 3 && isK33; j++) {
+                            bool hasEdge = false;
+                            for (int neighbor : adjList[set1[i]]) {
+                                if (neighbor == set2[j]) {
+                                    hasEdge = true;
+                                    break;
+                                }
+                            }
+                            if (!hasEdge) {
+                                isK33 = false;
+                            }
+                        }
+                    }
+                    if (isK33) return true;
+                }
+            }
+        } while (next_combination(vertexList, combination, 6));
+
+        return false;
+    }
+
+    bool next_combination(vector<int>& elements, vector<int>& combination, int k) {
+        int n = elements.size();
+        for (int i = k - 1; i >= 0; i--) {
+            if (combination[i] < elements[n - k + i]) {
+                combination[i]++;
+                for (int j = i + 1; j < k; j++) {
+                    combination[j] = elements[j - i + combination[i] - 1];
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+public:
+    PlanarGraph(int v) : vertices(v), edges(0) {
+        adjList.resize(vertices);
+    }
+
+    void addEdge(int u, int v) {
+        if (u >= 0 && u < vertices && v >= 0 && v < vertices) {
+            adjList[u].push_back(v);
+            adjList[v].push_back(u);
+            edges++;
+        }
+    }
+
+    bool isPlanar() {
+        if (vertices <= 4) return true;
+        if (edges > 3 * vertices - 6) return false;
+        
+        return !hasK5Subgraph() && !hasK33Subgraph();
+    }
+
+    int getEulerCharacteristic() {
+        int faces = 2 + edges - vertices;
+        return vertices - edges + faces;
+    }
+
+    bool isConnected() {
+        if (vertices == 0) return true;
+        
+        vector<bool> visited(vertices, false);
+        vector<int> stack;
+        
+        int start = 0;
+        for (int i = 0; i < vertices; i++) {
+            if (!adjList[i].empty()) {
+                start = i;
+                break;
+            }
+        }
+        
+        stack.push_back(start);
+        visited[start] = true;
+        
+        while (!stack.empty()) {
+            int current = stack.back();
+            stack.pop_back();
+            
+            for (int neighbor : adjList[current]) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    stack.push_back(neighbor);
+                }
+            }
+        }
+        
+        for (int i = 0; i < vertices; i++) {
+            if (!adjList[i].empty() && !visited[i]) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+
+    void display() {
+        cout << "Planar Graph Analysis:" << endl;
+        cout << "Vertices: " << vertices << endl;
+        cout << "Edges: " << edges << endl;
+        cout << "Is planar: " << (isPlanar() ? "Yes" : "No") << endl;
+        cout << "Is connected: " << (isConnected() ? "Yes" : "No") << endl;
+        if (isConnected()) {
+            cout << "Euler characteristic: " << getEulerCharacteristic() << endl;
+        }
+        
+        cout << "\nAdjacency List:" << endl;
+        for (int i = 0; i < vertices; i++) {
+            cout << i << ": ";
+            for (int neighbor : adjList[i]) {
+                cout << neighbor << " ";
+            }
+            cout << endl;
+        }
+    }
+};
+
+int main() {
+    PlanarGraph g1(5);
+    g1.addEdge(0, 1);
+    g1.addEdge(0, 2);
+    g1.addEdge(0, 3);
+    g1.addEdge(0, 4);
+    g1.addEdge(1, 2);
+    g1.addEdge(1, 3);
+    g1.addEdge(1, 4);
+    g1.addEdge(2, 3);
+    g1.addEdge(2, 4);
+    g1.addEdge(3, 4);
+    
+    cout << "Complete Graph K5:" << endl;
+    g1.display();
+    cout << endl;
+    
+    PlanarGraph g2(4);
+    g2.addEdge(0, 1);
+    g2.addEdge(0, 2);
+    g2.addEdge(0, 3);
+    g2.addEdge(1, 2);
+    g2.addEdge(1, 3);
+    g2.addEdge(2, 3);
+    
+    cout << "Complete Graph K4:" << endl;
+    g2.display();
+    cout << endl;
+    
+    PlanarGraph g3(6);
+    g3.addEdge(0, 3);
+    g3.addEdge(0, 4);
+    g3.addEdge(0, 5);
+    g3.addEdge(1, 3);
+    g3.addEdge(1, 4);
+    g3.addEdge(1, 5);
+    g3.addEdge(2, 3);
+    g3.addEdge(2, 4);
+    g3.addEdge(2, 5);
+    
+    cout << "Complete Bipartite Graph K3,3:" << endl;
+    g3.display();
+    
+    return 0;
+}

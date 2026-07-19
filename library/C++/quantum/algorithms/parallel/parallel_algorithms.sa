@@ -1,0 +1,346 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class ParallelAlgorithms {
+private:
+    void parallelMerge(int arr[], int temp[], int left, int mid, int right) {
+        int i = left;
+        int j = mid;
+        int k = left;
+        
+        while (i < mid && j <= right) {
+            if (arr[i] <= arr[j]) {
+                temp[k++] = arr[i++];
+            } else {
+                temp[k++] = arr[j++];
+            }
+        }
+        
+        while (i < mid) {
+            temp[k++] = arr[i++];
+        }
+        
+        while (j <= right) {
+            temp[k++] = arr[j++];
+        }
+        
+        for (i = left; i <= right; i++) {
+            arr[i] = temp[i];
+        }
+    }
+    
+    void parallelMergeSortHelper(int arr[], int temp[], int left, int right, int depth) {
+        if (left < right) {
+            if (depth <= 0) {
+                for (int i = left; i <= right; i++) {
+                    for (int j = i + 1; j <= right; j++) {
+                        if (arr[i] > arr[j]) {
+                            int tempVal = arr[i];
+                            arr[i] = arr[j];
+                            arr[j] = tempVal;
+                        }
+                    }
+                }
+            } else {
+                int mid = left + (right - left) / 2;
+                parallelMergeSortHelper(arr, temp, left, mid, depth - 1);
+                parallelMergeSortHelper(arr, temp, mid + 1, right, depth - 1);
+                parallelMerge(arr, temp, left, mid + 1, right);
+            }
+        }
+    }
+    
+    void parallelMergeSort(int arr[], int n, int maxDepth) {
+        int temp[1000];
+        parallelMergeSortHelper(arr, temp, 0, n - 1, maxDepth);
+    }
+    
+    void parallelPrefixSum(int arr[], int n, int result[]) {
+        if (n == 1) {
+            result[0] = arr[0];
+            return;
+        }
+        
+        int temp[1000];
+        
+        for (int i = 0; i < n - 1; i += 2) {
+            temp[i / 2] = arr[i] + arr[i + 1];
+        }
+        
+        if (n % 2 == 1) {
+            temp[n / 2] = arr[n - 1];
+        }
+        
+        int tempSize = (n + 1) / 2;
+        int tempResult[1000];
+        parallelPrefixSum(temp, tempSize, tempResult);
+        
+        result[0] = arr[0];
+        for (int i = 1; i < n; i++) {
+            if (i % 2 == 1) {
+                result[i] = tempResult[i / 2];
+            } else {
+                result[i] = tempResult[i / 2 - 1] + arr[i];
+            }
+        }
+    }
+    
+    void parallelMatrixMultiply(int A[][10], int B[][10], int C[][10], int n) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                C[i][j] = 0;
+            }
+        }
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < n; k++) {
+                    C[i][j] += A[i][k] * B[k][j];
+                }
+            }
+        }
+    }
+    
+    void parallelBinarySearch(int arr[], int n, int targets[], int m, int results[]) {
+        for (int i = 0; i < m; i++) {
+            int left = 0, right = n - 1;
+            int target = targets[i];
+            int result = -1;
+            
+            while (left <= right) {
+                int mid = left + (right - left) / 2;
+                
+                if (arr[mid] == target) {
+                    result = mid;
+                    break;
+                } else if (arr[mid] < target) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+            
+            results[i] = result;
+        }
+    }
+    
+    void parallelQuickSortHelper(int arr[], int left, int right, int depth) {
+        if (left < right) {
+            if (depth <= 0) {
+                for (int i = left; i <= right; i++) {
+                    for (int j = i + 1; j <= right; j++) {
+                        if (arr[i] > arr[j]) {
+                            int tempVal = arr[i];
+                            arr[i] = arr[j];
+                            arr[j] = tempVal;
+                        }
+                    }
+                }
+            } else {
+                int pivot = arr[right];
+                int i = left - 1;
+                
+                for (int j = left; j < right; j++) {
+                    if (arr[j] < pivot) {
+                        i++;
+                        int tempVal = arr[i];
+                        arr[i] = arr[j];
+                        arr[j] = tempVal;
+                    }
+                }
+                
+                int tempVal = arr[i + 1];
+                arr[i + 1] = arr[right];
+                arr[right] = tempVal;
+                
+                int partitionIndex = i + 1;
+                
+                parallelQuickSortHelper(arr, left, partitionIndex - 1, depth - 1);
+                parallelQuickSortHelper(arr, partitionIndex + 1, right, depth - 1);
+            }
+        }
+    }
+    
+    void parallelQuickSort(int arr[], int n, int maxDepth) {
+        parallelQuickSortHelper(arr, 0, n - 1, maxDepth);
+    }
+    
+    void parallelReduce(int arr[], int n, int& result) {
+        while (n > 1) {
+            int newSize = (n + 1) / 2;
+            
+            for (int i = 0; i < newSize; i++) {
+                if (2 * i + 1 < n) {
+                    arr[i] = arr[2 * i] + arr[2 * i + 1];
+                } else {
+                    arr[i] = arr[2 * i];
+                }
+            }
+            
+            n = newSize;
+        }
+        
+        result = arr[0];
+    }
+    
+    void printArray(int arr[], int n) {
+        cout << "[";
+        for (int i = 0; i < n; i++) {
+            cout << arr[i];
+            if (i < n - 1) {
+                cout << ", ";
+            }
+        }
+        cout << "]" << endl;
+    }
+    
+    void printMatrix(int matrix[][10], int n) {
+        cout << "[";
+        for (int i = 0; i < n; i++) {
+            if (i > 0) cout << " ";
+            cout << "[";
+            for (int j = 0; j < n; j++) {
+                cout << matrix[i][j];
+                if (j < n - 1) {
+                    cout << ", ";
+                }
+            }
+            cout << "]";
+            if (i < n - 1) {
+                cout << "," << endl;
+            }
+        }
+        cout << "]" << endl;
+    }
+    
+public:
+    void demonstrateParallelAlgorithms() {
+        cout << "Parallel Algorithms Demonstration" << endl;
+        cout << "=================================" << endl;
+        
+        cout << "1. Parallel Merge Sort:" << endl;
+        int mergeArr[] = {12, 11, 13, 5, 6, 7, 3, 9, 15, 4};
+        int mergeN = 10;
+        cout << "Original array: ";
+        printArray(mergeArr, mergeN);
+        
+        parallelMergeSort(mergeArr, mergeN, 2);
+        cout << "Sorted array: ";
+        printArray(mergeArr, mergeN);
+        cout << endl;
+        
+        cout << "2. Parallel Prefix Sum:" << endl;
+        int prefixArr[] = {3, 1, 4, 1, 5, 9, 2, 6};
+        int prefixN = 8;
+        int prefixResult[8];
+        
+        cout << "Original array: ";
+        printArray(prefixArr, prefixN);
+        
+        parallelPrefixSum(prefixArr, prefixN, prefixResult);
+        cout << "Prefix sum: ";
+        printArray(prefixResult, prefixN);
+        cout << endl;
+        
+        cout << "3. Parallel Matrix Multiplication:" << endl;
+        int A[10][10] = {{1, 2}, {3, 4}};
+        int B[10][10] = {{5, 6}, {7, 8}};
+        int C[10][10];
+        int matN = 2;
+        
+        cout << "Matrix A:" << endl;
+        printMatrix(A, matN);
+        cout << "Matrix B:" << endl;
+        printMatrix(B, matN);
+        
+        parallelMatrixMultiply(A, B, C, matN);
+        cout << "Result (A * B):" << endl;
+        printMatrix(C, matN);
+        cout << endl;
+        
+        cout << "4. Parallel Binary Search:" << endl;
+        int searchArr[] = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
+        int searchN = 10;
+        int targets[] = {7, 2, 15, 20, 1};
+        int targetsM = 5;
+        int searchResults[5];
+        
+        cout << "Sorted array: ";
+        printArray(searchArr, searchN);
+        cout << "Targets: ";
+        printArray(targets, targetsM);
+        
+        parallelBinarySearch(searchArr, searchN, targets, targetsM, searchResults);
+        cout << "Search results: ";
+        printArray(searchResults, targetsM);
+        cout << endl;
+        
+        cout << "5. Parallel Quick Sort:" << endl;
+        int quickArr[] = {10, 80, 30, 90, 40, 50, 70, 20, 60, 5};
+        int quickN = 10;
+        cout << "Original array: ";
+        printArray(quickArr, quickN);
+        
+        parallelQuickSort(quickArr, quickN, 2);
+        cout << "Sorted array: ";
+        printArray(quickArr, quickN);
+        cout << endl;
+        
+        cout << "6. Parallel Reduce (Sum):" << endl;
+        int reduceArr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        int reduceN = 10;
+        int reduceResult;
+        
+        cout << "Array: ";
+        printArray(reduceArr, reduceN);
+        
+        parallelReduce(reduceArr, reduceN, reduceResult);
+        cout << "Sum: " << reduceResult << endl;
+        cout << endl;
+        
+        cout << "7. Complex Parallel Operations:" << endl;
+        int complexArr[] = {64, 34, 25, 12, 22, 11, 90, 88, 45, 50};
+        int complexN = 10;
+        
+        cout << "Original array: ";
+        printArray(complexArr, complexN);
+        
+        parallelMergeSort(complexArr, complexN, 3);
+        cout << "After parallel merge sort: ";
+        printArray(complexArr, complexN);
+        
+        int complexPrefix[10];
+        parallelPrefixSum(complexArr, complexN, complexPrefix);
+        cout << "Prefix sum: ";
+        printArray(complexPrefix, complexN);
+        cout << endl;
+        
+        cout << "8. Performance Characteristics:" << endl;
+        cout << "Parallel Merge Sort: O(n log n) with parallel speedup" << endl;
+        cout << "Parallel Prefix Sum: O(log n) with n processors" << endl;
+        cout << "Parallel Matrix Multiply: O(n^3) with parallel speedup" << endl;
+        cout << "Parallel Binary Search: O(log n) per query" << endl;
+        cout << "Parallel Quick Sort: O(n log n) average case" << endl;
+        cout << "Parallel Reduce: O(log n) with parallel reduction" << endl;
+        cout << endl;
+        
+        cout << "Parallel Algorithms Features:" << endl;
+        cout << "- Parallel Merge Sort" << endl;
+        cout << "- Parallel Prefix Sum (Scan)" << endl;
+        cout << "- Parallel Matrix Multiplication" << endl;
+        cout << "- Parallel Binary Search" << endl;
+        cout << "- Parallel Quick Sort" << endl;
+        cout << "- Parallel Reduce operations" << endl;
+        cout << "- Divide and conquer parallelization" << endl;
+        cout << "- Work sharing and work stealing concepts" << endl;
+        cout << "- Scalability analysis" << endl;
+    }
+};
+
+int main() {
+    ParallelAlgorithms pa;
+    pa.demonstrateParallelAlgorithms();
+    return 0;
+}

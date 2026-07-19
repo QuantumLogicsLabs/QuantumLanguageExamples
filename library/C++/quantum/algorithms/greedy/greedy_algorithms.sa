@@ -1,0 +1,296 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class GreedyAlgorithms {
+private:
+    int coinChange(int coins[], int n, int amount) {
+        sort(coins, coins + n, greater<int>());
+        
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            while (amount >= coins[i]) {
+                amount -= coins[i];
+                count++;
+            }
+        }
+        
+        return count;
+    }
+    
+    int fractionalKnapsack(int weights[], int values[], int n, int capacity) {
+        double ratios[50];
+        
+        for (int i = 0; i < n; i++) {
+            ratios[i] = (double)values[i] / weights[i];
+        }
+        
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (ratios[i] < ratios[j]) {
+                    swap(ratios[i], ratios[j]);
+                    swap(weights[i], weights[j]);
+                    swap(values[i], values[j]);
+                }
+            }
+        }
+        
+        double totalValue = 0;
+        for (int i = 0; i < n; i++) {
+            if (capacity >= weights[i]) {
+                capacity -= weights[i];
+                totalValue += values[i];
+            } else {
+                totalValue += values[i] * ((double)capacity / weights[i]);
+                break;
+            }
+        }
+        
+        return (int)totalValue;
+    }
+    
+    int activitySelection(int start[], int finish[], int n) {
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (finish[i] > finish[j]) {
+                    swap(finish[i], finish[j]);
+                    swap(start[i], start[j]);
+                }
+            }
+        }
+        
+        int count = 1;
+        int lastFinish = finish[0];
+        
+        for (int i = 1; i < n; i++) {
+            if (start[i] >= lastFinish) {
+                count++;
+                lastFinish = finish[i];
+            }
+        }
+        
+        return count;
+    }
+    
+    int jobSequencing(int deadlines[], int profits[], int n) {
+        int maxDeadline = 0;
+        for (int i = 0; i < n; i++) {
+            maxDeadline = max(maxDeadline, deadlines[i]);
+        }
+        
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (profits[i] < profits[j]) {
+                    swap(profits[i], profits[j]);
+                    swap(deadlines[i], deadlines[j]);
+                }
+            }
+        }
+        
+        int slots[50];
+        for (int i = 0; i <= maxDeadline; i++) {
+            slots[i] = -1;
+        }
+        
+        int totalProfit = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = deadlines[i]; j >= 1; j--) {
+                if (slots[j] == -1) {
+                    slots[j] = i;
+                    totalProfit += profits[i];
+                    break;
+                }
+            }
+        }
+        
+        return totalProfit;
+    }
+    
+    int huffmanCoding(int frequencies[], int n) {
+        int totalCost = 0;
+        
+        while (n > 1) {
+            int min1 = 999999, min2 = 999999;
+            int idx1 = -1, idx2 = -1;
+            
+            for (int i = 0; i < n; i++) {
+                if (frequencies[i] != -1 && frequencies[i] < min1) {
+                    min2 = min1;
+                    idx2 = idx1;
+                    min1 = frequencies[i];
+                    idx1 = i;
+                } else if (frequencies[i] != -1 && frequencies[i] < min2) {
+                    min2 = frequencies[i];
+                    idx2 = i;
+                }
+            }
+            
+            if (idx1 != -1 && idx2 != -1) {
+                int combined = frequencies[idx1] + frequencies[idx2];
+                frequencies[idx1] = combined;
+                frequencies[idx2] = -1;
+                totalCost += combined;
+                n--;
+            } else {
+                break;
+            }
+        }
+        
+        return totalCost;
+    }
+    
+    int dijkstra(int graph[][50], int src, int vertices) {
+        int dist[50];
+        bool visited[50];
+        
+        for (int i = 0; i < vertices; i++) {
+            dist[i] = 999999;
+            visited[i] = false;
+        }
+        
+        dist[src] = 0;
+        
+        for (int count = 0; count < vertices - 1; count++) {
+            int minDist = 999999;
+            int u = -1;
+            
+            for (int v = 0; v < vertices; v++) {
+                if (!visited[v] && dist[v] < minDist) {
+                    minDist = dist[v];
+                    u = v;
+                }
+            }
+            
+            if (u == -1) break;
+            
+            visited[u] = true;
+            
+            for (int v = 0; v < vertices; v++) {
+                if (!visited[v] && graph[u][v] != 0 && 
+                    dist[u] + graph[u][v] < dist[v]) {
+                    dist[v] = dist[u] + graph[u][v];
+                }
+            }
+        }
+        
+        int totalDistance = 0;
+        for (int i = 0; i < vertices; i++) {
+            if (dist[i] != 999999) {
+                totalDistance += dist[i];
+            }
+        }
+        
+        return totalDistance;
+    }
+    
+    void printArray(int arr[], int n) {
+        cout << "[";
+        for (int i = 0; i < n; i++) {
+            cout << arr[i];
+            if (i < n - 1) {
+                cout << ", ";
+            }
+        }
+        cout << "]" << endl;
+    }
+    
+public:
+    void demonstrateGreedyAlgorithms() {
+        cout << "Greedy Algorithms Demonstration" << endl;
+        cout << "===============================" << endl;
+        
+        cout << "1. Coin Change Problem:" << endl;
+        int coins[] = {1, 5, 10, 25};
+        int n = 4;
+        int amount = 63;
+        
+        cout << "Coins: ";
+        printArray(coins, n);
+        cout << "Amount: " << amount << endl;
+        cout << "Minimum coins needed: " << coinChange(coins, n, amount) << endl;
+        cout << endl;
+        
+        cout << "2. Fractional Knapsack:" << endl;
+        int weights[] = {10, 20, 30};
+        int values[] = {60, 100, 120};
+        int knapsackN = 3;
+        int capacity = 50;
+        
+        cout << "Weights: ";
+        printArray(weights, knapsackN);
+        cout << "Values: ";
+        printArray(values, knapsackN);
+        cout << "Capacity: " << capacity << endl;
+        cout << "Maximum value: " << fractionalKnapsack(weights, values, knapsackN, capacity) << endl;
+        cout << endl;
+        
+        cout << "3. Activity Selection:" << endl;
+        int start[] = {1, 3, 0, 5, 8, 5};
+        int finish[] = {2, 4, 6, 7, 9, 9};
+        int activityN = 6;
+        
+        cout << "Start times: ";
+        printArray(start, activityN);
+        cout << "Finish times: ";
+        printArray(finish, activityN);
+        cout << "Maximum activities: " << activitySelection(start, finish, activityN) << endl;
+        cout << endl;
+        
+        cout << "4. Job Sequencing:" << endl;
+        int deadlines[] = {2, 1, 2, 1, 3};
+        int profits[] = {100, 19, 27, 25, 15};
+        int jobN = 5;
+        
+        cout << "Deadlines: ";
+        printArray(deadlines, jobN);
+        cout << "Profits: ";
+        printArray(profits, jobN);
+        cout << "Maximum profit: " << jobSequencing(deadlines, profits, jobN) << endl;
+        cout << endl;
+        
+        cout << "5. Huffman Coding:" << endl;
+        int frequencies[] = {5, 9, 12, 13, 16, 45};
+        int huffmanN = 6;
+        
+        cout << "Frequencies: ";
+        printArray(frequencies, huffmanN);
+        cout << "Total cost: " << huffmanCoding(frequencies, huffmanN) << endl;
+        cout << endl;
+        
+        cout << "6. Dijkstra's Algorithm:" << endl;
+        int graph[50][50] = {{0, 4, 0, 0, 0, 0, 0, 8, 0},
+                              {4, 0, 8, 0, 0, 0, 0, 11, 0},
+                              {0, 8, 0, 7, 0, 4, 0, 0, 2},
+                              {0, 0, 7, 0, 9, 14, 0, 0, 0},
+                              {0, 0, 0, 9, 0, 10, 0, 0, 0},
+                              {0, 0, 4, 14, 10, 0, 2, 0, 0},
+                              {0, 0, 0, 0, 2, 0, 1, 6, 0},
+                              {8, 11, 0, 0, 0, 0, 6, 0, 7},
+                              {0, 0, 2, 0, 0, 0, 0, 7, 0}};
+        int vertices = 9;
+        int src = 0;
+        
+        cout << "Graph vertices: " << vertices << endl;
+        cout << "Source: " << src << endl;
+        cout << "Total distance from source: " << dijkstra(graph, src, vertices) << endl;
+        cout << endl;
+        
+        cout << "Greedy Algorithms Features:" << endl;
+        cout << "- Coin Change Problem" << endl;
+        cout << "- Fractional Knapsack" << endl;
+        cout << "- Activity Selection" << endl;
+        cout << "- Job Sequencing" << endl;
+        cout << "- Huffman Coding" << endl;
+        cout << "- Dijkstra's Algorithm" << endl;
+        cout << "- Local optimal solutions" << endl;
+        cout << "- Greedy choice property" << endl;
+        cout << "- Optimal substructure" << endl;
+    }
+};
+
+int main() {
+    GreedyAlgorithms ga;
+    ga.demonstrateGreedyAlgorithms();
+    return 0;
+}

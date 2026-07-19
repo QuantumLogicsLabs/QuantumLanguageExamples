@@ -1,0 +1,395 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class AdvancedGraphAlgorithms {
+private:
+    const int MAX_V = 100;
+    const int INF = 999999;
+    
+    void floydWarshall(int graph[][100], int dist[][100], int V) {
+        for (int i = 0; i < V; i++) {
+            for (int j = 0; j < V; j++) {
+                if (i == j) {
+                    dist[i][j] = 0;
+                } else if (graph[i][j] == 0) {
+                    dist[i][j] = INF;
+                } else {
+                    dist[i][j] = graph[i][j];
+                }
+            }
+        }
+        
+        for (int k = 0; k < V; k++) {
+            for (int i = 0; i < V; i++) {
+                for (int j = 0; j < V; j++) {
+                    if (dist[i][k] + dist[k][j] < dist[i][j]) {
+                        dist[i][j] = dist[i][k] + dist[k][j];
+                    }
+                }
+            }
+        }
+    }
+    
+    void warshall(int graph[][100], int reach[][100], int V) {
+        for (int i = 0; i < V; i++) {
+            for (int j = 0; j < V; j++) {
+                reach[i][j] = graph[i][j];
+            }
+        }
+        
+        for (int k = 0; k < V; k++) {
+            for (int i = 0; i < V; i++) {
+                for (int j = 0; j < V; j++) {
+                    reach[i][j] = reach[i][j] || (reach[i][k] && reach[k][j]);
+                }
+            }
+        }
+    }
+    
+    int minDistance(int dist[], bool visited[], int V) {
+        int min = INF;
+        int minIndex = -1;
+        
+        for (int v = 0; v < V; v++) {
+            if (!visited[v] && dist[v] <= min) {
+                min = dist[v];
+                minIndex = v;
+            }
+        }
+        
+        return minIndex;
+    }
+    
+    void dijkstra(int graph[][100], int src, int dist[], int V) {
+        bool visited[MAX_V];
+        
+        for (int i = 0; i < V; i++) {
+            dist[i] = INF;
+            visited[i] = false;
+        }
+        
+        dist[src] = 0;
+        
+        for (int count = 0; count < V - 1; count++) {
+            int u = minDistance(dist, visited, V);
+            
+            if (u == -1) break;
+            
+            visited[u] = true;
+            
+            for (int v = 0; v < V; v++) {
+                if (!visited[v] && graph[u][v] && dist[u] != INF && 
+                    dist[u] + graph[u][v] < dist[v]) {
+                    dist[v] = dist[u] + graph[u][v];
+                }
+            }
+        }
+    }
+    
+    bool isBipartiteUtil(int graph[][100], int V, int color[], int src) {
+        color[src] = 1;
+        
+        int queue[MAX_V];
+        int front = 0, rear = 0;
+        queue[rear++] = src;
+        
+        while (front != rear) {
+            int u = queue[front++];
+            
+            for (int v = 0; v < V; v++) {
+                if (graph[u][v] && color[v] == -1) {
+                    color[v] = 1 - color[u];
+                    queue[rear++] = v;
+                } else if (graph[u][v] && color[v] == color[u]) {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    bool isBipartite(int graph[][100], int V) {
+        int color[MAX_V];
+        for (int i = 0; i < V; i++) {
+            color[i] = -1;
+        }
+        
+        for (int i = 0; i < V; i++) {
+            if (color[i] == -1) {
+                if (!isBipartiteUtil(graph, V, color, i)) {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    void dfsUtil(int graph[][100], int V, int u, bool visited[], int& count) {
+        visited[u] = true;
+        count++;
+        
+        for (int v = 0; v < V; v++) {
+            if (graph[u][v] && !visited[v]) {
+                dfsUtil(graph, V, v, visited, count);
+            }
+        }
+    }
+    
+    int countConnectedComponents(int graph[][100], int V) {
+        bool visited[MAX_V];
+        for (int i = 0; i < V; i++) {
+            visited[i] = false;
+        }
+        
+        int components = 0;
+        for (int i = 0; i < V; i++) {
+            if (!visited[i]) {
+                int count = 0;
+                dfsUtil(graph, V, i, visited, count);
+                components++;
+            }
+        }
+        
+        return components;
+    }
+    
+    bool hasCycleUtil(int graph[][100], int V, int u, bool visited[], int parent) {
+        visited[u] = true;
+        
+        for (int v = 0; v < V; v++) {
+            if (graph[u][v]) {
+                if (!visited[v]) {
+                    if (hasCycleUtil(graph, V, v, visited, u)) {
+                        return true;
+                    }
+                } else if (v != parent) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    bool hasCycle(int graph[][100], int V) {
+        bool visited[MAX_V];
+        for (int i = 0; i < V; i++) {
+            visited[i] = false;
+        }
+        
+        for (int i = 0; i < V; i++) {
+            if (!visited[i]) {
+                if (hasCycleUtil(graph, V, i, visited, -1)) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    void printMatrix(int matrix[][100], int V) {
+        cout << "    ";
+        for (int i = 0; i < V; i++) {
+            cout << i << " ";
+        }
+        cout << endl;
+        cout << "    ";
+        for (int i = 0; i < V; i++) {
+            cout << "--";
+        }
+        cout << endl;
+        
+        for (int i = 0; i < V; i++) {
+            cout << i << " | ";
+            for (int j = 0; j < V; j++) {
+                if (matrix[i][j] == INF) {
+                    cout << "∞ ";
+                } else {
+                    cout << matrix[i][j] << " ";
+                }
+            }
+            cout << endl;
+        }
+    }
+    
+    void printArray(int arr[], int V) {
+        cout << "[";
+        for (int i = 0; i < V; i++) {
+            if (arr[i] == INF) {
+                cout << "∞";
+            } else {
+                cout << arr[i];
+            }
+            if (i < V - 1) {
+                cout << ", ";
+            }
+        }
+        cout << "]" << endl;
+    }
+    
+public:
+    void demonstrateAdvancedGraphAlgorithms() {
+        cout << "Advanced Graph Algorithms Demonstration" << endl;
+        cout << "====================================" << endl;
+        
+        cout << "1. Floyd-Warshall Algorithm:" << endl;
+        int graph1[100][100] = {{0, 4, 0, 0, 0, 0, 0, 8, 0},
+                              {4, 0, 8, 0, 0, 0, 0, 11, 0},
+                              {0, 8, 0, 7, 0, 4, 0, 0, 2},
+                              {0, 0, 7, 0, 9, 14, 0, 0, 0},
+                              {0, 0, 0, 9, 0, 10, 0, 0, 0},
+                              {0, 0, 4, 14, 10, 0, 2, 0, 0},
+                              {0, 0, 0, 0, 0, 2, 0, 1, 6},
+                              {8, 11, 0, 0, 0, 0, 1, 0, 7},
+                              {0, 0, 2, 0, 0, 0, 6, 7, 0}};
+        int V1 = 9;
+        int dist1[100][100];
+        
+        cout << "Original graph:" << endl;
+        printMatrix(graph1, V1);
+        
+        floydWarshall(graph1, dist1, V1);
+        
+        cout << "Shortest distances:" << endl;
+        printMatrix(dist1, V1);
+        cout << endl;
+        
+        cout << "2. Warshall Algorithm (Transitive Closure):" << endl;
+        int graph2[100][100] = {{0, 1, 0, 0},
+                              {0, 0, 1, 0},
+                              {0, 0, 0, 1},
+                              {1, 0, 0, 0}};
+        int V2 = 4;
+        int reach[100][100];
+        
+        cout << "Original graph:" << endl;
+        printMatrix(graph2, V2);
+        
+        warshall(graph2, reach, V2);
+        
+        cout << "Transitive closure:" << endl;
+        printMatrix(reach, V2);
+        cout << endl;
+        
+        cout << "3. Dijkstra's Algorithm:" << endl;
+        int graph3[100][100] = {{0, 4, 0, 0, 0, 0, 0, 8, 0},
+                              {4, 0, 8, 0, 0, 0, 0, 11, 0},
+                              {0, 8, 0, 7, 0, 4, 0, 0, 2},
+                              {0, 0, 7, 0, 9, 14, 0, 0, 0},
+                              {0, 0, 0, 9, 0, 10, 0, 0, 0},
+                              {0, 0, 4, 14, 10, 0, 2, 0, 0},
+                              {0, 0, 0, 0, 0, 2, 0, 1, 6},
+                              {8, 11, 0, 0, 0, 0, 1, 0, 7},
+                              {0, 0, 2, 0, 0, 0, 6, 7, 0}};
+        int V3 = 9;
+        int dist3[MAX_V];
+        int src = 0;
+        
+        cout << "Source vertex: " << src << endl;
+        dijkstra(graph3, src, dist3, V3);
+        
+        cout << "Shortest distances from vertex " << src << ":" << endl;
+        printArray(dist3, V3);
+        cout << endl;
+        
+        cout << "4. Bipartite Graph Check:" << endl;
+        int graph4[100][100] = {{0, 1, 0, 1},
+                              {1, 0, 1, 0},
+                              {0, 1, 0, 1},
+                              {1, 0, 1, 0}};
+        int V4 = 4;
+        
+        cout << "Graph 1 (Bipartite):" << endl;
+        printMatrix(graph4, V4);
+        cout << "Is bipartite: " << (isBipartite(graph4, V4) ? "Yes" : "No") << endl;
+        
+        int graph5[100][100] = {{0, 1, 1},
+                              {1, 0, 1},
+                              {1, 1, 0}};
+        int V5 = 3;
+        
+        cout << "Graph 2 (Not Bipartite):" << endl;
+        printMatrix(graph5, V5);
+        cout << "Is bipartite: " << (isBipartite(graph5, V5) ? "Yes" : "No") << endl;
+        cout << endl;
+        
+        cout << "5. Connected Components:" << endl;
+        int graph6[100][100] = {{0, 1, 0, 0, 0, 0},
+                              {1, 0, 1, 0, 0, 0},
+                              {0, 1, 0, 0, 0, 0},
+                              {0, 0, 0, 0, 1, 0},
+                              {0, 0, 0, 1, 0, 1},
+                              {0, 0, 0, 0, 1, 0}};
+        int V6 = 6;
+        
+        cout << "Graph:" << endl;
+        printMatrix(graph6, V6);
+        cout << "Connected components: " << countConnectedComponents(graph6, V6) << endl;
+        cout << endl;
+        
+        cout << "6. Cycle Detection:" << endl;
+        int graph7[100][100] = {{0, 1, 0, 1},
+                              {1, 0, 1, 0},
+                              {0, 1, 0, 1},
+                              {1, 0, 1, 0}};
+        int V7 = 4;
+        
+        cout << "Graph 1 (Has cycle):" << endl;
+        printMatrix(graph7, V7);
+        cout << "Has cycle: " << (hasCycle(graph7, V7) ? "Yes" : "No") << endl;
+        
+        int graph8[100][100] = {{0, 1, 0},
+                              {1, 0, 1},
+                              {0, 1, 0}};
+        int V8 = 3;
+        
+        cout << "Graph 2 (No cycle):" << endl;
+        printMatrix(graph8, V8);
+        cout << "Has cycle: " << (hasCycle(graph8, V8) ? "Yes" : "No") << endl;
+        cout << endl;
+        
+        cout << "7. Complex Graph Analysis:" << endl;
+        int complexGraph[100][100] = {{0, 2, 0, 6, 0},
+                                     {2, 0, 3, 8, 5},
+                                     {0, 3, 0, 0, 7},
+                                     {6, 8, 0, 0, 9},
+                                     {0, 5, 7, 9, 0}};
+        int VComplex = 5;
+        
+        cout << "Complex graph:" << endl;
+        printMatrix(complexGraph, VComplex);
+        
+        cout << "Properties:" << endl;
+        cout << "Is bipartite: " << (isBipartite(complexGraph, VComplex) ? "Yes" : "No") << endl;
+        cout << "Connected components: " << countConnectedComponents(complexGraph, VComplex) << endl;
+        cout << "Has cycle: " << (hasCycle(complexGraph, VComplex) ? "Yes" : "No") << endl;
+        
+        int complexDist[MAX_V];
+        dijkstra(complexGraph, 0, complexDist, VComplex);
+        cout << "Shortest distances from vertex 0: ";
+        printArray(complexDist, VComplex);
+        cout << endl;
+        
+        cout << "Advanced Graph Algorithms Features:" << endl;
+        cout << "- Floyd-Warshall (All pairs shortest paths)" << endl;
+        cout << "- Warshall (Transitive closure)" << endl;
+        cout << "- Dijkstra's (Single source shortest paths)" << endl;
+        cout << "- Bipartite graph detection" << endl;
+        cout << "- Connected components counting" << endl;
+        cout << "- Cycle detection" << endl;
+        cout << "- Graph property analysis" << endl;
+        cout << "- Dynamic programming solutions" << endl;
+        cout << "- Graph traversal algorithms" << endl;
+    }
+};
+
+int main() {
+    AdvancedGraphAlgorithms aga;
+    aga.demonstrateAdvancedGraphAlgorithms();
+    return 0;
+}

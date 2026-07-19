@@ -1,0 +1,303 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class AdvancedMatrixOperations {
+private:
+    void matrixMultiply(int A[][10], int B[][10], int C[][10], int r1, int c1, int r2, int c2) {
+        for (int i = 0; i < r1; i++) {
+            for (int j = 0; j < c2; j++) {
+                C[i][j] = 0;
+                for (int k = 0; k < c1; k++) {
+                    C[i][j] += A[i][k] * B[k][j];
+                }
+            }
+        }
+    }
+    
+    void matrixAdd(int A[][10], int B[][10], int C[][10], int rows, int cols) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                C[i][j] = A[i][j] + B[i][j];
+            }
+        }
+    }
+    
+    void matrixSubtract(int A[][10], int B[][10], int C[][10], int rows, int cols) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                C[i][j] = A[i][j] - B[i][j];
+            }
+        }
+    }
+    
+    void matrixTranspose(int A[][10], int B[][10], int rows, int cols) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                B[j][i] = A[i][j];
+            }
+        }
+    }
+    
+    int matrixDeterminant(int matrix[][10], int n) {
+        if (n == 1) {
+            return matrix[0][0];
+        }
+        
+        if (n == 2) {
+            return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+        }
+        
+        int det = 0;
+        int temp[10][10];
+        
+        for (int k = 0; k < n; k++) {
+            int subi = 0;
+            for (int i = 1; i < n; i++) {
+                int subj = 0;
+                for (int j = 0; j < n; j++) {
+                    if (j == k) {
+                        continue;
+                    }
+                    temp[subi][subj] = matrix[i][j];
+                    subj++;
+                }
+                subi++;
+            }
+            
+            det += (k % 2 == 0 ? 1 : -1) * matrix[0][k] * matrixDeterminant(temp, n - 1);
+        }
+        
+        return det;
+    }
+    
+    void matrixInverse(int A[][10], float inverse[][10], int n) {
+        int det = matrixDeterminant(A, n);
+        
+        if (det == 0) {
+            return;
+        }
+        
+        if (n == 1) {
+            inverse[0][0] = 1.0 / A[0][0];
+            return;
+        }
+        
+        int adj[10][10];
+        matrixAdjoint(A, adj, n);
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                inverse[i][j] = (float)adj[i][j] / det;
+            }
+        }
+    }
+    
+    void matrixAdjoint(int A[][10], int adj[][10], int n) {
+        if (n == 1) {
+            adj[0][0] = 1;
+            return;
+        }
+        
+        int sign = 1;
+        int temp[10][10];
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                getCofactor(A, temp, i, j, n);
+                
+                sign = ((i + j) % 2 == 0) ? 1 : -1;
+                adj[j][i] = sign * matrixDeterminant(temp, n - 1);
+            }
+        }
+    }
+    
+    void getCofactor(int A[][10], int temp[][10], int p, int q, int n) {
+        int i = 0, j = 0;
+        
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < n; col++) {
+                if (row != p && col != q) {
+                    temp[i][j++] = A[row][col];
+                    if (j == n - 1) {
+                        i++;
+                        j = 0;
+                    }
+                }
+            }
+        }
+    }
+    
+    void matrixPower(int A[][10], int result[][10], int n, int power) {
+        int temp[10][10];
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == j) {
+                    result[i][j] = 1;
+                } else {
+                    result[i][j] = 0;
+                }
+            }
+        }
+        
+        for (int p = 0; p < power; p++) {
+            matrixMultiply(result, A, temp, n, n, n, n);
+            
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    result[i][j] = temp[i][j];
+                }
+            }
+        }
+    }
+    
+    bool isSymmetric(int A[][10], int n) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (A[i][j] != A[j][i]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
+    bool isIdentity(int A[][10], int n) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == j) {
+                    if (A[i][j] != 1) return false;
+                } else {
+                    if (A[i][j] != 0) return false;
+                }
+            }
+        }
+        return true;
+    }
+    
+    void printMatrix(int matrix[][10], int rows, int cols) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                cout << matrix[i][j] << " ";
+            }
+            cout << endl;
+        }
+    }
+    
+    void printFloatMatrix(float matrix[][10], int rows, int cols) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                cout << matrix[i][j] << " ";
+            }
+            cout << endl;
+        }
+    }
+    
+public:
+    void demonstrateAdvancedMatrixOperations() {
+        cout << "Advanced Matrix Operations Demonstration" << endl;
+        cout << "=====================================" << endl;
+        
+        cout << "1. Matrix Multiplication:" << endl;
+        int A[10][10] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        int B[10][10] = {{9, 8, 7}, {6, 5, 4}, {3, 2, 1}};
+        int C[10][10];
+        
+        cout << "Matrix A:" << endl;
+        printMatrix(A, 3, 3);
+        cout << "Matrix B:" << endl;
+        printMatrix(B, 3, 3);
+        
+        matrixMultiply(A, B, C, 3, 3, 3, 3);
+        cout << "A * B:" << endl;
+        printMatrix(C, 3, 3);
+        cout << endl;
+        
+        cout << "2. Matrix Addition and Subtraction:" << endl;
+        int D[10][10];
+        int E[10][10];
+        
+        matrixAdd(A, B, D, 3, 3);
+        cout << "A + B:" << endl;
+        printMatrix(D, 3, 3);
+        
+        matrixSubtract(A, B, E, 3, 3);
+        cout << "A - B:" << endl;
+        printMatrix(E, 3, 3);
+        cout << endl;
+        
+        cout << "3. Matrix Transpose:" << endl;
+        int T[10][10];
+        matrixTranspose(A, T, 3, 3);
+        cout << "Transpose of A:" << endl;
+        printMatrix(T, 3, 3);
+        cout << endl;
+        
+        cout << "4. Matrix Determinant:" << endl;
+        int det = matrixDeterminant(A, 3);
+        cout << "Determinant of A: " << det << endl;
+        
+        int F[10][10] = {{2, 5, 3}, {1, -2, -1}, {1, 3, 4}};
+        cout << "Matrix F:" << endl;
+        printMatrix(F, 3, 3);
+        cout << "Determinant of F: " << matrixDeterminant(F, 3) << endl;
+        cout << endl;
+        
+        cout << "5. Matrix Inverse:" << endl;
+        float inverse[10][10];
+        matrixInverse(F, inverse, 3);
+        cout << "Inverse of F:" << endl;
+        printFloatMatrix(inverse, 3, 3);
+        cout << endl;
+        
+        cout << "6. Matrix Power:" << endl;
+        int powerResult[10][10];
+        matrixPower(A, powerResult, 3, 3);
+        cout << "A^3:" << endl;
+        printMatrix(powerResult, 3, 3);
+        cout << endl;
+        
+        cout << "7. Matrix Properties:" << endl;
+        cout << "Is A symmetric: " << (isSymmetric(A, 3) ? "Yes" : "No") << endl;
+        cout << "Is A identity: " << (isIdentity(A, 3) ? "Yes" : "No") << endl;
+        
+        int I[10][10] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+        cout << "Is I identity: " << (isIdentity(I, 3) ? "Yes" : "No") << endl;
+        cout << endl;
+        
+        cout << "8. Complex Matrix Operations:" << endl;
+        int G[10][10] = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}, {13, 14, 15, 16}};
+        int H[10][10];
+        
+        cout << "4x4 Matrix G:" << endl;
+        printMatrix(G, 4, 4);
+        
+        matrixTranspose(G, H, 4, 4);
+        cout << "Transpose of G:" << endl;
+        printMatrix(H, 4, 4);
+        
+        int det4 = matrixDeterminant(G, 4);
+        cout << "Determinant of G: " << det4 << endl;
+        cout << endl;
+        
+        cout << "Advanced Matrix Operations Features:" << endl;
+        cout << "- Matrix multiplication" << endl;
+        cout << "- Matrix addition and subtraction" << endl;
+        cout << "- Matrix transpose" << endl;
+        cout << "- Matrix determinant" << endl;
+        cout << "- Matrix inverse" << endl;
+        cout << "- Matrix power" << endl;
+        cout << "- Matrix properties (symmetric, identity)" << endl;
+        cout << "- Cofactor and adjoint calculations" << endl;
+        cout << "- Time complexity analysis" << endl;
+        cout << "- Applications in linear algebra" << endl;
+    }
+};
+
+int main() {
+    AdvancedMatrixOperations amo;
+    amo.demonstrateAdvancedMatrixOperations();
+    return 0;
+}

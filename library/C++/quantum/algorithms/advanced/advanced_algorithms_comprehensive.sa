@@ -1,0 +1,309 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class AdvancedAlgorithms {
+private:
+    int kadane(int arr[], int n) {
+        int maxSoFar = arr[0];
+        int maxEndingHere = arr[0];
+        
+        for (int i = 1; i < n; i++) {
+            maxEndingHere = max(arr[i], maxEndingHere + arr[i]);
+            maxSoFar = max(maxSoFar, maxEndingHere);
+        }
+        
+        return maxSoFar;
+    }
+    
+    void maxSubarray(int arr[], int n, int& maxSum, int& start, int& end) {
+        maxSum = arr[0];
+        int maxEndingHere = arr[0];
+        start = 0;
+        end = 0;
+        int s = 0;
+        
+        for (int i = 1; i < n; i++) {
+            if (maxEndingHere + arr[i] < arr[i]) {
+                maxEndingHere = arr[i];
+                s = i;
+            } else {
+                maxEndingHere += arr[i];
+            }
+            
+            if (maxEndingHere > maxSum) {
+                maxSum = maxEndingHere;
+                start = s;
+                end = i;
+            }
+        }
+    }
+    
+    int longestIncreasingSubsequence(int arr[], int n) {
+        int lis[n];
+        
+        for (int i = 0; i < n; i++) {
+            lis[i] = 1;
+        }
+        
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (arr[i] > arr[j] && lis[i] < lis[j] + 1) {
+                    lis[i] = lis[j] + 1;
+                }
+            }
+        }
+        
+        int maxLen = lis[0];
+        for (int i = 1; i < n; i++) {
+            if (lis[i] > maxLen) {
+                maxLen = lis[i];
+            }
+        }
+        
+        return maxLen;
+    }
+    
+    int longestCommonSubsequence(string s1, string s2) {
+        int m = s1.length();
+        int n = s2.length();
+        
+        int dp[m + 1][n + 1];
+        
+        for (int i = 0; i <= m; i++) {
+            for (int j = 0; j <= n; j++) {
+                if (i == 0 || j == 0) {
+                    dp[i][j] = 0;
+                } else if (s1[i - 1] == s2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        
+        return dp[m][n];
+    }
+    
+    int editDistance(string s1, string s2) {
+        int m = s1.length();
+        int n = s2.length();
+        
+        int dp[m + 1][n + 1];
+        
+        for (int i = 0; i <= m; i++) {
+            for (int j = 0; j <= n; j++) {
+                if (i == 0) {
+                    dp[i][j] = j;
+                } else if (j == 0) {
+                    dp[i][j] = i;
+                } else if (s1[i - 1] == s2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = 1 + min(dp[i][j - 1], min(dp[i - 1][j], dp[i - 1][j - 1]));
+                }
+            }
+        }
+        
+        return dp[m][n];
+    }
+    
+    int matrixChainMultiplication(int dims[], int n) {
+        int m[n][n];
+        
+        for (int i = 1; i < n; i++) {
+            m[i][i] = 0;
+        }
+        
+        for (int L = 2; L < n; L++) {
+            for (int i = 1; i < n - L + 1; i++) {
+                int j = i + L - 1;
+                m[i][j] = 999999;
+                
+                for (int k = i; k < j; k++) {
+                    int cost = m[i][k] + m[k + 1][j] + dims[i - 1] * dims[k] * dims[j];
+                    if (cost < m[i][j]) {
+                        m[i][j] = cost;
+                    }
+                }
+            }
+        }
+        
+        return m[1][n - 1];
+    }
+    
+    int coinChange(int coins[], int n, int amount) {
+        int dp[amount + 1];
+        
+        for (int i = 0; i <= amount; i++) {
+            dp[i] = 999999;
+        }
+        
+        dp[0] = 0;
+        
+        for (int i = 1; i <= amount; i++) {
+            for (int j = 0; j < n; j++) {
+                if (coins[j] <= i) {
+                    dp[i] = min(dp[i], dp[i - coins[j]] + 1);
+                }
+            }
+        }
+        
+        return dp[amount] == 999999 ? -1 : dp[amount];
+    }
+    
+    int knapsack01(int weights[], int values[], int n, int capacity) {
+        int dp[n + 1][capacity + 1];
+        
+        for (int i = 0; i <= n; i++) {
+            for (int w = 0; w <= capacity; w++) {
+                if (i == 0 || w == 0) {
+                    dp[i][w] = 0;
+                } else if (weights[i - 1] <= w) {
+                    dp[i][w] = max(values[i - 1] + dp[i - 1][w - weights[i - 1]], dp[i - 1][w]);
+                } else {
+                    dp[i][w] = dp[i - 1][w];
+                }
+            }
+        }
+        
+        return dp[n][capacity];
+    }
+    
+    int subsetSum(int arr[], int n, int sum) {
+        bool dp[n + 1][sum + 1];
+        
+        for (int i = 0; i <= n; i++) {
+            dp[i][0] = true;
+        }
+        
+        for (int i = 1; i <= sum; i++) {
+            dp[0][i] = false;
+        }
+        
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= sum; j++) {
+                if (j < arr[i - 1]) {
+                    dp[i][j] = dp[i - 1][j];
+                } else {
+                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - arr[i - 1]];
+                }
+            }
+        }
+        
+        return dp[n][sum] ? 1 : 0;
+    }
+    
+    void printArray(int arr[], int n) {
+        cout << "[";
+        for (int i = 0; i < n; i++) {
+            cout << arr[i];
+            if (i < n - 1) {
+                cout << ", ";
+            }
+        }
+        cout << "]" << endl;
+    }
+    
+public:
+    void demonstrateAdvancedAlgorithms() {
+        cout << "Advanced Algorithms Demonstration" << endl;
+        cout << "==================================" << endl;
+        
+        cout << "1. Kadane's Algorithm (Maximum Subarray):" << endl;
+        int kadaneArr[] = {-2, -3, 4, -1, -2, 1, 5, -3};
+        int kadaneN = 8;
+        cout << "Array: ";
+        printArray(kadaneArr, kadaneN);
+        cout << "Maximum subarray sum: " << kadane(kadaneArr, kadaneN) << endl;
+        
+        int maxSum, start, end;
+        maxSubarray(kadaneArr, kadaneN, maxSum, start, end);
+        cout << "Subarray indices: [" << start << ", " << end << "]" << endl;
+        cout << endl;
+        
+        cout << "2. Longest Increasing Subsequence:" << endl;
+        int lisArr[] = {10, 22, 9, 33, 21, 50, 41, 60};
+        int lisN = 8;
+        cout << "Array: ";
+        printArray(lisArr, lisN);
+        cout << "Length of LIS: " << longestIncreasingSubsequence(lisArr, lisN) << endl;
+        cout << endl;
+        
+        cout << "3. Longest Common Subsequence:" << endl;
+        string s1 = "AGGTAB";
+        string s2 = "GXTXAYB";
+        cout << "String 1: " << s1 << endl;
+        cout << "String 2: " << s2 << endl;
+        cout << "Length of LCS: " << longestCommonSubsequence(s1, s2) << endl;
+        cout << endl;
+        
+        cout << "4. Edit Distance:" << endl;
+        string ed1 = "kitten";
+        string ed2 = "sitting";
+        cout << "String 1: " << ed1 << endl;
+        cout << "String 2: " << ed2 << endl;
+        cout << "Edit distance: " << editDistance(ed1, ed2) << endl;
+        cout << endl;
+        
+        cout << "5. Matrix Chain Multiplication:" << endl;
+        int dims[] = {1, 2, 3, 4};
+        int dimsN = 4;
+        cout << "Dimensions: ";
+        printArray(dims, dimsN);
+        cout << "Minimum multiplications: " << matrixChainMultiplication(dims, dimsN) << endl;
+        cout << endl;
+        
+        cout << "6. Coin Change:" << endl;
+        int coins[] = {1, 3, 4};
+        int coinsN = 3;
+        int amount = 6;
+        cout << "Coins: ";
+        printArray(coins, coinsN);
+        cout << "Amount: " << amount << endl;
+        cout << "Minimum coins: " << coinChange(coins, coinsN, amount) << endl;
+        cout << endl;
+        
+        cout << "7. 0/1 Knapsack:" << endl;
+        int weights[] = {10, 20, 30};
+        int values[] = {60, 100, 120};
+        int knapN = 3;
+        int capacity = 50;
+        cout << "Weights: ";
+        printArray(weights, knapN);
+        cout << "Values: ";
+        printArray(values, knapN);
+        cout << "Capacity: " << capacity << endl;
+        cout << "Maximum value: " << knapsack01(weights, values, knapN, capacity) << endl;
+        cout << endl;
+        
+        cout << "8. Subset Sum:" << endl;
+        int subsetArr[] = {3, 34, 4, 12, 5, 2};
+        int subsetN = 6;
+        int subsetSumTarget = 9;
+        cout << "Array: ";
+        printArray(subsetArr, subsetN);
+        cout << "Target sum: " << subsetSumTarget << endl;
+        cout << "Subset exists: " << (subsetSum(subsetArr, subsetN, subsetSumTarget) ? "Yes" : "No") << endl;
+        cout << endl;
+        
+        cout << "Advanced Algorithms Features:" << endl;
+        cout << "- Kadane's algorithm for maximum subarray" << endl;
+        cout << "- Longest Increasing Subsequence" << endl;
+        cout << "- Longest Common Subsequence" << endl;
+        cout << "- Edit Distance (Levenshtein distance)" << endl;
+        cout << "- Matrix Chain Multiplication" << endl;
+        cout << "- Coin Change problem" << endl;
+        cout << "- 0/1 Knapsack problem" << endl;
+        cout << "- Subset Sum problem" << endl;
+        cout << "- Dynamic programming solutions" << endl;
+        cout << "- Optimal substructure and overlapping subproblems" << endl;
+    }
+};
+
+int main() {
+    AdvancedAlgorithms aa;
+    aa.demonstrateAdvancedAlgorithms();
+    return 0;
+}

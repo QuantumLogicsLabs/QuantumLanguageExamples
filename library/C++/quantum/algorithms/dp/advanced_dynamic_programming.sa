@@ -1,0 +1,391 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class AdvancedDynamicProgramming {
+private:
+    int coinChange(int coins[], int n, int amount) {
+        int dp[amount + 1];
+        
+        for (int i = 0; i <= amount; i++) {
+            dp[i] = amount + 1;
+        }
+        
+        dp[0] = 0;
+        
+        for (int i = 1; i <= amount; i++) {
+            for (int j = 0; j < n; j++) {
+                if (coins[j] <= i) {
+                    dp[i] = min(dp[i], dp[i - coins[j]] + 1);
+                }
+            }
+        }
+        
+        return dp[amount] == amount + 1 ? -1 : dp[amount];
+    }
+    
+    int knapsack01(int weights[], int values[], int n, int capacity) {
+        int dp[n + 1][capacity + 1];
+        
+        for (int i = 0; i <= n; i++) {
+            for (int w = 0; w <= capacity; w++) {
+                if (i == 0 || w == 0) {
+                    dp[i][w] = 0;
+                } else if (weights[i - 1] <= w) {
+                    dp[i][w] = max(values[i - 1] + dp[i - 1][w - weights[i - 1]], dp[i - 1][w]);
+                } else {
+                    dp[i][w] = dp[i - 1][w];
+                }
+            }
+        }
+        
+        return dp[n][capacity];
+    }
+    
+    int longestIncreasingSubsequence(int arr[], int n) {
+        int dp[n];
+        
+        for (int i = 0; i < n; i++) {
+            dp[i] = 1;
+            for (int j = 0; j < i; j++) {
+                if (arr[i] > arr[j] && dp[i] < dp[j] + 1) {
+                    dp[i] = dp[j] + 1;
+                }
+            }
+        }
+        
+        int maxLen = dp[0];
+        for (int i = 1; i < n; i++) {
+            if (dp[i] > maxLen) {
+                maxLen = dp[i];
+            }
+        }
+        
+        return maxLen;
+    }
+    
+    int editDistance(string s1, string s2) {
+        int m = s1.length();
+        int n = s2.length();
+        
+        int dp[m + 1][n + 1];
+        
+        for (int i = 0; i <= m; i++) {
+            for (int j = 0; j <= n; j++) {
+                if (i == 0) {
+                    dp[i][j] = j;
+                } else if (j == 0) {
+                    dp[i][j] = i;
+                } else if (s1[i - 1] == s2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = 1 + min(dp[i][j - 1], min(dp[i - 1][j], dp[i - 1][j - 1]));
+                }
+            }
+        }
+        
+        return dp[m][n];
+    }
+    
+    int longestCommonSubsequence(string s1, string s2) {
+        int m = s1.length();
+        int n = s2.length();
+        
+        int dp[m + 1][n + 1];
+        
+        for (int i = 0; i <= m; i++) {
+            for (int j = 0; j <= n; j++) {
+                if (i == 0 || j == 0) {
+                    dp[i][j] = 0;
+                } else if (s1[i - 1] == s2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        
+        return dp[m][n];
+    }
+    
+    int matrixChainMultiplication(int dims[], int n) {
+        int m[n][n];
+        
+        for (int i = 1; i < n; i++) {
+            m[i][i] = 0;
+        }
+        
+        for (int L = 2; L < n; L++) {
+            for (int i = 1; i < n - L + 1; i++) {
+                int j = i + L - 1;
+                m[i][j] = 999999;
+                
+                for (int k = i; k < j; k++) {
+                    int cost = m[i][k] + m[k + 1][j] + dims[i - 1] * dims[k] * dims[j];
+                    if (cost < m[i][j]) {
+                        m[i][j] = cost;
+                    }
+                }
+            }
+        }
+        
+        return m[1][n - 1];
+    }
+    
+    int subsetSum(int arr[], int n, int sum) {
+        bool dp[n + 1][sum + 1];
+        
+        for (int i = 0; i <= n; i++) {
+            dp[i][0] = true;
+        }
+        
+        for (int i = 1; i <= sum; i++) {
+            dp[0][i] = false;
+        }
+        
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= sum; j++) {
+                if (j < arr[i - 1]) {
+                    dp[i][j] = dp[i - 1][j];
+                } else {
+                    dp[i][j] = dp[i - 1][j] || dp[i - 1][j - arr[i - 1]];
+                }
+            }
+        }
+        
+        return dp[n][sum] ? 1 : 0;
+    }
+    
+    int palindromePartitioning(string s) {
+        int n = s.length();
+        bool dp[n][n];
+        int cut[n][n];
+        
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = true;
+            cut[i][i] = 0;
+        }
+        
+        for (int len = 2; len <= n; len++) {
+            for (int i = 0; i < n - len + 1; i++) {
+                int j = i + len - 1;
+                
+                if (len == 2) {
+                    dp[i][j] = (s[i] == s[j]);
+                } else {
+                    dp[i][j] = (s[i] == s[j]) && dp[i + 1][j - 1];
+                }
+                
+                if (dp[i][j]) {
+                    cut[i][j] = 0;
+                } else {
+                    cut[i][j] = 999999;
+                    for (int k = i; k < j; k++) {
+                        cut[i][j] = min(cut[i][j], cut[i][k] + cut[k + 1][j] + 1);
+                    }
+                }
+            }
+        }
+        
+        return cut[0][n - 1];
+    }
+    
+    int wordBreak(string s, string dictionary[], int dictSize) {
+        int n = s.length();
+        bool dp[n + 1];
+        
+        for (int i = 0; i <= n; i++) {
+            dp[i] = false;
+        }
+        
+        dp[0] = true;
+        
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (dp[j]) {
+                    string sub = s.substr(j, i - j);
+                    bool found = false;
+                    
+                    for (int k = 0; k < dictSize; k++) {
+                        if (dictionary[k] == sub) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    
+                    if (found) {
+                        dp[i] = true;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        return dp[n] ? 1 : 0;
+    }
+    
+    int maxSumIncreasingSubsequence(int arr[], int n) {
+        int dp[n];
+        
+        for (int i = 0; i < n; i++) {
+            dp[i] = arr[i];
+        }
+        
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (arr[i] > arr[j] && dp[i] < dp[j] + arr[i]) {
+                    dp[i] = dp[j] + arr[i];
+                }
+            }
+        }
+        
+        int maxSum = dp[0];
+        for (int i = 1; i < n; i++) {
+            if (dp[i] > maxSum) {
+                maxSum = dp[i];
+            }
+        }
+        
+        return maxSum;
+    }
+    
+    void printArray(int arr[], int n) {
+        cout << "[";
+        for (int i = 0; i < n; i++) {
+            cout << arr[i];
+            if (i < n - 1) {
+                cout << ", ";
+            }
+        }
+        cout << "]" << endl;
+    }
+    
+public:
+    void demonstrateAdvancedDynamicProgramming() {
+        cout << "Advanced Dynamic Programming Demonstration" << endl;
+        cout << "=========================================" << endl;
+        
+        cout << "1. Coin Change Problem:" << endl;
+        int coins[] = {1, 3, 4};
+        int coinN = 3;
+        int amount = 6;
+        
+        cout << "Coins: ";
+        printArray(coins, coinN);
+        cout << "Amount: " << amount << endl;
+        cout << "Minimum coins: " << coinChange(coins, coinN, amount) << endl;
+        cout << endl;
+        
+        cout << "2. 0/1 Knapsack:" << endl;
+        int weights[] = {10, 20, 30};
+        int values[] = {60, 100, 120};
+        int knapN = 3;
+        int capacity = 50;
+        
+        cout << "Weights: ";
+        printArray(weights, knapN);
+        cout << "Values: ";
+        printArray(values, knapN);
+        cout << "Capacity: " << capacity << endl;
+        cout << "Maximum value: " << knapsack01(weights, values, knapN, capacity) << endl;
+        cout << endl;
+        
+        cout << "3. Longest Increasing Subsequence:" << endl;
+        int lisArr[] = {10, 22, 9, 33, 21, 50, 41, 60};
+        int lisN = 8;
+        
+        cout << "Array: ";
+        printArray(lisArr, lisN);
+        cout << "Length of LIS: " << longestIncreasingSubsequence(lisArr, lisN) << endl;
+        cout << endl;
+        
+        cout << "4. Edit Distance:" << endl;
+        string s1 = "kitten";
+        string s2 = "sitting";
+        
+        cout << "String 1: " << s1 << endl;
+        cout << "String 2: " << s2 << endl;
+        cout << "Edit distance: " << editDistance(s1, s2) << endl;
+        cout << endl;
+        
+        cout << "5. Longest Common Subsequence:" << endl;
+        string lcs1 = "AGGTAB";
+        string lcs2 = "GXTXAYB";
+        
+        cout << "String 1: " << lcs1 << endl;
+        cout << "String 2: " << lcs2 << endl;
+        cout << "Length of LCS: " << longestCommonSubsequence(lcs1, lcs2) << endl;
+        cout << endl;
+        
+        cout << "6. Matrix Chain Multiplication:" << endl;
+        int dims[] = {1, 2, 3, 4};
+        int dimsN = 4;
+        
+        cout << "Dimensions: ";
+        printArray(dims, dimsN);
+        cout << "Minimum multiplications: " << matrixChainMultiplication(dims, dimsN) << endl;
+        cout << endl;
+        
+        cout << "7. Subset Sum:" << endl;
+        int subsetArr[] = {3, 34, 4, 12, 5, 2};
+        int subsetN = 6;
+        int subsetSumTarget = 9;
+        
+        cout << "Array: ";
+        printArray(subsetArr, subsetN);
+        cout << "Target sum: " << subsetSumTarget << endl;
+        cout << "Subset exists: " << (subsetSum(subsetArr, subsetN, subsetSumTarget) ? "Yes" : "No") << endl;
+        cout << endl;
+        
+        cout << "8. Palindrome Partitioning:" << endl;
+        string palindromeStr = "ababbbabbababa";
+        
+        cout << "String: " << palindromeStr << endl;
+        cout << "Minimum cuts: " << palindromePartitioning(palindromeStr) << endl;
+        cout << endl;
+        
+        cout << "9. Word Break:" << endl;
+        string wordStr = "ilikeicecream";
+        string dictionary[] = {"i", "like", "ice", "cream", "icecream"};
+        int dictSize = 5;
+        
+        cout << "String: " << wordStr << endl;
+        cout << "Dictionary: ";
+        for (int i = 0; i < dictSize; i++) {
+            cout << dictionary[i];
+            if (i < dictSize - 1) cout << ", ";
+        }
+        cout << endl;
+        cout << "Can break: " << (wordBreak(wordStr, dictionary, dictSize) ? "Yes" : "No") << endl;
+        cout << endl;
+        
+        cout << "10. Maximum Sum Increasing Subsequence:" << endl;
+        int msisArr[] = {1, 101, 2, 3, 100, 4, 5};
+        int msisN = 7;
+        
+        cout << "Array: ";
+        printArray(msisArr, msisN);
+        cout << "Maximum sum: " << maxSumIncreasingSubsequence(msisArr, msisN) << endl;
+        cout << endl;
+        
+        cout << "Advanced Dynamic Programming Features:" << endl;
+        cout << "- Coin Change (minimum coins)" << endl;
+        cout << "- 0/1 Knapsack (maximum value)" << endl;
+        cout << "- Longest Increasing Subsequence" << endl;
+        cout << "- Edit Distance (string similarity)" << endl;
+        cout << "- Longest Common Subsequence" << endl;
+        cout << "- Matrix Chain Multiplication" << endl;
+        cout << "- Subset Sum (partition problem)" << endl;
+        cout << "- Palindrome Partitioning" << endl;
+        cout << "- Word Break (dictionary segmentation)" << endl;
+        cout << "- Maximum Sum Increasing Subsequence" << endl;
+        cout << "- Optimal substructure and overlapping subproblems" << endl;
+    }
+};
+
+int main() {
+    AdvancedDynamicProgramming adp;
+    adp.demonstrateAdvancedDynamicProgramming();
+    return 0;
+}

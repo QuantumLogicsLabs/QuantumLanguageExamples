@@ -1,0 +1,92 @@
+// Double-Ended Queue (Deque) Implementation in C++
+#include <iostream>
+using namespace std;
+
+class Deque {
+private:
+    static const int MAX_SIZE = 100;
+    int data[MAX_SIZE];
+    int front, rear;
+
+public:
+    Deque() : front(-1), rear(-1) {}
+
+    bool insertFront(int value) {
+        if (front <= 0) {
+            return false;
+        }
+        if (front == -1) {
+            front = rear = 0;
+        } else {
+            front--;
+        }
+        data[front] = value;
+        return true;
+    }
+
+    bool insertRear(int value) {
+        if (rear >= MAX_SIZE - 1) {
+            return false;
+        }
+        if (front == -1) {
+            front = rear = 0;
+        } else {
+            rear++;
+        }
+        data[rear] = value;
+        return true;
+    }
+
+    bool deleteFront(int& value) {
+        if (front == -1) {
+            return false;
+        }
+        value = data[front];
+        if (front == rear) {
+            front = rear = -1;
+        } else {
+            front++;
+        }
+        return true;
+    }
+
+    bool deleteRear(int& value) {
+        if (front == -1) {
+            return false;
+        }
+        value = data[rear];
+        if (front == rear) {
+            front = rear = -1;
+        } else {
+            rear--;
+        }
+        return true;
+    }
+
+    void display() {
+        if (front == -1) {
+            cout << "Deque is empty" << endl;
+            return;
+        }
+        cout << "Deque: ";
+        for (int i = front; i <= rear; i++) {
+            cout << data[i] << " ";
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    Deque deque;
+    deque.insertRear(10);
+    deque.insertRear(20);
+    deque.insertFront(5);
+    deque.display();
+    
+    int value;
+    if (deque.deleteFront(value)) {
+        cout << "Deleted from front: " << value << endl;
+    }
+    deque.display();
+    return 0;
+}

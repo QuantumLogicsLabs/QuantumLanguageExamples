@@ -1,0 +1,97 @@
+// Ring Buffer Implementation in C++
+#include <iostream>
+using namespace std;
+
+class RingBuffer {
+private:
+    int* data;
+    int size;
+    int capacity;
+    int head;
+    int tail;
+
+public:
+    RingBuffer(int cap) : size(0), capacity(cap), head(0), tail(0) {
+        data = new int[capacity];
+    }
+
+    ~RingBuffer() {
+        delete[] data;
+    }
+
+    bool enqueue(int value) {
+        if (size >= capacity) {
+            return false;
+        }
+        
+        data[tail] = value;
+        tail = (tail + 1) % capacity;
+        size++;
+        return true;
+    }
+
+    bool dequeue(int& value) {
+        if (size == 0) {
+            return false;
+        }
+        
+        value = data[head];
+        head = (head + 1) % capacity;
+        size--;
+        return true;
+    }
+
+    bool peek(int& value) {
+        if (size == 0) {
+            return false;
+        }
+        
+        value = data[head];
+        return true;
+    }
+
+    bool isEmpty() {
+        return size == 0;
+    }
+
+    bool isFull() {
+        return size >= capacity;
+    }
+
+    void display() {
+        if (isEmpty()) {
+            cout << "Ring Buffer is empty" << endl;
+            return;
+        }
+        
+        cout << "Ring Buffer: ";
+        for (int i = 0; i < size; i++) {
+            int index = (head + i) % capacity;
+            cout << data[index] << " ";
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    RingBuffer rb(5);
+    rb.enqueue(10);
+    rb.enqueue(20);
+    rb.enqueue(30);
+    rb.display();
+    
+    int value;
+    if (rb.dequeue(value)) {
+        cout << "Dequeued: " << value << endl;
+    }
+    rb.display();
+    
+    rb.enqueue(40);
+    rb.enqueue(50);
+    rb.enqueue(60);
+    rb.display();
+    
+    cout << "Is full: " << (rb.isFull() ? "Yes" : "No") << endl;
+    
+    return 0;
+}

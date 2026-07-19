@@ -1,0 +1,213 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class HeapAlgorithms {
+private:
+    void heapify(int arr[], int n, int i) {
+        int largest = i;
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+        
+        if (left < n && arr[left] > arr[largest]) {
+            largest = left;
+        }
+        
+        if (right < n && arr[right] > arr[largest]) {
+            largest = right;
+        }
+        
+        if (largest != i) {
+            int temp = arr[i];
+            arr[i] = arr[largest];
+            arr[largest] = temp;
+            
+            heapify(arr, n, largest);
+        }
+    }
+    
+    void buildHeap(int arr[], int n) {
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            heapify(arr, n, i);
+        }
+    }
+    
+    void heapSort(int arr[], int n) {
+        buildHeap(arr, n);
+        
+        for (int i = n - 1; i > 0; i--) {
+            int temp = arr[0];
+            arr[0] = arr[i];
+            arr[i] = temp;
+            
+            heapify(arr, i, 0);
+        }
+    }
+    
+    int extractMax(int heap[], int& heapSize) {
+        if (heapSize <= 0) {
+            return -1;
+        }
+        
+        if (heapSize == 1) {
+            heapSize--;
+            return heap[0];
+        }
+        
+        int root = heap[0];
+        heap[0] = heap[heapSize - 1];
+        heapSize--;
+        heapify(heap, heapSize, 0);
+        
+        return root;
+    }
+    
+    void insertKey(int heap[], int& heapSize, int key, int capacity) {
+        if (heapSize == capacity) {
+            return;
+        }
+        
+        heapSize++;
+        int i = heapSize - 1;
+        heap[i] = key;
+        
+        while (i != 0 && heap[(i - 1) / 2] < heap[i]) {
+            int temp = heap[i];
+            heap[i] = heap[(i - 1) / 2];
+            heap[(i - 1) / 2] = temp;
+            i = (i - 1) / 2;
+        }
+    }
+    
+    void decreaseKey(int heap[], int heapSize, int i, int newVal) {
+        heap[i] = newVal;
+        
+        while (i != 0 && heap[(i - 1) / 2] < heap[i]) {
+            int temp = heap[i];
+            heap[i] = heap[(i - 1) / 2];
+            heap[(i - 1) / 2] = temp;
+            i = (i - 1) / 2;
+        }
+    }
+    
+    void deleteKey(int heap[], int& heapSize, int i) {
+        decreaseKey(heap, heapSize, i, 999999);
+        extractMax(heap, heapSize);
+    }
+    
+    int kthLargest(int arr[], int n, int k) {
+        int heap[100];
+        int heapSize = 0;
+        
+        for (int i = 0; i < k; i++) {
+            insertKey(heap, heapSize, arr[i], 100);
+        }
+        
+        for (int i = k; i < n; i++) {
+            if (arr[i] < heap[0]) {
+                heap[0] = arr[i];
+                heapify(heap, heapSize, 0);
+            }
+        }
+        
+        return heap[0];
+    }
+    
+    void mergeHeaps(int merged[], int heap1[], int heap2[], int n1, int n2) {
+        for (int i = 0; i < n1; i++) {
+            merged[i] = heap1[i];
+        }
+        
+        for (int i = 0; i < n2; i++) {
+            merged[n1 + i] = heap2[i];
+        }
+        
+        buildHeap(merged, n1 + n2);
+    }
+    
+    void printArray(int arr[], int n) {
+        cout << "[";
+        for (int i = 0; i < n; i++) {
+            cout << arr[i];
+            if (i < n - 1) {
+                cout << ", ";
+            }
+        }
+        cout << "]" << endl;
+    }
+    
+public:
+    void demonstrateHeapAlgorithms() {
+        cout << "Heap Algorithms Demonstration" << endl;
+        cout << "===========================" << endl;
+        
+        cout << "1. Heap Sort:" << endl;
+        int heapSortArr[] = {12, 11, 13, 5, 6, 7};
+        int heapSortN = 6;
+        cout << "Original array: ";
+        printArray(heapSortArr, heapSortN);
+        heapSort(heapSortArr, heapSortN);
+        cout << "Sorted array: ";
+        printArray(heapSortArr, heapSortN);
+        cout << endl;
+        
+        cout << "2. Max Heap Operations:" << endl;
+        int heap[100];
+        int heapSize = 0;
+        
+        insertKey(heap, heapSize, 10, 100);
+        insertKey(heap, heapSize, 20, 100);
+        insertKey(heap, heapSize, 15, 100);
+        insertKey(heap, heapSize, 30, 100);
+        
+        cout << "Heap after insertions: ";
+        printArray(heap, heapSize);
+        
+        cout << "Extracted max: " << extractMax(heap, heapSize) << endl;
+        cout << "Heap after extraction: ";
+        printArray(heap, heapSize);
+        cout << endl;
+        
+        cout << "3. Kth Largest Element:" << endl;
+        int kthArr[] = {7, 10, 4, 3, 20, 15};
+        int kthN = 6;
+        int k = 3;
+        cout << "Array: ";
+        printArray(kthArr, kthN);
+        cout << k << "rd largest element: " << kthLargest(kthArr, kthN, k) << endl;
+        cout << endl;
+        
+        cout << "4. Heap Merge:" << endl;
+        int heap1[] = {10, 5, 6, 2};
+        int heap2[] = {12, 7, 9};
+        int n1 = 4, n2 = 3;
+        int merged[100];
+        
+        cout << "Heap 1: ";
+        printArray(heap1, n1);
+        cout << "Heap 2: ";
+        printArray(heap2, n2);
+        
+        mergeHeaps(merged, heap1, heap2, n1, n2);
+        cout << "Merged heap: ";
+        printArray(merged, n1 + n2);
+        cout << endl;
+        
+        cout << "Heap Algorithms Features:" << endl;
+        cout << "- Heap Sort implementation" << endl;
+        cout << "- Max Heap operations (insert, extract, delete)" << endl;
+        cout << "- Kth largest element using heap" << endl;
+        cout << "- Heap merging" << endl;
+        cout << "- Heapify and build heap" << endl;
+        cout << "- Decrease key operation" << endl;
+        cout << "- Priority queue operations" << endl;
+        cout << "- Time complexity O(log n) for heap operations" << endl;
+    }
+};
+
+int main() {
+    HeapAlgorithms ha;
+    ha.demonstrateHeapAlgorithms();
+    return 0;
+}

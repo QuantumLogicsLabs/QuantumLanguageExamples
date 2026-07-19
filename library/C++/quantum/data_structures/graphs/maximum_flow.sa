@@ -1,0 +1,178 @@
+// Maximum Flow (Ford-Fulkerson Algorithm) Implementation in C++
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+using namespace std;
+
+class MaxFlowGraph {
+private:
+    vector<vector<int>> capacity;
+    vector<vector<int>> flow;
+    int vertices;
+
+    bool bfs(int source, int sink, vector<int>& parent) {
+        vector<bool> visited(vertices, false);
+        queue<int> q;
+
+        q.push(source);
+        visited[source] = true;
+        parent[source] = -1;
+
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+
+            for (int v = 0; v < vertices; v++) {
+                if (!visited[v] && capacity[u][v] - flow[u][v] > 0) {
+                    q.push(v);
+                    parent[v] = u;
+                    visited[v] = true;
+                    
+                    if (v == sink) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+public:
+    MaxFlowGraph(int v) : vertices(v) {
+        capacity.resize(vertices, vector<int>(vertices, 0));
+        flow.resize(vertices, vector<int>(vertices, 0));
+    }
+
+    void addEdge(int u, int v, int cap) {
+        if (u >= 0 && u < vertices && v >= 0 && v < vertices) {
+            capacity[u][v] = cap;
+        }
+    }
+
+    int fordFulkerson(int source, int sink) {
+        vector<int> parent(vertices);
+        int maxFlow = 0;
+
+        while (bfs(source, sink, parent)) {
+            int pathFlow = INT_MAX;
+            
+            for (int v = sink; v != source; v = parent[v]) {
+                int u = parent[v];
+                pathFlow = min(pathFlow, capacity[u][v] - flow[u][v]);
+            }
+
+            for (int v = sink; v != source; v = parent[v]) {
+                int u = parent[v];
+                flow[u][v] += pathFlow;
+                flow[v][u] -= pathFlow;
+            }
+
+            maxFlow += pathFlow;
+        }
+
+        return maxFlow;
+    }
+
+    vector<vector<int>> getMinCut(int source) {
+        vector<bool> visited(vertices, false);
+        queue<int> q;
+
+        q.push(source);
+        visited[source] = true;
+
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+
+            for (int v = 0; v < vertices; v++) {
+                if (!visited[v] && capacity[u][v] - flow[u][v] > 0) {
+                    q.push(v);
+                    visited[v] = true;
+                }
+            }
+        }
+
+        vector<vector<int>> minCut(2);
+        for (int i = 0; i < vertices; i++) {
+            if (visited[i]) {
+                minCut[0].push_back(i);
+            } else {
+                minCut[1].push_back(i);
+            }
+        }
+
+        return minCut;
+    }
+
+    void displayFlow() {
+        cout << "Flow Network:" << endl;
+        cout << "Edge\tFlow/Capacity" << endl;
+        for (int u = 0; u < vertices; u++) {
+            for (int v = 0; v < vertices; v++) {
+                if (capacity[u][v] > 0) {
+                    cout << u << "->" << v << "\t" << flow[u][v] << "/" << capacity[u][v] << endl;
+                }
+            }
+        }
+    }
+
+    void displayMinCut(const vector<vector<int>>& minCut) {
+        cout << "Minimum Cut:" << endl;
+        cout << "Set S (Source side): ";
+        for (int vertex : minCut[0]) {
+            cout << vertex << " ";
+        }
+        cout << endl;
+
+        cout << "Set T (Sink side): ";
+        for (int vertex : minCut[1]) {
+            cout << vertex << " ";
+        }
+        cout << endl;
+    }
+
+    void display() {
+        cout << "Capacity Matrix:" << endl;
+        for (int u = 0; u < vertices; u++) {
+            for (int v = 0; v < vertices; v++) {
+                cout << capacity[u][v] << " ";
+            }
+            cout << endl;
+        }
+    }
+};
+
+int main() {
+    MaxFlowGraph g(6);
+    
+    g.addEdge(0, 1, 16);
+    g.addEdge(0, 2, 13);
+    g.addEdge(1, 2, 10);
+    g.addEdge(1, 3, 12);
+    g.addEdge(2, 1, 4);
+    g.addEdge(2, 4, 14);
+    g.addEdge(3, 2, 9);
+    g.addEdge(3, 5, 20);
+    g.addEdge(4, 3, 7);
+    g.addEdge(4, 5, 4);
+    
+    g.display();
+    cout << endl;
+    
+    int source = 0;
+    int sink = 5;
+    int maxFlow = g.fordFulkerson(source, sink);
+    
+    cout << "Maximum Flow from " << source << " to " << sink << ": " << maxFlow << endl;
+    cout << endl;
+    
+    g.displayFlow();
+    cout << endl;
+    
+    vector<vector<int>> minCut = g.getMinCut(source);
+    g.displayMinCut(minCut);
+    
+    return 0;
+}

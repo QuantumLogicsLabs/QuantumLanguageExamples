@@ -1,0 +1,247 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class NumberTheory {
+private:
+    int gcd(int a, int b) {
+        if (b == 0) return a;
+        return gcd(b, a % b);
+    }
+    
+    int lcm(int a, int b) {
+        return (a * b) / gcd(a, b);
+    }
+    
+    bool isPrime(int n) {
+        if (n <= 1) return false;
+        if (n == 2) return true;
+        if (n % 2 == 0) return false;
+        
+        for (int i = 3; i * i <= n; i += 2) {
+            if (n % i == 0) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    int power(int base, int exp) {
+        if (exp == 0) return 1;
+        if (exp == 1) return base;
+        
+        int result = 1;
+        for (int i = 0; i < exp; i++) {
+            result *= base;
+        }
+        
+        return result;
+    }
+    
+    int powerMod(int base, int exp, int mod) {
+        if (exp == 0) return 1 % mod;
+        
+        int result = 1;
+        base %= mod;
+        
+        while (exp > 0) {
+            if (exp % 2 == 1) {
+                result = (result * base) % mod;
+            }
+            base = (base * base) % mod;
+            exp /= 2;
+        }
+        
+        return result;
+    }
+    
+    int factorial(int n) {
+        if (n < 0) return -1;
+        if (n == 0 || n == 1) return 1;
+        
+        long long result = 1;
+        for (int i = 2; i <= n; i++) {
+            result *= i;
+        }
+        
+        return (int)result;
+    }
+    
+    bool isPerfectNumber(int n) {
+        if (n <= 1) return false;
+        
+        int sum = 0;
+        for (int i = 1; i < n; i++) {
+            if (n % i == 0) {
+                sum += i;
+            }
+        }
+        
+        return sum == n;
+    }
+    
+    bool isArmstrong(int n) {
+        if (n < 0) return false;
+        
+        int original = n;
+        int sum = 0;
+        int digits = 0;
+        int temp = n;
+        
+        while (temp != 0) {
+            temp /= 10;
+            digits++;
+        }
+        
+        temp = n;
+        for (int i = 0; i < digits; i++) {
+            int digit = temp % 10;
+            sum += power(digit, digits);
+            temp /= 10;
+        }
+        
+        return sum == original;
+    }
+    
+    int countDigits(int n) {
+        if (n == 0) return 1;
+        
+        int count = 0;
+        while (n != 0) {
+            n /= 10;
+            count++;
+        }
+        
+        return count;
+    }
+    
+    int sumOfDigits(int n) {
+        int sum = 0;
+        if (n < 0) n = -n;
+        
+        while (n != 0) {
+            sum += n % 10;
+            n /= 10;
+        }
+        
+        return sum;
+    }
+    
+    int reverseNumber(int n) {
+        int reversed = 0;
+        if (n < 0) n = -n;
+        
+        while (n != 0) {
+            reversed = reversed * 10 + n % 10;
+            n /= 10;
+        }
+        
+        return reversed;
+    }
+    
+    bool isPalindrome(int n) {
+        return n == reverseNumber(n);
+    }
+    
+    int fibonacci(int n) {
+        if (n <= 1) return n;
+        
+        int a = 0, b = 1;
+        for (int i = 2; i <= n; i++) {
+            int temp = a + b;
+            a = b;
+            b = temp;
+        }
+        
+        return b;
+    }
+    
+    void printArray(int arr[], int size) {
+        cout << "[";
+        for (int i = 0; i < size; i++) {
+            cout << arr[i];
+            if (i < size - 1) {
+                cout << ", ";
+            }
+        }
+        cout << "]" << endl;
+    }
+    
+public:
+    void demonstrateNumberTheory() {
+        cout << "Number Theory Demonstration" << endl;
+        cout << "=========================" << endl;
+        
+        cout << "1. GCD and LCM:" << endl;
+        int a = 12, b = 18;
+        cout << "GCD(" << a << ", " << b << ") = " << gcd(a, b) << endl;
+        cout << "LCM(" << a << ", " << b << ") = " << lcm(a, b) << endl;
+        cout << endl;
+        
+        cout << "2. Prime Number Testing:" << endl;
+        int n = 29;
+        cout << "Is " << n << " prime? " << (isPrime(n) ? "Yes" : "No") << endl;
+        cout << endl;
+        
+        cout << "3. Power and Modular Exponentiation:" << endl;
+        int base = 2, exp = 10, mod = 1000;
+        cout << "Power(" << base << ", " << exp << ") = " << power(base, exp) << endl;
+        cout << "PowerMod(" << base << ", " << exp << ", " << mod << ") = " << powerMod(base, exp, mod) << endl;
+        cout << endl;
+        
+        cout << "4. Factorial:" << endl;
+        int fact = 6;
+        cout << "Factorial(" << fact << ") = " << factorial(fact) << endl;
+        cout << endl;
+        
+        cout << "5. Special Numbers:" << endl;
+        int perfect = 28;
+        int armstrong = 153;
+        int palindrome = 121;
+        
+        cout << "Is " << perfect << " perfect? " << (isPerfectNumber(perfect) ? "Yes" : "No") << endl;
+        cout << "Is " << armstrong << " Armstrong? " << (isArmstrong(armstrong) ? "Yes" : "No") << endl;
+        cout << "Is " << palindrome << " palindrome? " << (isPalindrome(palindrome) ? "Yes" : "No") << endl;
+        cout << endl;
+        
+        cout << "6. Number Properties:" << endl;
+        int num = 12345;
+        cout << "Number: " << num << endl;
+        cout << "Digits: " << countDigits(num) << endl;
+        cout << "Sum of digits: " << sumOfDigits(num) << endl;
+        cout << "Reversed: " << reverseNumber(num) << endl;
+        cout << endl;
+        
+        cout << "7. Fibonacci Sequence:" << endl;
+        int fib = 10;
+        cout << "Fibonacci(" << fib << ") = " << fibonacci(fib) << endl;
+        
+        int fibSeries[15];
+        for (int i = 0; i <= fib; i++) {
+            fibSeries[i] = fibonacci(i);
+        }
+        cout << "Fibonacci series (0 to " << fib << "): ";
+        printArray(fibSeries, fib + 1);
+        cout << endl;
+        
+        cout << "Number Theory Features:" << endl;
+        cout << "- GCD and LCM calculation" << endl;
+        cout << "- Prime number testing" << endl;
+        cout << "- Power and modular exponentiation" << endl;
+        cout << "- Factorial calculation" << endl;
+        cout << "- Perfect numbers detection" << endl;
+        cout << "- Armstrong numbers detection" << endl;
+        cout << "- Palindrome number detection" << endl;
+        cout << "- Number properties (digits, sum, reverse)" << endl;
+        cout << "- Fibonacci sequence generation" << endl;
+        cout << "- Efficient algorithms without external libraries" << endl;
+    }
+};
+
+int main() {
+    NumberTheory nt;
+    nt.demonstrateNumberTheory();
+    return 0;
+}

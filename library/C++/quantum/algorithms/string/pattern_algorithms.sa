@@ -1,0 +1,237 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class PatternAlgorithms {
+private:
+    void printPattern(int n) {
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= i; j++) {
+                cout << "* ";
+            }
+            cout << endl;
+        }
+    }
+    
+    void printPyramid(int n) {
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n - i; j++) {
+                cout << " ";
+            }
+            for (int j = 1; j <= 2 * i - 1; j++) {
+                cout << "* ";
+            }
+            cout << endl;
+        }
+    }
+    
+    void printDiamond(int n) {
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n - i; j++) {
+                cout << " ";
+            }
+            for (int j = 1; j <= 2 * i - 1; j++) {
+                cout << "* ";
+            }
+            cout << endl;
+        }
+        
+        for (int i = n - 1; i >= 1; i--) {
+            for (int j = 1; j <= n - i; j++) {
+                cout << " ";
+            }
+            for (int j = 1; j <= 2 * i - 1; j++) {
+                cout << "* ";
+            }
+            cout << endl;
+        }
+    }
+    
+    void printSquare(int n) {
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                cout << "* ";
+            }
+            cout << endl;
+        }
+    }
+    
+    void printPascal(int n) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                cout << " ";
+            }
+            for (int j = 0; j < 2 * i + 1; j++) {
+                cout << "* ";
+            }
+            cout << endl;
+        }
+    }
+    
+    void printHollowSquare(int n) {
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (i == 1 || i == n || j == 1 || j == n) {
+                    cout << "* ";
+                } else {
+                    cout << "  ";
+                }
+            }
+            cout << endl;
+        }
+    }
+    
+    void printNumberPattern(int n) {
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= i; j++) {
+                cout << j << " ";
+            }
+            cout << endl;
+        }
+    }
+    
+    void printFloydTriangle(int n) {
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n - i; j++) {
+                cout << " ";
+            }
+            for (int j = 1; j <= 2 * i - 1; j++) {
+                cout << i << " ";
+            }
+            cout << endl;
+        }
+    }
+    
+    void printZigzag(int n) {
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                if ((i + j) % 2 == 0) {
+                    cout << "* ";
+                } else {
+                    cout << "  ";
+                }
+            }
+            cout << endl;
+        }
+    }
+    
+    void printSpiral(int n) {
+        int matrix[20][20];
+        int top = 0, bottom = n - 1, left = 0, right = n - 1;
+        int num = 1;
+        
+        while (top <= bottom && left <= right) {
+            for (int i = left; i <= right; i++) {
+                matrix[top][i] = num++;
+            }
+            top++;
+            
+            for (int i = top; i <= bottom; i++) {
+                matrix[i][right] = num++;
+            }
+            right--;
+            
+            if (top <= bottom) {
+                for (int i = right; i >= left; i--) {
+                    matrix[bottom][i] = num++;
+                }
+                bottom--;
+            }
+        }
+        
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                cout << matrix[i][j] << " ";
+            }
+            cout << endl;
+        }
+    }
+    
+    void printHeart(int n) {
+        for (int i = n / 2; i >= 0; i--) {
+            for (int j = 0; j < 2 * i; j++) {
+                cout << " ";
+            }
+            for (int j = 0; j < n - 2 * i; j++) {
+                cout << "* ";
+            }
+            cout << endl;
+        }
+        
+        for (int i = 1; i <= n / 2; i++) {
+            for (int j = 0; j < n - 2 * i; j++) {
+                cout << "* ";
+            }
+            for (int j = 0; j < 4 * i - 1; j++) {
+                cout << " ";
+            }
+            cout << endl;
+        }
+    }
+    
+public:
+    void demonstratePatternAlgorithms() {
+        cout << "Pattern Algorithms Demonstration" << endl;
+        cout << "=============================" << endl;
+        
+        cout << "1. Right Triangle Pattern:" << endl;
+        printPattern(5);
+        cout << endl;
+        
+        cout << "2. Pyramid Pattern:" << endl;
+        printPyramid(5);
+        cout << endl;
+        
+        cout << "3. Diamond Pattern:" << endl;
+        printDiamond(5);
+        cout << endl;
+        
+        cout << "4. Square Pattern:" << endl;
+        printSquare(5);
+        cout << endl;
+        
+        cout << "5. Pascal's Triangle Pattern:" << endl;
+        printPascal(5);
+        cout << endl;
+        
+        cout << "6. Hollow Square Pattern:" << endl;
+        printHollowSquare(5);
+        cout << endl;
+        
+        cout << "7. Number Pattern:" << endl;
+        printNumberPattern(5);
+        cout << endl;
+        
+        cout << "8. Floyd's Triangle Pattern:" << endl;
+        printFloydTriangle(5);
+        cout << endl;
+        
+        cout << "9. Zigzag Pattern:" << endl;
+        printZigzag(5);
+        cout << endl;
+        
+        cout << "10. Spiral Pattern:" << endl;
+        printSpiral(5);
+        cout << endl;
+        
+        cout << "11. Heart Pattern:" << endl;
+        printHeart(7);
+        cout << endl;
+        
+        cout << "Pattern Algorithms Features:" << endl;
+        cout << "- Various geometric patterns" << endl;
+        cout << "- Number patterns and sequences" << endl;
+        cout << "- Nested loop implementations" << endl;
+        cout << "- Mathematical pattern generation" << endl;
+        cout << "- Complex shapes (Diamond, Heart, etc.)" << endl;
+        cout << "- Matrix-based patterns" << endl;
+        cout << "- Time and space complexity analysis" << endl;
+    }
+};
+
+int main() {
+    PatternAlgorithms pa;
+    pa.demonstratePatternAlgorithms();
+    return 0;
+}
