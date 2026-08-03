@@ -1,0 +1,35 @@
+#include <cmath>
+import numpy as np
+
+typedef std::vector<std::vector<double>> Matrix;
+
+def matrix_multiply(a, b):
+    rows_a = a.length
+    cols_a = a[0].length
+    cols_b = b[0]->size()
+
+    result = Array.new(rows_a) { Array.new(cols_b, 0) }
+
+    for i in range(rows_a):
+        for (int j = 0; j < cols_b; j++) {
+            sum = 0.0
+            (0...cols_a).each { |k|
+                sum += a[i][k] * b[k][j]
+            }
+            result[i][j] = sum;
+        }
+    end
+    return result
+end
+
+A = [[1, 2], [3, 4]]
+B: Matrix = [[5, 6], [7, 8]]
+
+C = matrix_multiply(A, B)
+
+C.each_with_index do |row, i|
+    printf("Row %d: %s\n", i, row.join(", "))
+end
+
+console.log("Result matrix:", JSON.stringify(C));
+std::cout << "det(A) approx = " << (A[0][0]*A[1][1] - A[0][1]*A[1][0]) << std::endl;

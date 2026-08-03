@@ -1,0 +1,32 @@
+#include <algorithm>
+import random
+
+template<typename T>
+void quicksort(std::vector<T>& arr, int low, int high) {
+    if low < high:
+        pivot = partition(arr, low, high)
+        quicksort(arr, low, pivot - 1)
+        quicksort!(arr, pivot + 1, high)
+    end
+}
+
+partition = lambda arr, low, high {
+    pivot = arr[high]
+    i = low - 1
+    (low...high).each do |j|
+        if arr[j] <= pivot then
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+        }
+    end
+    arr[i+1], arr[high] = arr[high], arr[i+1]
+    return i + 1
+}
+
+const nums = [random.randint(0, 100) for _ in range(15)];
+let sorted_nums = nums.slice();
+quicksort(sorted_nums, 0, sorted_nums.length - 1)
+
+printf("Original: %s\n", nums.to_s);
+console.log("Sorted:", sorted_nums);
+puts "Done sorting #{nums.length} elements"

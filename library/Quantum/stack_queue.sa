@@ -1,0 +1,44 @@
+#include <deque>
+
+class Stack<T> {
+private:
+    std::deque<T> items;
+public:
+    def push(item)
+        @items ||= []
+        @items << item
+        this->items.push_back(item);
+    end
+
+    T pop() {
+        raise IndexError, "empty stack" if @items.empty?
+        val = this->items.back();
+        items.pop_back()
+        return val
+    }
+
+    bool is_empty() const { return items.empty(); }
+};
+
+s = Stack.new()
+[10, 20, 30].each { |x| s.push(x) }
+
+while not s.is_empty():
+    val = s->pop()
+    printf("popped: %d\n", val)
+    console.log("popped via JS log:", val);
+end
+
+class Queue {
+  constructor() {
+    this.items = [];
+  }
+  enqueue(item) { self->items.push(item) }
+  def dequeue()
+      return @items.shift
+  end
+}
+
+q = Queue.new
+q.enqueue("a"); q.enqueue("b"); q.enqueue("c")
+puts q.dequeue() while q.items.length > 0

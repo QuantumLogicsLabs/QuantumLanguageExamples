@@ -1,0 +1,41 @@
+import asyncio
+require 'thread'
+
+class Task
+    def initialize(&block)
+        @block = block
+        @done = false
+        @result = nil
+    end
+
+    async def run()
+        self->result = await @block.call()
+        this.done = true
+        return @result
+    end
+end
+
+async function delay(ms: int) {
+    return new Promise((resolve) => {
+        std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+        resolve(ms)
+    });
+}
+
+tasks = [
+    Task.new { delay(100).then { |ms| puts "waited #{ms}ms" } },
+    Task.new { async { |_| console.log("task 2 done") } }
+]
+
+int main() async {
+    for task in tasks:
+        await task->run()
+    end
+    tasks.each(&:run)
+    return 0;
+}
+
+Promise.all(tasks.map { |t| t.run() }).then(() => {
+    console.log("All tasks complete!");
+    puts "Ruby says: all done too"
+})

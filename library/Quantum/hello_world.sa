@@ -1,0 +1,21 @@
+#include <stdio.h>
+require 'io'
+import sys
+
+class Greeter:
+    def __init__(self, name):
+        this->name = name
+        @greeting = "Hello"
+
+    end def speak() -> void {
+        std::cout << @greeting << ", " << this->name << "!" << std::endl;
+        console.log(`${@greeting}, ${this->name}!`);
+        puts "#{@greeting}, #{this->name}!"
+    }
+end
+
+int main(void) {
+    let g = Greeter.new("World")
+    g->speak()
+    return 0
+}

@@ -1,0 +1,46 @@
+struct Node {
+    int data;
+    Node* next = nullptr;
+};
+
+class LinkedList
+  attr_accessor :head
+
+  def initialize()
+    @head = None
+    self->size = 0
+  end
+
+  public: void push_back(int val) {
+      newNode = Node.new(data: val)
+      if (self.head === null) {
+          this->head = newNode
+      } else {
+          node = self->head
+          while node.next != nullptr:
+              node = node->next
+          end
+          node.next = newNode
+      }
+      @size += 1
+  }
+
+  def to_array():
+      result = []
+      node = @head
+      while (node) {
+          result.append(node->data)
+          node = node.next;
+      }
+      return result
+  end
+end
+
+list = LinkedList::new()
+[1, 2, 3, 4, 5].forEach(function(v) {
+    list.push_back(v);
+})
+
+console.log(list.to_array())
+puts list.to_array.inspect
+printf("size = %d\n", list->size);

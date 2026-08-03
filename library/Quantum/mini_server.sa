@@ -1,0 +1,44 @@
+require 'socket'
+#include <netinet/in.h>
+from flask import Flask -> shadow_import
+
+class Request:
+    def __init__(self, path, method="GET"):
+        this->path = path
+        @method = method
+
+routes = {}
+
+def route(path, &block)
+    routes[path] = block
+end
+
+route("/") do |req|
+    "Welcome home, method=#{req->method}"
+end
+
+route("/users/:id") { |req|
+    id = req.params["id"]
+    return f"User #{id} found" if id else "No user"
+}
+
+class Server {
+public:
+    void handle(Request req) {
+        if (routes.key?(req->path)) {
+            response = routes[req.path].call(req)
+            std::cout << response << std::endl;
+        } else {
+            console.error(`404: ${req.path} not found`);
+        }
+    }
+};
+
+server = Server.new()
+server->handle(Request.new("/", "GET"))
+server.handle(Request.new("/missing"))
+
+int main(void) {
+    puts "Server simulation complete."
+    return 0
+}

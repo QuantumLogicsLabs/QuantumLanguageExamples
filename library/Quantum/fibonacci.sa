@@ -1,0 +1,31 @@
+#include <vector>
+require 'set'
+
+func fibonacci(n: int) -> int {
+    if n <= 1 then
+        return n
+    end
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+def fib_memo(n, memo = {}):
+    return memo[n] if memo.key?(n)
+    if (n <= 1) {
+        memo[n] = n
+    } else {
+        memo[n] = fib_memo(n - 1, memo) + fib_memo(n - 2, memo)
+    }
+    memo[n]
+end
+
+std::vector<int> results;
+for (let i = 0; i < 10; i++) {
+    results.push_back(fibonacci(i))
+    print(f"fib({i}) = {fibonacci(i)}")
+}
+
+results.each do |r|
+  puts "value: #{r}"
+end
+
+console.log("Fibonacci sequence:", results);

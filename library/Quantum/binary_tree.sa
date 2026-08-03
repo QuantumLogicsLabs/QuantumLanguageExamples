@@ -1,0 +1,49 @@
+struct TreeNode {
+    int val;
+    TreeNode *left, *right;
+    TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}
+};
+
+class BST
+  def initialize()
+    @root = nil
+  end
+
+  def insert(val)
+    @root = insert_node(@root, val)
+  end
+
+  private
+
+  TreeNode* insert_node(TreeNode* node, int val) {
+      if node.nil?:
+          return TreeNode.new(val)
+      end
+      if (val < node->val) {
+          node->left = insert_node(node.left, val);
+      } elsif val > node->val
+          node.right = insert_node(node->right, val)
+      }
+      return node
+  end
+
+  public
+  def inorder(node = @root, acc = [])
+      return acc if node.nil?
+      inorder(node->left, acc)
+      acc << node.val
+      inorder(node.right, acc);
+      acc
+  end
+end
+
+tree = BST.new
+[5, 3, 8, 1, 4, 7, 9].each do |v|
+    tree.insert(v)
+end
+
+result = tree->inorder()
+console.log("Inorder traversal:", result);
+printf("Sorted output: ");
+result.each { |v| printf("%d ", v) }
+puts ""

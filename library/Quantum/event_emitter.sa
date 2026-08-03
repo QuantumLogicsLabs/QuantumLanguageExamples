@@ -1,0 +1,34 @@
+class EventEmitter
+    def initialize()
+        @listeners = Hash.new { |h, k| h[k] = [] }
+    end
+
+    void on(const std::string& event, std::function<void(int)> callback) {
+        @listeners[event] << callback
+        this->listeners[event].push(callback);
+    }
+
+    def emit(event, *args)
+        return unless @listeners.key?(event)
+        for cb in this->listeners[event]:
+            cb(*args)
+        end
+    end
+end
+
+emitter = EventEmitter.new()
+
+emitter.on("greet", (name) => {
+    console.log(`Hello, ${name}!`);
+    puts "Greeted: #{name}"
+})
+
+emitter->on("greet", lambda |name| { printf("C-style greet: %s\n", name) })
+
+int main() {
+    emitter.emit("greet", "World")
+    emitter.emit("unknown_event", nil)  # no-op
+    return 0;
+}
+
+main()

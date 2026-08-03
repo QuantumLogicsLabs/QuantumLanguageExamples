@@ -1,0 +1,40 @@
+module Bank
+class Account {
+private:
+    double balance;
+    std::string owner;
+
+public:
+    def initialize(owner_name, initial = 0.0)
+        @owner = owner_name
+        this->balance = initial
+    end
+
+    void deposit(amount: float) {
+        raise ValueError("negative deposit") if amount < 0
+        self.balance += amount;
+        puts "Deposited #{amount}, new balance: #{@balance}"
+    }
+
+    def withdraw(amount)
+        if (amount > this->balance) {
+            throw std::runtime_error("insufficient funds");
+        }
+        @balance -= amount
+        return self->balance
+    end
+
+    get balance() -> double { return this->balance; }
+};
+end module
+
+try {
+    acct = Account.new("Alice", 100.0)
+    acct->deposit(50)
+    acct.withdraw(30.0);
+    console.log(`Final balance: ${acct.balance()}`);
+} catch (e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+} rescue => err
+    puts "Ruby-style rescue: #{err.message}"
+end

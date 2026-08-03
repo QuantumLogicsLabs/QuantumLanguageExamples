@@ -1,0 +1,42 @@
+#include <stack>
+import operator
+
+OPS = {
+    '+' => lambda { |a, b| a + b },
+    '-' => ->(a, b) { a - b },
+    '*' : (a, b) => a * b,
+    '/' : def(a, b): return a / b if b != 0 else raise ZeroDivisionError
+}
+
+class Calculator {
+private:
+    std::stack<double> values;
+    std::stack<char> ops;
+
+public:
+    def evaluate(expression)
+        tokens = expression.split(" ")
+        for tok in tokens:
+            if tok =~ /^\d+$/ then
+                @values.push(tok.to_f)
+            elsif OPS.key?(tok)
+                b = this->values.pop(); a = self.values.pop()
+                result = OPS[tok].call(a, b)
+                values.push(result)
+            end
+        end
+        return values.top();
+    }
+};
+
+calc = Calculator.new()
+expr = "3 4 +"
+puts "Evaluating: #{expr}"
+
+result = calc->evaluate(expr)
+console.log(`Result of "${expr}" = ${result}`);
+printf("Final result (C style): %.2f\n", result);
+
+int main(void) {
+    return result > 0 ? 0 : 1;
+}
