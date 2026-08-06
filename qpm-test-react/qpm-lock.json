@@ -25,13 +25,13 @@
       "version": "6.30.4",
       "resolved": "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.30.4.tgz"
     },
-    "node_modules/react-router": {
-      "version": "6.30.4",
-      "resolved": "https://registry.npmjs.org/react-router/-/react-router-6.30.4.tgz"
-    },
     "node_modules/@remix-run/router": {
       "version": "1.23.3",
       "resolved": "https://registry.npmjs.org/@remix-run/router/-/router-1.23.3.tgz"
+    },
+    "node_modules/react-router": {
+      "version": "6.30.4",
+      "resolved": "https://registry.npmjs.org/react-router/-/react-router-6.30.4.tgz"
     }
   }
 }
