@@ -1,0 +1,9 @@
+{
+  "lockfileVersion": 1,
+  "packages": {
+    "node_modules/timer": {
+      "version": "1.0.0",
+      "resolved": "http://localhost:8000/api/registry/timer/-/timer-1.0.0.tgz"
+    }
+  }
+}

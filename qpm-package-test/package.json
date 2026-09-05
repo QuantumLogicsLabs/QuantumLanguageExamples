@@ -1,0 +1,7 @@
+{
+  "name": "qpm-package-test",
+  "version": "1.0.0",
+  "dependencies": {
+    "timer": "^1.0.0"
+  }
+}
