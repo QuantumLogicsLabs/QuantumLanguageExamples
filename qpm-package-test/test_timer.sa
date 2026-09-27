@@ -1,0 +1,26 @@
+// test_timer.sa — verifies the `timer` (or `timer-counter`) qpm package.
+//
+// Run this after `qpm install <your-timer-package-name>` puts it in
+// qpm_modules/ so the import below can resolve.
+
+from timer import starttimer, endtimer
+
+print("Starting workload...")
+
+starttimer()
+
+// A deliberately slow workload so the elapsed time is easy to see —
+// sums 1 through 2,000,000.
+let sum = 0;
+let i = 0;
+while (i < 2000000) {
+    sum = sum + i;
+    i = i + 1;
+}
+
+
+print("Sum result:", sum);
+
+endtimer()
+
+print("Done.")
