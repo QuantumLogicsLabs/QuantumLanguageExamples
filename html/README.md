@@ -6,13 +6,22 @@ page is a complete HTML document with its CSS in a `<style>` element.
 A `.sa` file that starts with `<!DOCTYPE html>`, an HTML comment or an HTML
 tag is compiled by Quantum's HTML front-end. It checks the markup the way an
 HTML validator does, checks every stylesheet with the CSS front-end, and
-prints the document as a browser builds it.
+opens the compiled page in your default web browser.
 
 ```bash
-qrun 10_flexbox/03_justify_content_center.sa        # print the compiled page
+qrun 10_flexbox/03_justify_content_center.sa           # open the compiled page in the browser
+quantum 10_flexbox/03_justify_content_center.sa        # the same, from a standalone .exe
+qrun --print 10_flexbox/03_justify_content_center.sa   # print the compiled page instead
 qrun --strict 10_flexbox/03_justify_content_center.sa  # any problem is a compile error
-qrun --test examples                                # run every example, these included
+qrun --test examples                                   # run every example, these included
 ```
+
+The compiled page is written to `quantum-pages` in your temp folder, the
+browser opens it from there, and the file is deleted again 10 seconds later
+(so reloading the tab after that finds nothing: run the page again). Relative URLs in it (images, scripts, links,
+CSS `url()`) are resolved against the source file's folder first, so the
+files next to your page still load. The test runner prints pages instead of
+opening them.
 
 The pages compile with no errors and no warnings. Errors are things like an
 unclosed element, misnested tags, a misspelled property, a length with no
