@@ -194,24 +194,24 @@ impl Inventory {
     fn print_catalog(&self) {
         let mut products: Vec<&Product> = self.products.values().collect();
         products.sort_by_key(|p| p.id);
-        println!("\n{:─<80}");
+        println!("\n{:─<80}", "");
         println!("{:>4} {:<25} {:<10} {:<15} {:>8} {:>8} {:>7} {}",
             "ID", "Name", "SKU", "Category", "Price", "Cost", "Stock", "Margin");
-        println!("{:─<80}");
+        println!("{:─<80}", "");
         for p in products {
             let alert = if p.is_out_of_stock() { " 🚫" } else if p.is_low_stock() { " ⚠" } else { "" };
             println!("{:>4} {:<25} {:<10} {:<15} {:>8.2} {:>8.2} {:>7}{}{}", 
                 p.id, p.name, p.sku, p.category, p.price, p.cost, p.stock, alert, 
                 format!("  {:.1}%", p.margin_pct()));
         }
-        println!("{:─<80}");
+        println!("{:─<80}", "");
         println!("Stock value: ${:.2}  |  Retail value: ${:.2}", self.total_stock_value(), self.total_retail_value());
     }
 
     fn print_sales_report(&self) {
-        println!("\n{:─<60}");
+        println!("\n{:─<60}", "");
         println!("Sales Report ({} transactions)", self.sales.len());
-        println!("{:─<60}");
+        println!("{:─<60}", "");
         let mut by_product: HashMap<u32, (String, u32, f64, f64)> = HashMap::new();
         for s in &self.sales {
             let e = by_product.entry(s.product_id).or_insert((s.product_name.clone(), 0, 0.0, 0.0));
@@ -222,11 +222,11 @@ impl Inventory {
         let mut items: Vec<_> = by_product.iter().collect();
         items.sort_by(|a, b| b.1.2.partial_cmp(&a.1.2).unwrap());
         println!("{:<25} {:>8} {:>12} {:>12}", "Product", "Units", "Revenue", "Profit");
-        println!("{:─<60}");
+        println!("{:─<60}", "");
         for (_, (name, qty, rev, profit)) in &items {
             println!("{:<25} {:>8} {:>12.2} {:>12.2}", name, qty, rev, profit);
         }
-        println!("{:─<60}");
+        println!("{:─<60}", "");
         println!("{:<25} {:>8} {:>12.2} {:>12.2}", "TOTAL", 
             self.sales.iter().map(|s| s.quantity).sum::<u32>(),
             self.total_revenue(), self.total_profit());

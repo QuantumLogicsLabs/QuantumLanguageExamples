@@ -1,0 +1,8 @@
+[package]
+name = "web-server-framework"
+version = "0.1.0"
+edition = "2021"
+description = "A small async web server framework: routing, middleware, templates and security helpers"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
