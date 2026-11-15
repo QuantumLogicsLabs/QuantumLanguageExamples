@@ -128,7 +128,7 @@ impl Account {
     }
 
     fn print_statement(&self) {
-        println!("\n{'Account Statement':-^60}");
+        println!("\n{:-^60}", "Account Statement");
         println!("  Account:  {} ({})", self.id, self.account_type);
         println!("  Owner:    {}", self.owner);
         println!("  Balance:  ${:.2}", self.balance);
@@ -232,7 +232,7 @@ impl Bank {
     fn total_assets(&self) -> f64 { self.accounts.values().map(|a| a.balance).sum() }
 
     fn print_summary(&self) {
-        println!("\n{'Bank Summary':-^60}");
+        println!("\n{:-^60}", "Bank Summary");
         println!("  Bank: {}", self.name);
         println!("  Accounts: {}", self.accounts.len());
         println!("  Total Assets: ${:.2}", self.total_assets());

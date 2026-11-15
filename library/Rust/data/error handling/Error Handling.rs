@@ -80,7 +80,7 @@ fn parse_and_double(s: &str) -> Result<i32, ParseIntError> {
 fn chain_operations(input: &str) -> Result<f64, Box<dyn std::error::Error>> {
     let n:  i64 = input.trim().parse()?;      // ParseIntError
     let sq: f64 = divide(n as f64, 2.0)
-        .map_err(|e| e.into::<Box<dyn std::error::Error>>().unwrap_or_else(|_| "math".into()))?;
+        .map_err(|e| -> Box<dyn std::error::Error> { e.into() })?;
     Ok(sq)
 }
 
